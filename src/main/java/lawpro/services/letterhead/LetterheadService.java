@@ -52,7 +52,7 @@ public class LetterheadService {
             File applicantDirectory = new File(directory.getPath() + "/applicantLetterheads");
             File assocDirectory = new File(directory.getPath() + "/assocLetterheads");
             File manCompanyLetterhead = new File(directory.getPath() + "/manCompanyLetterheads");
-
+            //wierd stuff
             applicantDirectory.mkdir();
             assocDirectory.mkdir();
             manCompanyLetterhead.mkdir();

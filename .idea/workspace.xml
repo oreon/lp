@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7d194184-cd1f-4868-941f-584fdfe35e0d" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/mylawpro.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/lawpro/services/letterhead/LetterheadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lawpro/services/letterhead/LetterheadService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
