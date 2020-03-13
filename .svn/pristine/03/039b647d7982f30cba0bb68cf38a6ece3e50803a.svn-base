@@ -1,0 +1,28 @@
+<div th:fragment="question">
+    <div th:id="'formQuestion' + ${questionNumber}" class="formQuestion">
+        <label class="headerLabel">
+            <span class="questionTitle" th:utext="${questionText}"></span>
+            <th:block th:if="${role == 'admin'}">
+                <input type="text" class="questionTitleInput" th:value="${questionText}" name="questionTitleInput" style="display: none;" />
+            </th:block>
+            <i class="fa fa-info-circle formHelpIcon questionHelp" aria-hidden="true" th:style="${helpText != null && helpText.length() > 0} ? 'margin-top: 5px; margin-left: 5px;' : 'display: none;'"></i>
+        </label>
+        <div th:utext="${instructions}" class="questionInstructions"></div>
+        <th:block th:if="${role == 'admin'}">
+            <textarea type="textarea" class="questionInstructionsInput" th:text="${instructions}" name="questionInstructionsInput" style="display: none;"></textarea>
+        </th:block>
+        <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none;" th:id="'popup' + ${questionNumber}">
+            <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup();">
+                <span class="icon-sc-cl" aria-hidden="true">×</span>
+            </button>
+            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+            <p class="message-alert-none" style="color: white !important;"></p>
+            <div th:utext="${helpText}" class="questionHelpParagraph"></div>
+            <th:block th:if="${role == 'admin'}">
+                <textarea type="textarea" class="questionHelpInput" th:text="${helpText}" name="questionHelpInput" style="display: none;"></textarea>
+            </th:block>
+        </div>
+        <input type="hidden" name="questionId" class="questionID" th:value="${questionID}" />
+    </div>
+    <div style="clear: both;"></div>
+</div>

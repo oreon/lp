@@ -1,0 +1,1162 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Form</title>
+
+</head>
+<body>
+
+<th:block layout:fragment="content" th:with="role=${role}">
+    <script src="/js/forms/address.js"></script>
+    <script src="/js/forms/newapp.js"></script>
+    <link rel="stylesheet" href="/css/form/new-app.css">
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+    </script>
+
+
+    <script th:if="${(#httpServletRequest.getParameter('confirmed') != null) and (#httpServletRequest.getParameter('confirmed') == 'true')}" th:inline="javascript">
+        $(document).ready(function(){
+            $('#newApplicationForm').hide();
+            $('#confirmation').show();
+            $('#helpContainer').hide();
+            $('#formIntro').show();
+
+            $('#submittedDate').html();
+            $('#efilingInfo').show();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#_csrf_param_name').attr('name', _csrf_param_name);
+            $('#_csrf_param_name').val(_csrf_token);
+        });
+    </script>
+
+    <form name="UserDetailsForm" id="UserDetailsForm" method="post">
+        <input type="hidden" name="userName" id="UserName" th:value="${user.getLSONumber()}" />
+        <input type="hidden" name="formName" value="NewApplicationForm" />
+    </form>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="formIntro">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-details blog-sig-details blog-details-inner" style="float: left; width: 100%;">
+
+                        <th:block th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                            <div class="alert alert-info alert-infoAdmin alert-st-two" role="alert">
+                                <i class="fa fa-info-circle edu-inform admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
+                                <p class="message-mg-rt message-alert-none">You are viewing the <span th:text="${form.name}"></span> as a user would see it.</p>
+                            </div>
+                            <div style="float: right;">
+                                <button id="btnEdit" class="btn btn-info">Edit</button>
+                                <button id="btnEditCancel" class="btn btn-alert" style="display: none;">Done</button>
+                            </div>
+                        </th:block>
+
+                        <h2 style="float: left;">Professional Liability Insurance Application Form: New Applicants</h2>
+                        <div class="clearfix"></div>
+                        <div>For newly called lawyers and those returning to practice. This application is for coverage as described in the current year ‘s <a href="https://www.lawpro.ca/your-policy/policy/" target="_blank">POLICY</a>. For definitions of capitalised terms, see the <a href="https://www.lawpro.ca/your-policy/policy/" target="_blank">POLICY</a>. For more information, see our <a href="https://www.lawpro.ca/wp-content/uploads/2019/09/A2-Renewal-Program-Guide-2020.pdf" target="_blank">Program Guide.</a></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single pro tab review Start-->
+    <form name="newApplicationForm" method="post" id="newApplicationForm">
+        <input type="hidden" name="UserName" th:value="${name}" />
+
+        <input type="hidden" name="partTimePracticeAllowed" id="partTimePracticeAllowed" th:value="${options.policyOptions.partTimePractice.allowed}" />
+        <input type="hidden" name="nilDeducAllowed" id="nilDeducAllowed" th:value="${options.policyOptions.deduc.allowed}" />
+        <input type="hidden" name="repcoAllowed" id="repcoAllowed" th:value="${options.policyOptions.repco.allowed}" />
+
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-payment-inner-st">
+                            <ul id="myTabedu1" class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+                                <li id="yourInfoTab" class="myNewAppTab active"><a href="#yourInfo">Address/Info Update</a></li>
+                                <li id="lawInfoTab" class="myNewAppTab"><a href="#lawInfo">Lawyer Information</a></li>
+                                <li id="firmInfoTab" class="myNewAppTab"><a href="#firmInfo">Firm Information</a></li>
+                                <li id="coverageTab" class="myNewAppTab"><a href="#coverage">Coverage Options</a></li>
+                                <li id="paymentTab" class="myNewAppTab"><a href="#payment">Premium Payment Information</a></li>
+                                <li id="finalizeTab" class="myNewAppTab"><a href="#final">Warranty & Signature</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit">
+                                <div class="product-tab-list tab-pane fade active in" id="yourInfo">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="pro-ad addcoursepro">
+
+                                                    <div class="row">
+
+                                                        <th:block th:include="forms/fragments/address" th:with="user=${user}, edit=${edit}, review=${addressReview}, naturesOfLaw=${naturesOfLaw}, lawyers=${lawyers}, provinces=${provinces}"></th:block>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tab-list tab-pane fade in" id="lawInfo">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="pro-ad addcoursepro">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                            <!-------------- 2 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question2.getId()}, questionText=${question2.getText()}, helpText=${question2.getHelp()}, questionNumber=${question2.getNumber()}, instructions=${question2.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" onclick="checkTCRD();" data-id="tcrd">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="TCRD" id="CertIndianStatusYes" value="true" data-value="Yes" autocomplete="off" /> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="TCRD" id="CertIndianStatusNo" value="false" data-value="No" autocomplete="off" /> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="CertIndianStatusYesContainer" style="display: none;">
+                                                                <div class="alert alert-success">Please email a copy of your Certificate or TCRD to <a href="mailto:service@lawpro.ca">service@lawpro.ca</a></div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr />
+
+                                                            <!-------------- 3 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question3.getId()}, questionText=${question3.getText()}, helpText=${question3.getHelp()}, questionNumber=${question3.getNumber()}, instructions=${question3.getInstructions()}"></th:block>
+
+                                                            <div style="width: 50px;" class="form-group" onclick="checkPracticeOutside();">
+                                                                <label for="Ontario_Years" style="display: none;">Practice Outside</label>
+                                                                <input class="touchspin1 form-control NumbersOnly" data-max="99" style="width: 50px; display: block;" type="text" value="" name="Ontario_Years" id="Ontario_Years" data-id="ontarioYears" onchange="checkPracticeOutside();">
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 4 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question4.getId()}, questionText=${question4.getText()}, helpText=${question4.getHelp()}, questionNumber=${question4.getNumber()}, instructions=${question4.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" onclick="checkPracticeOutside();" data-id="practiceOutside">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="PracticeOutside" id="PracticeOutsideYes" autocomplete="off" value="true" data-value="Yes"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="PracticeOutside" id="PracticeOutsideNo" autocomplete="off" value="false" data-value="No"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <!-------------- 4a ----------------------------------->
+                                                            <div id="PracticeOutsideOther" style="display: none;">
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question4a.getId()}, questionText=${question4a.getText()}, helpText=${question4a.getHelp()}, questionNumber=${question4a.getNumber()}, instructions=${question4a.getInstructions()}"></th:block>
+                                                                <div class="questionBreak"></div>
+                                                                <div class="form-group">
+                                                                    <label for="PracticeOutsideOtherText" style="display: none;">Practice Outside Other</label>
+                                                                    <input type="text" data-id="practiceOutsideOther" name="practiceOutsideOther" class="form-control" style="width: 500px;" id="PracticeOutsideOtherText" />
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <hr>
+                                                            <!-------------- 5 ----------------------------------->
+
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question5.getId()}, questionText=${question5.getText()}, helpText=${question5.getHelp()}, questionNumber=${question5.getNumber()}, instructions=${question5.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" onclick="checkVolumeBillings();" data-id="volume" id="checkVolumeBillings">
+                                                                    <label class="btn btn-secondary" for="VolumeBillingsAnnualButton">
+                                                                        <input type="radio" name="VolumeBillings" id="VolumeBillingsAnnualButton" value="annual" data-value="Yes" autocomplete="off"> Actual Gross Billings
+                                                                    </label>
+                                                                    <label class="btn btn-secondary" for="VolumeBillingsAverageButton">
+                                                                        <input type="radio" name="VolumeBillings" id="VolumeBillingsAverageButton" value="average" data-value="No" autocomplete="off"> Average Gross Billings
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group" id="volumeBillingsAnnualContainer" style="display: none;">
+                                                                <label for="volumeBillingsAnnual" style="display:none;">Volume Billings Annual</label>
+                                                                <select name="GB"  style="width: 450px;" id="volumeBillingsAnnual" data-id="volumeBillingsAnnual">
+                                                                    <th:block th:each="item : ${volumeBillingsInfoAnnual}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="form-group" id="volumeBillingsAverageContainer" style="display: none;">
+                                                                <label for="volumeBillingsAverage" style="display: none;">Volume Billings Average</label>
+                                                                <select name="GB" style="width: 450px;" id="volumeBillingsAverage" data-id="volumeBillingsAverage">
+                                                                    <th:block th:each="item : ${volumeBillingsInfoAverage}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+
+                                                            <!-------------- 6 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question6.getId()}, questionText=${question6.getText()}, helpText=${question6.getHelp()}, questionNumber=${question6.getNumber()}, instructions=${question6.getInstructions()}"></th:block>
+
+                                                            <div style="width: 75px;" class="form-group">
+                                                                <label for="Private_Hours" style="display: none;">Private Hours</label>
+                                                                <input class="touchspin1 form-control NumbersOnly" data-forcestepdivisibility="none" data-step="10" data-max="10000" style="width: 100px; display: block;" type="text" value="" name="Private_Hours" id="Private_Hours" data-id="privateHours">
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 7a ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question7.getId()}, questionText=${question7.getText()}, helpText=${question7.getHelp()}, questionNumber=${question7.getNumber()}, instructions=${question7.getInstructions()}"></th:block>
+                                                            <div class="form-group">
+                                                                <label for="primaryAreaOfPractice" style="display: none;">Primary Area of Practice</label>
+                                                                <select name="PrimaryAreaOfPractice" data-id="primaryAreaOfPractice" id="primaryAreaOfPractice" style="width: 500px;">
+                                                                    <th:block th:each="item : ${primaryPracticeAreas}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <!-------------- 7b ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question7a.getId()}, questionText=${question7a.getText()}, helpText=${question7a.getHelp()}, questionNumber=${question7a.getNumber()}, instructions=${question7a.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <label for="secondaryAreaOfPractice" style="display: none;">Secondary Area of Practice</label>
+                                                                <select name="SecondaryAreaOfPractice" data-id="secondaryAreaOfPractice" id="secondaryAreaOfPractice" style="width: 500px;">
+                                                                    <th:block th:each="item : ${secondaryPracticeAreas}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 8 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question8.getId()}, questionText=${question8.getText()}, helpText=${question8.getHelp()}, questionNumber=${question8.getNumber()}, instructions=${question8.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <label for="PersonalLawCorp" style="display: none;">Personal Law Corp</label>
+                                                                <input type="text" name="PersonalLawCorp" class="form-control" placeholder="Personal Law Corporation" style="width: 500px;" id="PersonalLawCorp" data-id="personalLawCorp" />
+                                                                <input hidden type="text" id="testing"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="payment-adress">
+                                                                <button type="submit" class="btn btn-primary waves-effect waves-light btnSave" onclick="next(false); return false;">Save & Continue</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tab-list tab-pane fade" id="firmInfo">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <!-------------- 9 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question9.getId()}, questionText=${question9.getText()}, helpText=${question9.getHelp()}, questionNumber=${question9.getNumber()}, instructions=${question9.getInstructions()}"></th:block>
+
+
+
+                                                            <div style="float: left;" id="validNOPText">
+                                                                Valid Nature of Practice combinations:
+                                                            </div>
+
+                                                            <div style="float: left; margin-left: 5px;">
+                                                                <i class="fa fa-question-circle formHelpIcon" aria-hidden="true" onclick="showValidNOP();"></i>
+                                                            </div>
+
+                                                            <div class="clearfix"></div>
+
+                                                            <div class="form-group" style="float: left;">
+                                                                <label for="NatureOfLawPractice" style="display: none;">Nature of law practice</label>
+                                                                <select name="NatureOfLawPractice" id="NatureOfLawPractice" multiple style="width: 500px;" data-id="natureOfLawPractice">
+                                                                    <th:block th:each="item : ${naturesOfLaw}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+
+                                                            <div style="float: left; margin-left: 20px; margin-top: 7px;">
+                                                                <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none" id="validNOP">
+                                                                    <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup();">
+                                                                        <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                    </button>
+                                                                    <div class="questionHelpParagraph">
+                                                                        <i class="fa fa-question-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                        <p style="font-size: 14px; font-weight: bold;">
+                                                                            If you are selecting multiple Nature of Practice options, the following are valid combinations:
+                                                                        </p>
+                                                                        <p style="font-size: 14px; font-weight: bold; font-style: italic; margin-top: 5px; margin-bottom: 5px;">Valid Nature of Law Practice combinations:</p>
+                                                                        <p>
+                                                                            Sole Practitioner <u>and</u> Law Corporate - Sole<br/>
+                                                                            Sole Practitioner <u>and</u> In-House Corporate Counsel<br/>
+                                                                            Law Corporation - Not Sole <u>and</u> Association<br/>
+                                                                            Law Corporation - Not Sole <u>and</u> Partnership - General<br/>
+                                                                            Law Corporation - Not Sole <u>and</u> Multi-Discipline Partnership and/or Combined Licensee Firm<br/>
+                                                                            Law Corporation - Not Sole <u>and</u>    Partnership - Limited Liability Partnership (LLP)<br/>
+                                                                            Law Corporation - Not Sole and Partnership - Limited Liability Partnership (LLP) <u>and</u> Multi-Discipline Partnership and/or Combined Licensee Firm
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="clearfix"></div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <div th:if="${user.getFirmKey().equals('000000') || user.getFirmKey().equals('960806') || user.getFirmKey().isEmpty()}" id="newAppNoFirm">
+                                                                <!-------------- 9a ----------------------------------->
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question91.getId()}, questionText=${question91.getText()}, helpText=${question91.getHelp()}, questionNumber=${question91.getNumber()}, instructions=${question91.getInstructions()}"></th:block>
+
+                                                                <div class="form-group">
+                                                                    <label for="pendingFirmName" style="display: none;">Firm name</label>
+                                                                    <textarea rows="4" cols="50" id="pendingFirmName" name="firmInfo" data-id="firmInfo"></textarea>
+                                                                </div>
+
+                                                                <div class="questionBreak"></div>
+
+                                                                <hr>
+                                                            </div>
+
+                                                            <!-------------- 10 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question10.getId()}, questionText=${question10.getText()}, helpText=${question10.getHelp()}, questionNumber=${question10.getNumber()}, instructions=${question10.getInstructions()}"></th:block>
+                                                            <div class="form-group" style="width: 50px;">
+                                                                <label for="NumberofLawyers" style="display: none;">Number of lawyers</label>
+                                                                <input class="touchspin1 form-control NumbersOnly" style="width: 50px;" type="text" data-id="numberofLawyers" data-max="999" name="NumberofLawyers" id="NumberofLawyers" />
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 11 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question11.getId()}, questionText=${question11.getText()}, helpText=${question11.getHelp()}, questionNumber=${question11.getNumber()}, instructions=${question11.getInstructions()}"></th:block>
+                                                            <div class="form-group" style="width: 50px;">
+                                                                <label for="NonLaw" style="display: none;">Non law</label>
+                                                                <input type="text" class="touchspin4 form-control NumbersOnly" style="width: 50px;" name="NonLaw" id="NonLaw" data-id="nonLaw" />
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 12a ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question12.getId()}, questionText=${question12.getText()}, helpText=${question12.getHelp()}, questionNumber=${question12.getNumber()}, instructions=${question12.getInstructions()}"></th:block>
+                                                            <div class="form-group">
+                                                                <label for="NameofInsurer" style="display: none;">Name of Insurer</label>
+                                                                <select name="NameofInsurer" onchange="checkInsurer();" id="NameofInsurer" style="width: 500px;" data-placeholder="Select Insurance Provider(s)" multiple data-id="nameofInsurer">
+                                                                    <th:block th:each="item : ${excessLiabilities}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                                <div style="font-style: italic; margin-top: 15px; margin-bottom: 5px;">
+                                                                    If you have other excess insurer(s) not in the list above, please specify:
+                                                                </div>
+                                                                <label for="OtherExcessInsurer" style="display: none;">Please specify insurer</label>
+                                                                <input type="text" class="form-control" name="OtherExcessInsurer" id="OtherExcessInsurer" placeholder="Please Specify Insurer(s)" style="width: 500px;" data-id="otherExcessInsurer" />
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div id="liabilityLimits">
+                                                                <!-------------- 12b ----------------------------------->
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question121.getId()}, questionText=${question121.getText()}, helpText=${question121.getHelp()}, questionNumber=${question121.getNumber()}, instructions=${question121.getInstructions()}"></th:block>
+
+                                                                <div class="form-group millionPerClaimValue" style="width: 50px; padding-right: 150px; float: left;">
+                                                                    <label for="Excess_per_Claim" style="display: none;">Excess per claim</label>
+                                                                    <input type="text" data-id="excess" name="Excess_per_Claim" id="Excess_per_Claim" data-max="999" class=" NumbersOnly touchspin1 form-control" style="width:50px;" >
+                                                                </div>
+                                                                <div style="float: left; margin-top: 20px;" class="millionPerClaimLabel"> Million per CLAIM</div>
+
+                                                                <div class="clear"></div>
+
+                                                                <div class="form-group millionPerClaimValue" style="width: 50px; padding-right: 150px; float: left;">
+                                                                    <label for="Aggregate" style="display: none;">Aggregate</label>
+                                                                    <input type="text" data-id="aggregate" name="Aggregate" id="Aggregate" class="NumbersOnly touchspin1 form-control" data-max="999" style="width: 50px">
+                                                                </div>
+                                                                <div style="float: left; margin-top: 20px;" class="millionPerClaimLabel">Million aggregate</div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light btnSave" onclick="next(false); return false;">Save & Continue</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tab-list tab-pane fade" id="coverage">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <!-------------- 13 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question13.getId()}, questionText=${question13.getText()}, helpText=${question13.getHelp()}, questionNumber=${question13.getNumber()}, instructions=${question13.getInstructions()}"></th:block>
+                                                            <div class="form-group data-custon-pick" style="width: 250px;">
+                                                                <div class="input-group date" style="width: 200px;">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar clickable-calendar"></i></span>
+                                                                    <label for="DateofPolicy" style="display: none;">Date of policy</label>
+                                                                    <input type="text" class="form-control" style="width: 200px;" name="DateofPolicy" placeholder="MMM DD, YYYY" id="DateofPolicy" data-id="dateOfPolicy">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <!-------------- 14 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question14.getId()}, questionText=${question14.getText()}, helpText=${question14.getHelp()}, questionNumber=${question14.getNumber()}, instructions=${question14.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <label for="Deductibles" style="display: none;">Deductible</label>
+                                                                <select name="Deduc" data-id="deduc" id="Deductibles" style="width: 900px;">
+                                                                    <th:block th:each="item : ${deductibles}">
+                                                                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                    </th:block>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <!-------------- 15a - Restricted Practice Option ----------------------------------->
+
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question15.getId()}, questionText=${question15.getText()}, helpText=${question15.getHelp()}, questionNumber=${question15.getNumber()}, instructions=${question15.getInstructions()}"></th:block>
+                                                            <div class="questionBreak"></div>
+
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question151.getId()}, questionText=${question151.getText()}, helpText=${question151.getHelp()}, questionNumber=${question151.getNumber()}, instructions=${question151.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" onclick="checkRestricted();" data-id="restrictedAreaOfPractice">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="RPrac" id="RPracYes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="RPrac" id="RPracNo" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div id="restrictedDeclaration" class="alert alert-success" style="display: none;">
+                                                                <div class="reviewLabel">DECLARATION</div>
+                                                                <p>I, the Undersigned LAWYER, undertake to restrict my law practice to the exclusive area of Criminal and/or Immigration Law throughout the entirety of the applicable POLICY PERIOD. I understand that all insureds within my firm also qualify for this option. If I wish to expand my practice to other areas at any point during the POLICY PERIOD, I will advise LAWPRO of my intention prior to doing so. I acknowledge that my policy premium, limits and other terms of insurance may be amended effective on or after the date of such change in my practice.
+                                                                </p>
+                                                                <div class="form-group">
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox-inline i-checks pull-left" for="DeclarationR">
+                                                                            <input type="checkbox" name="DeclarationR" value="true" data-id="declarationRestrictedAreaOfPractice" id="DeclarationR">Please check this box to evidence your signature for the Declaration above.</label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="questionBreak"></div>
+                                                                <div class="questionBreak"></div>
+                                                            </div>
+
+                                                            <!-------------- 15b - Part-Time Practice Option ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question152.getId()}, questionText=${question152.getText()}, helpText=${question152.getHelp()}, questionNumber=${question152.getNumber()}, instructions=${question152.getInstructions()}"></th:block>
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" data-id="partTimePractice">
+                                                                    <label class="btn btn-secondary" onclick="checkPartTime();">
+                                                                        <input type="radio" name="PPRac" id="PPracYes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary" onclick="checkPartTime();">
+                                                                        <input type="radio" name="PPRac" id="PPracNo" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div id="parttimeDeclaration" class="alert alert-success" style="display: none;">
+                                                                <div class="reviewLabel">DECLARATION</div>
+                                                                <p>I, the undersigned LAWYER, have read and understand the criteria that apply to the Part-Time practice option indicated above. I declare that I am eligible for the Part-time practice option, and undertake to conduct my practice in accordance with the criteria that apply to the option for the entirety of the applicable POLICY PERIOD. I will advise LAWPRO in writing of any change in my practice that affects my eligibility for the Part-time practice option. I acknowledge that my POLICY premium and other terms of insurance may be amended effective before or after the date of such change in my practice.</p>
+                                                                <div class="form-group">
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox-inline i-checks pull-left" for="DeclarationP">
+                                                                            <input type="checkbox" name="DeclarationP" value="true" data-id="declarationPartTimePractice" id="DeclarationP">Please check this box to evidence your signature for the Declaration above.</label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="questionBreak"></div>
+                                                                <div class="questionBreak"></div>
+                                                            </div>
+
+                                                            <!-------------- 15c - Real Estate Practice Option ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question153.getId()}, questionText=${question153.getText()}, helpText=${question153.getHelp()}, questionNumber=${question153.getNumber()}, instructions=${question153.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" onclick="checkRealEstate();" data-id="repco">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="LandTitle" id="LandTitleYes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="LandTitle" id="LandTitleNo" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="RealEstatePracticeYesContainer" style="display: none;">
+                                                                <div class="alert alert-success"><p>Due to the nature of this coverage, it is important that LAWPRO conduct its due diligence before adding this coverage. Therefore, it may take up to 10 business days to add the Real Estate Practice Coverage option to your policy. As such, you may need to engage the services of another real estate lawyer to handle your real estate transactions in the interim. </p></div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <!-------------- 16 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question16.getId()}, questionText=${question16.getText()}, helpText=${question16.getHelp()}, questionNumber=${question16.getNumber()}, instructions=${question16.getInstructions()}"></th:block>
+                                                            <p><span id="InnocentPartyCoverage"></span></p>
+                                                            <input type="hidden" name="InnocentPartyCoverage" id="InnocentPartyCoverageValue" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light btnSave" onclick="next(false); return false;">Save & Continue</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tab-list tab-pane fade" id="payment">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <!-------------- 17 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question17.getId()}, questionText=${question17.getText()}, helpText=${question17.getHelp()}, questionNumber=${question17.getNumber()}, instructions=${question17.getInstructions()}"></th:block>
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" data-id="thirdPartyPayor">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="ThirdPartyPayor" id="ThirdPartyPayorYes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="ThirdPartyPayor" id="ThirdPartyPayorNo" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                                <div class="third-party-info" style="display:none">
+                                                                    <div class="questionBreak"></div>
+                                                                    <p><b>Paying the insurance premium using third party account information</b></p>
+                                                                    <p>If the LAWYER'S insurance premium will be paid by a third party, other than another LAWYER or PARALEGAL PARTNER OR SHAREHOLDER in the LAW FIRM, or the LAW FIRM itself, or a management or other company of the LAW FIRM, the LAWYER agrees to obtain the consent of this third party authorizing the transaction and providing for the use and disclosure of personal information, in accordance with privacy legislation that came into effect on January 1, 2004.</p>
+                                                                    <p>This third party authorization will apply to future policy years, unless LAWPRO is advised in writing otherwise.</p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 18 ----------------------------------->
+                                                            <div id="paymentOptions">
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question18.getId()}, questionText=${question18.getText()}, helpText=${question18.getHelp()}, questionNumber=${question18.getNumber()}, instructions=${question18.getInstructions()}"></th:block>
+                                                                <div class="questionBreak"></div>
+
+                                                                <div id="onlinePayment">
+                                                                    <label class="headerLabel">Lump sum payment by</label>
+
+                                                                    <div class="inline-checkbox-cs">
+
+                                                                        <label class="checkbox i-checks" onclick="hidePaymentAuth('1S CASH');" for="1SCASH">
+                                                                            <input name="Instalment" type="radio" value="1S CASH" id="1SCASH" onclick="hidePaymentAuth('1S CASH');" /> cheque
+                                                                        </label>
+                                                                        <label class="checkbox i-checks" onclick="showBankingAuth('1S EFT');" for="1SEFT">
+                                                                            <input name="Instalment" type="radio" value="1S EFT" id="1SEFT" onclick="showBankingAuth('1S EFT');" /> pre-authorized bank account withdrawal
+                                                                        </label>
+                                                                        <label class="checkbox i-checks" onclick="showCreditAuth('1S CREDIT CARD');" for="1SCREDITCARD">
+                                                                            <input name="Instalment" type="radio" value="1S CREDIT CARD" id="1SCREDITCARD" onclick="showCreditAuth('1S CREDIT CARD');" /> credit card
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="headerLabel">Quarterly instalments by
+                                                                            <i class="fa fa-info-circle formHelpIcon questionHelp" aria-hidden="true"></i>
+                                                                        </label>
+                                                                        <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none;" id="popup181">
+                                                                            <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(181);">
+                                                                                <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                            </button>
+                                                                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                            <div class="questionHelpParagraph">
+                                                                                <p>(Quarterly payments for current Policy year are processed on January 15, April 15, July 15, and October 15. Payments for prior years' coverage will be processed on Policy Coverage Inception.) </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div style="clear: both;"></div>
+
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox i-checks" onclick="showBankingAuth('4S EFT');" for="4SEFT">
+                                                                            <input name="Instalment" type="radio" value="4S EFT" id="4SEFT" onclick="showBankingAuth('4S EFT');" /> pre-authorized bank account withdrawal
+                                                                        </label>
+                                                                        <label class="checkbox i-checks" onclick="showCreditAuth('4S CREDIT CARD');" for="4SCREDITCARD">
+                                                                            <input name="Instalment" type="radio" value="4S CREDIT CARD" id="4SCREDITCARD" onclick="showCreditAuth('4S CREDIT CARD');" /> credit card
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="headerLabel">Monthly instalments by
+                                                                            <i class="fa fa-info-circle formHelpIcon questionHelp" aria-hidden="true"></i>
+                                                                        </label>
+                                                                        <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none;" id="popup182">
+                                                                            <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(182);">
+                                                                                <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                            </button>
+                                                                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                            <div class="quesitonHelpParagraph">
+                                                                                <p>(Payments are processed on the 15th of each month)</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div style="clear: both;"></div>
+
+                                                                    <div class="inline-checkbox-cs">
+
+                                                                        <label class="checkbox i-checks" onclick="showBankingAuth('12S EFT');" for="12SEFT">
+                                                                            <input name="Instalment" type="radio" value="12S EFT" id="12SEFT" onclick="showBankingAuth('12S EFT');" /> pre-authorized bank account withdrawal
+                                                                        </label>
+                                                                        <label class="checkbox i-checks"onclick="showCreditAuth('12S CREDIT CARD');" for="12SCREDITCARD">
+                                                                            <input name="Instalment" type="radio" value="12S CREDIT CARD" id="12SCREDITCARD" onclick="showCreditAuth('12S CREDIT CARD');"/> credit card
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <input type="hidden" id="Instalment_Option" />
+                                                                </div>
+
+                                                                <div id="creditAuth" style="display: none;" class="row">
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            For your enhanced credit card security, you will be asked to provide your credit card payment details later in this filing. Please read the 'Next Steps' instructions carefully at the bottom of the Application Review page to proceed with your credit card information.
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+
+                                                                <div id="paymentAuth" style="display: none;" class="row">
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            NOTE: You have certain recourse rights if any debit does not comply with
+                                                                            this agreement. For example, you have the right to receive reimbursement
+                                                                            for any debit that is not authorized or is not consistent with this PAD
+                                                                            agreement. To obtain more information on your recourse rights, contact
+                                                                            your financial institution or visit www.payments.ca
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+
+
+                                                                <div id="bankingAuth" style="display: none;" class="row">
+                                                                    <div class="col-xs-12 col-sm-8">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            <label class="headerLabel">
+                                                                                Pre-authorized Bank Account Withdrawal:
+                                                                                <i class="fa fa-info-circle formHelpIcon" aria-hidden="true" style="display: none;"></i>
+                                                                            </label>
+                                                                            <p>(complete only if paying by pre-authorized bank account withdrawal).</p>
+                                                                            <div class="alert alert-info alert-success-style2 alert-success-stylenone" style="display: none;" id="popup183">
+                                                                                <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(183);">
+                                                                                    <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                                </button>
+                                                                                <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                                <p>(complete only if paying by pre-authorized bank account withdrawal).</p>
+                                                                            </div>
+
+                                                                            <div class="questionBreak"></div>
+
+                                                                            <p>
+                                                                                Banking Institution (please select one from the list below):
+                                                                            </p>
+
+                                                                            <label for="BankingInstitution" class="banking-info-review" style="display: none;">Bank</label>
+                                                                            <select name="BankingInstitution" id="BankingInstitution" style="width: 600px;">
+                                                                                <th:block th:each="item : ${banks}">
+                                                                                    <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                                </th:block>
+                                                                            </select>
+
+                                                                            <div class="questionBreak"></div>
+
+                                                                            <label for="transitNumber" class="banking-info-review" style="display: none;">Transit Number</label>
+                                                                            <input data-id="paymentInfo.account.transit" id="transitNumber" name="TransitNumber" type="text" class="form-control NumbersOnly" placeholder="Transit #" style="width: 100px; margin-right:10px; float: left;" maxlength="5">
+<!--                                                                            <label for="bankingInstitution2" class="banking-info-review" style="display: none;">Banking Institution</label>-->
+                                                                            <input id="bankingInstitution2" name="BankingInstitution2" type="text" class="form-control review-hidden" placeholder="Bank #" style="width: 100px; float: left; margin-right: 10px;" readonly>
+                                                                            <label for="accountNumber" class="banking-info-review" style="display: none;">Account Number</label>
+                                                                            <input data-id="paymentInfo.account.number" id="accountNumber" name="AccountNumber" type="text" class="form-control NumbersOnly" placeholder="Account #" style="width: 200px; float: left;" maxlength="12">
+                                                                            <div class="clearfix"></div>
+                                                                            <div class="questionBreak"></div>
+                                                                            <label for="NameOnAccount" class="banking-info-review" style="display: none;">Name</label>
+                                                                            <input id="NameOnAccount" name="NameOnAccount" type="text" class="form-control" placeholder="Name of account holder" style="width: 420px;">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+                                                                <!-------------- 19 ----------------------------------->
+                                                                <div id="paymentAuthorization" style="display: none;">
+                                                                    <th:block th:include="fragments/question" th:with="questionID=${question19.getId()}, questionText=${question19.getText()}, helpText=${question19.getHelp()}, questionNumber=${question19.getNumber()}, instructions=${question19.getInstructions()}"></th:block>
+
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox i-checks" for="PPA_Check">
+                                                                            <input type="checkbox" name="PPA_Check" id="PPA_Check" value="true" />Please check this box to evidence your signature for the Declaration above.
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+
+                                                                <div class="questionBreak"></div>
+                                                            </div>
+
+                                                            <div id="paymentOptionsAlert" class="alert alert-warning" style="display: none;">
+                                                                <p>No payment options required when mailing in payment</p>
+                                                            </div>
+
+                                                            <!-------------- 20 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question20.getId()}, questionText=${question20.getText()}, helpText=${question20.getHelp()}, questionNumber=${question20.getNumber()}, instructions=${question20.getInstructions()}"></th:block>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light btnSave" onclick="next(false); return false;">Save & Continue</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-tab-list tab-pane fade" id="final">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <!-------------- 21 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question21.getId()}, questionText=${question21.getText()}, helpText=${question21.getHelp()}, questionNumber=${question21.getNumber()}, instructions=${question21.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle" data-toggle="buttons" data-id="claims">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="claims" id="claimsYes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="claims" id="claimsNo" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <div class="comments-area">
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question22.getId()}, questionText=${question22.getText()}, helpText=${question22.getHelp()}, questionNumber=${question22.getNumber()}, instructions=${question22.getInstructions()}"></th:block>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="comments" style="display: none;">Comments</label>
+                                                                <textarea rows="4" cols="50" name="comments" id="comments" data-id="comments"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question23.getId()}, questionText=${question23.getText()}, helpText=${question23.getHelp()}, questionNumber=${question23.getNumber()}, instructions=${question23.getInstructions()}"></th:block>
+
+                                                            <div class="inline-checkbox-cs">
+                                                                <label class="checkbox i-checks" for="Declaration">
+                                                                    <input type="checkbox" name="Declaration" value="yes" id="Declaration" /> Please check this box to evidence your signature for the Warranty and signature Declaration above.
+                                                                </label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSteps1">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+                                                            <p style="color: #336699"><b>Next steps</b> (<i>Note that you must first 'Review' your application before being able to <font color="#e68d02"><b>SUBMIT</b></font> it online</i>):</p>
+                                                            <ul class="ul50">
+                                                                <li>Click "<font color="#e68d02">Review</font>" to see a summary of your entries before submitting your application; OR</li>
+                                                                <li>Click "<font color="#e68d02">Cancel</font>" to exit the application.</li>
+                                                            </ul>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSteps2" style="display: none;">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <div class="reviewLabel">Confirmation Email:	A confirmation email will be sent to <span th:text="${user.email}"></span> upon submission.</div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <p style="color: #336699"><b>Next steps</b></p>
+                                                            <ul class="ul50">
+                                                                <li>If you are ready to submit your Application, <b>print a copy of the completed Application</b> for your records. Then click on <font color=e68d02>"Submit"</font> below.</li>
+                                                                <li id="creditInfo" style="display: none;">You may provide your credit card payment details by clicking the 'Provide CC Payment Info' button below, and this application will be submitted to LAWPRO Customer Service for review and processing. If you do not wish to provide a credit card with this application, please click the 'Revise Form button and choose a different payment method.</li>
+                                                                <li>To make further changes, click on <font color="#e68d02">"Revise Form"</font> below.</li>
+                                                                <li>Click on <font color="#e68d02">"Cancel"</font>   to terminate this e-filing session and return to the File Online options screen. </li>
+                                                            </ul>
+                                                            <div class="alert alert-success alert-st-two" role="alert" id="creditAlert">
+                                                                <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                <p style="margin-left: 30px;">Once you click the 'Provide CC Payment Info' button you will be re-directed to a secure third party website to enter your credit card information. After you complete your credit card information, you will then be returned to our site for the confirmation page of this filing.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSubmit1">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="review(); return false;">Review</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="location.href='/forms/newapplicationform'; return false;">Cancel</button>
+                                                            <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSubmit2" style="display: none;">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="reviseForm(); return false;">Revise Form</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="submitButton" onclick="submitForm(); return false;">Submit</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="creditButton" onclick="submitCC();" style="display: none;">Provide CC Payment Info</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="location.href='/forms/newapplicationform'; return false;">Cancel</button>
+                                                            <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+
+                                                    </div>
+                                                </div>
+
+                                                <input type="hidden" id="firmIdHidden" name="firmID" th:value="${user.getFirmKey()}" />
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        For more information about this form, please contact LAWPRO Customer Service at: 1-800-410-1013, or (416) 598-5899 in Toronto or via email at <a href="mailto:service@lawpro.ca">service@lawpro.ca</a>.
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="confirmation" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st" style="font-size: 16px;">
+                        <div class="clearfix"></div>
+
+                        <h2 style="color: #483b71;">Thank you!</h2>
+
+                        <div class="questionBreak"></div>
+
+                        <p>Thank you for submitting your professional liability application online with LAWPRO.</p>
+
+                        <div class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${user.getContactName().firstName}"></span> <span style="font-weight: normal;" th:text="${user.getContactName().lastName}"></span></div>
+                        <div class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${user.getLSONumberPartial()}"></span></div>
+                        <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Professional Liability Insurance Application Form: New Applicants</span></div>
+                            <div class="submittedValue confirmationLine">DATE: <span th:text="${#httpServletRequest.getParameter('confirmedDate')}" style="font-weight: normal;" id="submittedDate"></span></div>
+                        <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumber" th:text="${confirmationNumber}"></span></div>
+
+                        <div class="questionBreak"></div>
+
+                        <div class="alert alert-success alert-st-two" role="alert" id="efilingInfo" style="margin-top: 20px;">
+                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                            <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="http://lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://practicepro.ca" target="_blank">practicepro.ca</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="GrossBillingsModal" class="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header header-color-modal bg-color-1">
+                    <h4 class="modal-title">Gross Billings</h4>
+                    <div class="modal-close-area modal-close-df">
+                        <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <i class="educate-icon educate-checked modal-check-pro"></i>
+                    <h2>Information</h2>
+                    <p>Information will be shown here</p>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" href="#">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="NotesModal" class="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
+        <div class="modal-dialog" style="width: 100% !important; max-width: 1200px;">
+            <div class="modal-content">
+                <div class="modal-header header-color-modal bg-color-1">
+                    <h4 class="modal-title">Information</h4>
+                    <div class="modal-close-area modal-close-df">
+                        <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h2>Notes to the New Applicants application form</h2>
+                    <div style="text-align: left;">
+                        <ol>
+                            <li style="margin-bottom: 5px;">For more assistance in completing the New Applicants application form, we recommend you download the <a target="_blank" href="http://my.lawpro.ca/file_online/PDF/A2Booklet_Prim_Prog.pdf">Program Guide for New Applicants</a>.</li>
+                            <li style="margin-bottom: 5px;">In answering question #3 "Total number of full years in private and/or public practice", be sure to include in your calculation all years in which you were practising law, whether in Ontario or elsewhere.</li>
+                            <li style="margin-bottom: 5px;">If you are applying for the Part-time Practice Option, you must meet certain billings and hours criteria both last year and this year to be eligible, and check the appropriate box to evidence your Declaration.</li>
+                            <li style="margin-bottom: 5px;">If practising in a Law Corporation or Partnership with other lawyers, you will need to match options (such as deductible, Innocent Party sublimit, Restricted Area of Practice option, if applicable) with the other lawyers in your firm.</li>
+                            <li style="margin-bottom: 5px;">If applying for the Real Estate Practice Coverage Option, LAWPRO must conduct due diligence before adding this coverage. As such, it may be necessary to engage the services of another Real Estate lawyer to handle your Real Estate transactions in the interim.</li>
+                            <li style="margin-bottom: 5px;">
+                                Payment Options: Note that instalment payments by credit card or pre-authorized payment will be processed on the 15th of the month(s) indicated. You can provide your Premium Payment information on this application form, or by providing the relevant data separately by fax or mail. •To authorize payment using a credit card: Complete question #19 and the authorization in question 21
+                                <ul class="ul50">
+                                    <li>To authorize payment using pre-authorized payments: Complete question #20 and the authorization in question 21</li>
+                                    <li>If your insurance premium will be paid by a third party, (as defined in the <a target="_blank" href="http://my.lawpro.ca/file_online/PDF/A2Booklet_Prim_Prog.pdf">Program Guide for New Applicants</a>), you should not complete the payment section on the application form, but rather you will need to separately submit a <a href="#">premium payment authorization form.</a></li>
+                                    <li>To mail or fax in the required authorization form, proceed to <a href="#">Premium Payment Authorization Form</a></li>
+                                </ul>
+                            </li>
+                            <li>Complete the Warranty & Signature section.</li>
+                            <li>Click on "Review" to see a preliminary copy of your completed application; if any of the questions have not been answered (or have been answered incorrectly), a message will appear with the appropriate direction.</li>
+                            <li>When you have completed your review and are ready to submit your filing, we suggest that you print a copy of your completed application for your records. Note that your application will not be considered received by LAWPRO until you press the "Submit" button and receive your confirmation number (beginning with "P"). Record this confirmation number along with your printed application. LAWPRO does not accept the printed copy of your Review page as a completed application, if it has not been Submitted properly as described above.</li>
+
+                        </ol>
+                        <p>Please note: If you are applying for 2018 policy coverage and intend to continue practising in 2019, you will also have to apply for 2019 policy coverage. 2019 Renewal applications will be available for download or online filing on or about October 1, 2018.</p>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" href="#">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="LocumModal" class="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
+        <div class="modal-dialog" style="width: 100% !important; max-width: 1200px;">
+            <div class="modal-content">
+                <div class="modal-header header-color-modal bg-color-1">
+                    <h4 class="modal-title">Information</h4>
+                    <div class="modal-close-area modal-close-df">
+                        <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h2>Issues to consider when acting as LOCUM (for questions 14-16)</h2>
+                    <div style="text-align: left;">
+                        <p>If you are acting as LOCUM you are responsible for ensuring that you have in place E&O insurance protection with appropriate coverage options that reflects your LOCUM work, as well as your own law practice that you may still be conducting.</p>
+                        <br/>
+                        <p>This is because, as a LOCUM, you are standing in for another LAWYER to cover or run his/her law practice while away. In this replacement capacity you are considered a member of the firm that has hired you (the contracting firm) and should expect to be viewed as such by clients and others. Insurance requirements, options and coverages all need to be considered in this light.</p>
+                        <br/>
+                        <p>Some issues to consider include:</p>
+                        <br/>
+                        <h4>1. Your current insurance coverage and options under the Law Society program</h4>
+                        <ul class="ul50">
+                            <li>Do the practice and coverage options in place for you under the program still apply? If you opted for the Restricted Area of Practice option but your LOCUM work is not confined to only criminal and/or immigration law, you no longer qualify for this practice option.</li>
+                            <li>If you had qualified for the Part-time Practice option, but now will be working full-time (whether as a LOCUM for a single LAWYER, or for more than one LAWYER, or in addition to your own personal law practice), you need to have this practice option removed before practising on a full-time basis.</li>
+                            <li>If your LOCUM work is to include the practice of REAL ESTATE LAW, you need to apply for and be granted the Real Estate Practice Coverage Option.</li>
+                        </ul>
+                        <br/>
+                        <h4>2. The need for Innocent Party Coverage under the Law Society program</h4>
+                        <p>If you are standing in for a LAWYER in an association, partnership or LAW CORPORATION with more than one LAWYER, you must carry at least the minimum $250,000 per CLAIM/aggregate Innocent Party sub-limit protection. This is even if you otherwise maintain a personal law practice as a SOLE PRACTITIONER.</p>
+                        <br/>
+                        <p>If other LAWYERS in the firm have bought up their Innocent Party protection, you must carry at least that same amount of increased Innocent Party protection. LAWPRO strongly recommends that the LOCUM, as well as LAWYERS in the contracting firm, apply for the full amount of Innocent Party protection available to ensure that they are well protected against CLAIMS that may arise out of dishonest acts.</p>
+                        <br/>
+                        <p>If a CLAIM does arise in relation to LOCUM work, it is the LOCUM's policy coverage under the Law Society program that would respond.</p>
+                        <br/>
+                        <h4>If you are the contracting firm hiring a LOCUM</h4>
+                        <p>In the eyes of the client and others, you can anticipate that the LOCUM will be seen as acting as a member of the contracting firm. It is important that the contracting firm ensures that the LOCUM maintains program protection and coverage options that are consistent with both the LOCUM work and the coverage of the firm's other LAWYERS. </p>
+                        <br/>
+                        <p>Firm LAWYERS should keep in mind the following: Limit protection for a CLAIM made against the LOCUM would not be increased by virtue of the program coverage maintained by other LAWYERS in the contracting firm; partners in the firm could find themselves responsible for paying the LOCUM'S program DEDUCTIBLE; and no protection is available in respect of allegations of damage to the goodwill and reputation of the firm. As well, the aggregate limit protection provided to LOCUMS could also be eroded by CLAIMS that are not related to LOCUM work. </p>
+                        <br/>
+                        <p>For more information on insurance coverage for LOCUMS, please contact the LAWPRO Customer Service Department at 416-598-5899 or 1-800-410-1013; email: <a href="mailto:service@lawpro.ca">service@lawpro.ca</a></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" href="#">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="RealEstateModal" class="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
+        <div class="modal-dialog" style="width: 100% !important; max-width: 1200px;">
+            <div class="modal-content">
+                <div class="modal-header header-color-modal bg-color-1">
+                    <h4 class="modal-title">Information</h4>
+                    <div class="modal-close-area modal-close-df">
+                        <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: left;">
+                        <h4 style="font-style: italic">Definition of REAL ESTATE LAW</h4>
+                        <p>REAL ESTATE LAW means the practice of the law of Canada, its provinces and territories, that concerns: </p>
+                        <ol type="i">
+                            <li>the registration of any instrument under the <span style="font-style: italic;">Land Titles Act;</span> and/or</li>
+                            <li>the actual or contemplated transfer, charging, insuring, or otherwise affecting, an estate, right or interest in land;</li>
+                            </li>
+                        </ol>
+                        <p>and may include, without limitation, any one or more of the following services by a solicitor: the receipt of instructions, preparation of documents, searches and/or the providing of one or more opinions or certificates with respect to the title, transfer or charge, and/or with respect to the issuance of any title insurance policy.</p>
+
+                        <h4 style="font-style: italic; margin-top: 20px;">Eligibility</h4>
+                        <p>This coverage is available only to ELIGIBLE LAWYERS. ELIGIBLE means eligible to practise REAL ESTATE LAW in Ontario as permitted by the Law Society of Ontario. The following categories of LAWYERS are not eligible for this coverage:</p>
+                        <ul class="ul50">
+                            <li>those who are in bankruptcy;</li>
+                            <li>those who have been convicted or disciplined in connection with real estate fraud;</li>
+                            <li>those under investigation, where the Law Society obtains: an interlocutory suspension order or a restriction on the LAWYER’s practice prohibiting the LAWYER from practising real estate; or an undertaking not to practise real estate.</li>
+                        </ul>
+
+                        <h4 style="font-style: italic; margin-top: 20px;">LAWYERS changing area of practice</h4>
+                        <p>If you cease to practise REAL ESTATE LAW in Ontario at some point in 2019, or if you commence the practice of REAL ESTATE LAW part way through the year, you will qualify for a premium adjustment for this option, pro-rated for the period during which you practise (practised) REAL ESTATE LAW, subject to the following criteria:</p>
+                        <ul class="ul50">
+                            <li>a 30-day minimum premium; and</li>
+                            <li>only one premium adjustment per LAWYER for this option for the year (beyond this, the full $100 annual premium would apply).</li>
+                        </ul>
+
+                        <p>LAWYERS who commence the practice of REAL ESTATE LAW part way through the year should be sure to provide LAWPRO with a completed Application for Mid-Term Changes Form at least ten (10) days prior to the date that the requested change is to take effect. As such, the LAWYER may need to engage the services of another Real Estate lawyer to handle any Real Estate transactions in the interim. Please note that requests to add this coverage will not be backdated prior to the date we receive the completed form. The effective date of coverage will be the date this completed form is received by LAWPRO or the requested effective date, whichever is later.</p>
+
+                        <p>LAWYERS who cease to practise REAL ESTATE LAW part way through the year and prefer not to continue to carry this coverage option, should provide LAWPRO with a completed Application for Mid-Term Changes Form within thirty (30) days, for any available reduction in premium to be applied, subject to the criteria above and <span style="font-weight: bold;">Return of premium</span>     provision on page 14 of the <a target="_blank" href="http://my.lawpro.ca/file_online/PDF/A2Booklet_Prim_Prog.pdf">Program Guide</a>. Requests to remove this coverage will not be backdated prior to the date we receive the completed mid-change form. The effective date of removal of this coverage will be the date this completed form is received by LAWPRO or the requested removal date, whichever is later. </p>
+
+                        <h4 style="font-style: italic; margin-top: 20px;">Coverage sublimit:</h4>
+                        <p>$250,000 per CLAIM/$1 million in the AGGREGATE per POLICY PERIOD, applicable to CLAIM expenses, indemnity payments and/or costs of repairs together. </p>
+
+                        <h4 style="font-style: italic; margin-top: 20px;">Premium:</h4>
+                        <p>$100 per insured LAWYER.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" href="#">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ClaimsModal" class="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
+        <div class="modal-dialog" style="width: 100% !important; max-width: 1200px;">
+            <div class="modal-content">
+                <div class="modal-header header-color-modal bg-color-1">
+                    <h4 class="modal-title">Information</h4>
+                    <div class="modal-close-area modal-close-df">
+                        <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: left;">
+                        <p>For the purposes of this Application:</p>
+
+                        <p><span style="font-weight: bold;">CLAIM(S)</span> means:</p>
+                        <ul class="ul50">
+                            <li>a written or oral demand for money or services; or</li>
+                            <li>a written or oral allegation of breach in the rendering or failure to render PROFESSIONAL SERVICES; or</li>
+                            <li>a written or oral allegation of any <span style="font-weight: bold;">dishonest, fraudulent, criminal or malicious act(s) or omission(s)</span> in the rendering or failure to render PROFESSIONAL SERVICES;</li>
+                        </ul>
+
+                        <p>received by the INSURED and resulting from a single or related error(s), omission(s) or act(s) in the performance of or failure to perform PROFESSIONAL SERVICES.</p>
+
+                        <p><span style="font-weight: bold;">POTENTIAL CLAIM(S)</span> means circumstances of any actual or potential error(s), omission(s) or act(s) which any reasonable person or LAW FIRM would expect to subsequently give rise to a CLAIM(S). </p>
+
+                        <p>Reporting CLAIM(S) or POTENTIAL CLAIM(S)</p>
+                        <p>The LAWPRO insurance policy requires lawyers to immediately notify LAWPRO of a CLAIM or POTENTIAL CLAIM. This notice can be filed in one of two ways*: </p>
+                        <ul class="ul50">
+                            <li>online using the <a target="_blank" href="https://my.lawpro.ca/insurance/online_services/report_claim.asp">Claim Notice Report</a>.</li>
+                            <li>
+                                <div>Via mail or fax. Forward information to:</div>
+                                <div>LAWPRO</div>
+                                <div>250 Yonge Street, Suite 3101</div>
+                                <div>P.O. Box 3</div>
+                                <div>Toronto, ON M5B 2L7</div>
+                                <div>Fax: 416-599-8341 or 1-800-286-7639</div>
+                            </li>
+                        </ul>
+
+                        <h3>* If you are unable to meet the "in writing" notice requirement due to a disability, please contact LAWPRO’s New Claims Coordinator, who will work with you in order to reasonably accommodate your situation. </h3>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" href="#">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>

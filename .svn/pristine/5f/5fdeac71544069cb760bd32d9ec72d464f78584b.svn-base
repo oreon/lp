@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Home</title>
+<body>
+
+
+
+<th:block layout:fragment="content">
+    <div th:if="${#httpServletRequest.isUserInRole('USER')}">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label>Based on your current status, you may choose one of the following online filing options:</label></br>
+                <a href="/forms/newapplicationform">
+                    <button type="button" class="btn btn-custon-four btn-primary btn-lg">Apply for Professional Liability Insurance</button>
+                </a> </br></br>
+                <a href="/forms/excessform">
+                    <button type="button" class="btn btn-custon-four btn-primary btn-lg">Apply for Excess Coverage</button>
+                </a>
+                <a href="/forms/iropform">
+                    <button type="button" class="btn btn-custon-four btn-primary btn-lg">IROP</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

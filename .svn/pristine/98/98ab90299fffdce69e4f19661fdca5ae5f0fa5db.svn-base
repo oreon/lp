@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" lang="en">
+    <head>
+        <meta sec:authorize="isAuthenticated()" name="_csrf" th:content="${_csrf.token}"/>
+        <meta sec:authorize="isAuthenticated()" name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">My LAWPRO</title>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="build" content="0.3.0709">
+
+        <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+        <!-- Bootstrap CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <!-- Bootstrap CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <!-- tabs CSS
+        ============================================ -->
+        <link rel="stylesheet" href="/css/tabs.css">
+
+        <!-- animate CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/animate.css">
+        <!-- chosen CSS
+        ============================================ -->
+        <link rel="stylesheet" href="/css/chosen/bootstrap-chosen.css">
+        <!-- datapicker CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/datapicker/datepicker3.css">
+
+        <!-- normalize CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/normalize.css">
+        <!-- meanmenu icon CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/meanmenu.min.css">
+        <!-- main CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/main.css">
+        <!-- educate icon CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/educate-custon-icon.css">
+        <!-- morrisjs CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/morrisjs/morris.css">
+
+        <link rel="stylesheet" href="/css/modals.css">
+        <link rel="stylesheet" href="/css/alerts.css">
+        <!-- mCustomScrollbar CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/scrollbar/jquery.mCustomScrollbar.min.css">
+        <!-- metisMenu CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/metisMenu/metisMenu.min.css">
+        <link rel="stylesheet" href="/css/metisMenu/metisMenu-vertical.css">
+        <!-- calendar CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/calendar/fullcalendar.min.css">
+        <link rel="stylesheet" href="/css/calendar/fullcalendar.print.min.css">
+        <!-- style CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/style.css">
+        <!-- responsive CSS
+            ============================================ -->
+        <link rel="stylesheet" href="/css/responsive.css">
+
+        <link rel="stylesheet" href="/css/touchspin/jquery.bootstrap-touchspin.min.css">
+        <!-- jquery
+        ============================================ -->
+        <script src="/js/vendor/jquery-1.12.4.min.js"></script>
+
+        <!-- notifications CSS
+        ============================================ -->
+        <link rel="stylesheet" href="/css/notifications/Lobibox.min.css">
+        <link rel="stylesheet" href="/css/notifications/notifications.css">
+
+        <!-- summernote CSS
+        ============================================ -->
+        <link rel="stylesheet" href="/css/summernote/summernote.css">
+
+
+    </head>
+    <body>
+        <th:block th:if="${@activeProfile.activeProfile().equals('prod')}">
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-24843237-2"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'UA-24843237-2');
+            </script>
+        </th:block>
+
+
+
+        <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <th:block th:if="${#request.getSession(true).getAttribute('hideMenus') == true || @activeProfile.activeProfile().equals('prod')}">
+        <style>
+            .all-content-wrapper
+            {
+                margin-left: 0px !important;
+            }
+            .header-top-area
+            {
+                left: 0px !important;;
+            }
+        </style>
+    </th:block>
+    <!-- Start Left menu area -->
+    <th:block th:if="${@activeProfile.activeProfile().equals('dev')}">
+        <th:block th:if="${#request.getSession(true).getAttribute('hideMenus') != true}">
+            <div class="left-sidebar-pro">
+                <nav id="sidebar" class="">
+                    <div class="sidebar-header">
+                        <a href="/"><img class="main-logo" src="/img/logo/logo-lawpro.png" alt="MyLawPro" /></a>
+                        <strong><a href="#"><img src="/img/logo/logo-lawpro.png" alt="MyLawPro" /></a></strong>
+                    </div>
+                    <div class="left-custom-menu-adp-wrap comment-scrollbar">
+                        <nav class="sidebar-nav left-sidebar-menu-pro">
+                            <div th:replace="fragments/menu :: ${#httpServletRequest.isUserInRole('ADMIN')} ? 'menu-admin' : 'menu-user'">
+
+                            </div>
+                        </nav>
+                    </div>
+                </nav>
+            </div>
+        </th:block>
+    </th:block>
+    <!-- End Left menu area -->
+
+    <!-- Start Welcome area -->
+    <div class="all-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="logo-pro">
+                        <a href="/"><img class="main-logo-mobile" src="/img/logo/logo-lawpro.png" alt="MyLawPro" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-advance-area">
+            <div class="header-top-area">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="header-top-wraper">
+                                <div class="row">
+                                    <th:block th:if="${#request.getSession(true).getAttribute('hideMenus') == true || @activeProfile.activeProfile().equals('prod')}">
+                                        <style>
+                                            #topAreaMessage
+                                            {
+                                                width: 91.66666667% !important;
+                                            }
+                                        </style>
+                                    </th:block>
+                                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12" id="topAreaMessage">
+                                        <div style="line-height: 60px; color: #e68d02; font-weight: bold; float: left; margin-right: 20px;">
+                                            <div th:if="${#request.getSession(true).getAttribute('error') == true}">
+                                                <span>Due to a technical error, you may experience limited functionality</span>
+                                            </div>
+                                        </div>
+
+                                        <th:block th:if="${#request.getSession(true).getAttribute('hideMenus') == true || @activeProfile.activeProfile().equals('prod')}">
+                                            <div style="float: left;">
+                                                <img class="main-logo" src="/img/logo/logo-lawpro.png" alt="" />
+                                            </div>
+                                            <div style="line-height: 100%; float: left; color: #e68d02; font-weight: bold;">
+                                                <span style="position: absolute; top: 40%;">Welcome to the new My LAWPRO website. Some pages have been updated while others remain in the older format. Please be patient as we implement changes.</span>
+                                            </div>
+                                        </th:block>
+
+                                        <th:block th:if="${#request.getSession(true).getAttribute('hideMenus') != true}">
+                                            <div style="line-height: 60px; float: left;">
+                                                <th:block th:if="${@activeProfile.activeProfile().equals('dev')}">
+                                                    <span>Build </span><span th:with="appProvider=${new lawpro.providers.ApplicationProvider()}" th:text="${appProvider.Version()}"></span>
+                                                    <span> API: </span><span th:with="appProvider=${new lawpro.providers.ApplicationProvider()}" th:text="${appProvider.API()}"></span>
+                                                </th:block>
+                                            </div>
+                                        </th:block>
+
+                                        <div class="header-top-menu tabl-d-n">
+                                            <div th:replace="fragments/menu :: ${#httpServletRequest.isUserInRole('ADMIN')} ? 'menu-top-admin' : 'menu-top-user'">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                        <th:block th:if="${#request.getSession(true).getAttribute('hideMenus') != true && @activeProfile.activeProfile().equals('dev')}">
+                                            <div th:if="${#httpServletRequest.remoteUser != null}">
+                                                <div class="header-right-info">
+                                                    <ul class="nav navbar-nav mai-top-nav header-right-menu menuUser">
+                                                        <li class="nav-item">
+                                                            <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
+                                                                <div>
+                                                                    <span class="admin-name" th:inline="text">[[${#httpServletRequest.remoteUser}]]</span>
+                                                                    <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+                                                                </div>
+                                                            </a>
+                                                            <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+                                                                <th:block th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                                                                    <li><a href="/myaccount"><span class="edu-icon edu-home-admin author-log-ic"></span>My Account</a>
+                                                                    </li>
+                                                                </th:block>
+                                                                <li><a href="javascript: document.logoutForm.submit()"><span class="edu-icon edu-locked author-log-ic"></span>Log Out</a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu start -->
+            <div class="mobile-menu-area">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="mobile-menu">
+                                <nav id="dropdown">
+                                    <div th:replace="fragments/menu :: ${#httpServletRequest.isUserInRole('ADMIN')} ? 'menu-mobile-admin' : 'menu-mobile-user'">
+
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu end -->
+
+        </div>
+
+
+
+        <div style="margin: 20px;">
+            <th:block layout:fragment="content">
+
+            </th:block>
+        </div>
+
+
+
+
+        <div class="footer-copyright-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="footer-copy-right">
+                            <p>© 2019 Lawyers' Professional Indemnity Company (LAWPRO). All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="footerLinks">
+                            <a target="_blank" href="https://www.lawpro.ca/contact/" class="footerLink">Contact us</a>
+                            <a target="_blank" href="https://www.lawpro.ca/Privacy/" class="footerLink">Privacy</a>
+                            <a target="_blank" href="https://www.lawpro.ca/legal/" class="footerLink">Legal</a>
+                            <a target="_blank" href="https://www.lawpro.ca/terms/" class="footerLink">Terms & Conditions</a>
+                            <a target="_blank" href="https://www.lawpro.ca/refunds/" class="footerLink">Refunds & Returns</a>
+                            <a target="_blank" href="https://www.lawpro.ca/feedback/" class="footerLink">Feedback</a>
+                            <a target="_blank" href="https://www.lawpro.ca/accessibility-at-lawpro/" class="footerLink">Accessibility</a>
+                            <a target="_blank" href="https://www.lawpro.ca/anti-spam/" class="footerLink">Anti-Spam</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+        <input hidden type="submit" value="Sign Out"/>
+    </form>
+
+        <!-- bootstrap JS
+            ============================================ -->
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- wow JS
+        ============================================ -->
+    <script src="/js/wow.min.js"></script>
+
+    <!-- datapicker JS
+        ============================================ -->
+    <script src="/js/datapicker/bootstrap-datepicker.js"></script>
+    <script src="/js/datapicker/datepicker-active.js"></script>
+    <!-- input-mask JS
+        ============================================ -->
+    <script src="/js/input-mask/jasny-bootstrap.min.js"></script>
+
+    <!-- price-slider JS
+        ============================================ -->
+    <script src="/js/jquery-price-slider.js"></script>
+    <!-- meanmenu JS
+        ============================================ -->
+    <script src="/js/jquery.meanmenu.js"></script>
+    <!-- owl.carousel JS
+        ============================================ -->
+    <script src="/js/owl.carousel.min.js"></script>
+    <!-- sticky JS
+        ============================================ -->
+    <script src="/js/jquery.sticky.js"></script>
+    <!-- counterup JS
+        ============================================ -->
+    <script src="/js/counterup/jquery.counterup.min.js"></script>
+    <script src="/js/counterup/waypoints.min.js"></script>
+    <script src="/js/counterup/counterup-active.js"></script>
+    <!-- mCustomScrollbar JS
+        ============================================ -->
+    <script src="/js/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="/js/scrollbar/mCustomScrollbar-active.js"></script>
+    <!-- metisMenu JS
+        ============================================ -->
+    <script src="/js/metisMenu/metisMenu.min.js"></script>
+    <script src="/js/metisMenu/metisMenu-active.js"></script>
+    <!-- main JS
+        ============================================ -->
+    <script src="/js/main.js"></script>
+
+    <script src="/js/notifications/Lobibox.js"></script>
+    <script src="/js/notifications/notification-active.js"></script>
+
+    <!-- modernizr JS
+    ============================================ -->
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="/js/touchspin/touchspin-active.js"></script>
+
+    <!-- chosen JS
+    ============================================ -->
+    <script src="/js/chosen/chosen.jquery.js"></script>
+    <script src="/js/chosen/chosen-active.js"></script>
+
+    <!-- icheck JS
+    ============================================ -->
+    <script src="/js/icheck/icheck.min.js"></script>
+    <script src="/js/icheck/icheck-active.js"></script>
+
+    <!-- summernote JS
+    ============================================ -->
+    <script src="/js/summernote/summernote.min.js"></script>
+        <script src="/js/moment.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/script.js"></script>
+
+    </body>
+</html>

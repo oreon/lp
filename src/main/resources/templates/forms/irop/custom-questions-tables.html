@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <div th:fragment="past-employment">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <th:block th:include="fragments/question"
+                      th:with="questionID=${question.getId()}, questionText=${question.getText()}, helpText=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+
+            <div class="form-group">
+                <table id="employment-table" class="table table-striped" style="width:auto">
+                    <col width="175px">
+                    <col width="175px">
+                    <col width="175px">
+                    <col width="65px">
+                    <col width="65px">
+                    <tr>
+                        <th class="table-header-with-btn" colspan="6">
+                            <button type="button"
+                                    id="add-employment-toggle"
+                                    class="btn btn-default"
+                                    style="background-color:#2e1a47;color:white;">Add Employment Details
+                            </button>
+                        </th>
+                    </tr>
+                    <tr id="employment-table-header" style="display:none">
+                        <th>Year(s)</th>
+                        <th>Name of Firm/Employer</th>
+                        <th>Position</th>
+                        <th class="review-edit-remove">Edit</th>
+                        <th class="review-edit-remove">Remove</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:fragment="poa-table">
+        <div class="form-group">
+            <table id="poa-table" class="table table-striped" style="width:auto">
+                <col width="225px">
+                <col width="125px">
+                <col width="125px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="65px">
+                <col width="65px">
+                <tr>
+                    <th class="table-header-with-btn" colspan="9">
+                        <button type="button"
+                                id="poa-modal-toggle"
+                                class="btn btn-default"
+                                style="background-color:#2e1a47;color:white;">Add Appointment Details
+                        </button>
+                    </th>
+                </tr>
+                <tr id="poa-table-header" style="display:none">
+                    <th>Name of Client</th>
+                    <th>Approximate date of appointment</th>
+                    <th>Family member of applicant?</th>
+                    <th>Nature and purpose</th>
+                    <th>Already acting?</th>
+                    <th>Estimated duration</th>
+                    <th>Notice to client of change</th>
+                    <th class="review-edit-remove">Edit</th>
+                    <th class="review-edit-remove">Remove</th>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div th:fragment="inter-vevos-table">
+        <div class="form-group">
+            <table id="inter-vevos-table" class="table table-striped" style="width:auto">
+                <col width="225px">
+                <col width="125px">
+                <col width="125px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="65px">
+                <col width="65px">
+                <tr>
+                    <th class="table-header-with-btn" colspan="9">
+                        <button type="button"
+                                id="inter-vevos-modal-toggle"
+                                class="btn btn-default"
+                                style="background-color:#2e1a47;color:white;">Add Appointment Details
+                        </button>
+                    </th>
+                </tr>
+                <tr id="inter-vevos-table-header" style="display:none">
+                    <th>Name of Client</th>
+                    <th>Approximate date of appointment</th>
+                    <th>Family member of applicant?</th>
+                    <th>Nature and purpose</th>
+                    <th>Already acting?</th>
+                    <th>Estimated duration</th>
+                    <th>Notice to client of change</th>
+                    <th class="review-edit-remove">Edit</th>
+                    <th class="review-edit-remove">Remove</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div th:fragment="estate-trust-table">
+        <div class="form-group">
+            <table id="estate-table" class="table table-striped" style="width:auto">
+                <col width="225px">
+                <col width="125px">
+                <col width="125px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="175px">
+                <col width="65px">
+                <col width="65px">
+                <tr>
+                    <th class="table-header-with-btn" colspan="10">
+                        <button type="button"
+                                id="estate-modal-toggle"
+                                class="btn btn-default"
+                                style="background-color:#2e1a47;color:white;">Add Appointment Details
+                        </button>
+                    </th>
+                </tr>
+                <tr id="estate-table-header" style="display:none">
+                    <th>Name of Client</th>
+                    <th>Approximate date of appointment</th>
+                    <th>Family member of applicant?</th>
+                    <th>Estimated value</th>
+                    <th>Date of passing of accounts</th>
+                    <th>Already Acting?</th>
+                    <th>Estimated duration</th>
+                    <th>Notice to client of change</th>
+                    <th class="review-edit-remove">Edit</th>
+                    <th class="review-edit-remove">Remove</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

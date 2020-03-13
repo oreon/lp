@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="warranty">
+        <div class="product-tab-list tab-pane fade in" id="warranty">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="review-content-section">
+                        <div class="pro-ad addcoursepro">
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <th:block th:include="forms/components/simple :: yes-no-with-question" th:with="question=${question15}, id='claims', name='awareOfClaims'"></th:block>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 comments-area">
+                                    <th:block th:include="forms/components/simple :: simple-question-with-text-area" th:with="question=${question16}, id='comments'"></th:block>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <th:block th:include="forms/components/simple :: simple-question" th:with="question=${question17}"></th:block>
+                                    <div class="inline-checkbox-cs">
+                                        <label class="checkbox i-checks" id="authorization-sig" style="width:650px" for="auth-sig">
+                                            <input type="checkbox" name="Declaration" value="yes" id="auth-sig" /> Please check this box to evidence your signature for the Warranty and signature Declaration above.
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <th:block th:include="forms/components/general :: review-blurb"></th:block>
+
+                            <th:block th:include="forms/irop/custom-general :: next-submit-1"></th:block>
+                            <th:block th:include="forms/irop/custom-general :: next-submit-2"></th:block>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

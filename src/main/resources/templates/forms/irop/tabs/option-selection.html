@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="option-selection">
+        <div class="product-tab-list tab-pane fade in " id="option-selection" >
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="review-content-section">
+                        <div class="pro-ad addcoursepro">
+                            <div class="row">
+                                <th:block th:include="forms/irop/custom-question-general :: coverage-limit-buy-up-fragment" th:with="question=${question07}"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/irop/custom-question-general :: coverage-term" th:with="question=${question08}"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/irop/custom-question-general :: innocent-buy-up-fragment" th:with="question=${question09}"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/irop/custom-question-general :: applying-for-protection-options" th:with="question=${question10}"></th:block>
+                            </div>
+                            <div class="questionBreak"></div>
+
+                            <div class="row applying-for-protection-info">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="form-group">
+                                        <th:block th:include="forms/components/simple :: yes-no-without-question" th:with="labelText='Is the Applicant applying for protection for residual work  with respect to services to be provided as an attorney for property?', id='protection-respect-attorney', name='protectionRespectAttorney'"></th:block>
+                                        <div class="form-group poa-table-info" style="display: none">
+                                            <th:block th:include="forms/irop/custom-questions-tables :: poa-table"></th:block>
+                                            <div id="poa-wn-info" style="display:none">
+                                                <th:block th:include="forms/components/simple :: simple-label-with-text-area"
+                                                          th:with="labelText='If you are not providing notice to a client(s) of a change of your insurance coverage as above, please explain:', id='poa-wn-reason'"></th:block>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="headerLabel">Is the Applicant applying for protection for residual work  with respect to services to be provided as a trustee of an <i>inter vivos</i> trust?</label>
+                                            </div>
+
+                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                 data-toggle="buttons">
+                                                <label class="btn btn-secondary">
+                                                    <input type="radio" id="protection-respect-inter-yes"
+                                                           name="protectionRespectInter"
+                                                           data-value="Yes" th:value=true
+                                                           autocomplete="off"> Yes
+                                                </label>
+                                                <label class="btn btn-secondary">
+                                                    <input type="radio" id="protection-respect-inter-no"
+                                                           name="protectionRespectInter"
+                                                           data-value="No" th:value=false
+                                                           autocomplete="off"> No
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="questionBreak"></div>
+
+                                        <div class="form-group inter-vevos-table-info" style="display: none">
+                                            <th:block th:include="forms/irop/custom-questions-tables :: inter-vevos-table"></th:block>
+                                            <div id="iv-wn-info" style="display:none">
+                                                <th:block th:include="forms/components/simple :: simple-label-with-text-area"
+                                                          th:with="labelText='If you are not providing notice to a client(s) of a change of your insurance coverage as above, please explain:', id='iv-wn-reason'"></th:block>
+                                            </div>
+                                        </div>
+                                        <th:block th:include="forms/components/simple :: yes-no-without-question" th:with="labelText='Is the Applicant applying for protection for residual work  with respect to services to be provided as an estate trustee?', id='protection-respect-estate', name='protectionRespectEstate'"></th:block>
+                                        <div class="questionBreak"></div>
+                                        <div class="form-group estate-trust-table-info" style="display: none">
+                                            <th:block th:include="forms/irop/custom-questions-tables :: estate-trust-table"></th:block>
+                                            <div id="estate-wn-info" style="display:none">
+                                                <th:block th:include="forms/components/simple :: simple-label-with-text-area"
+                                                          th:with="labelText='If you are not providing notice to a client(s) of a change of your insurance coverage as above, please explain:', id='estate-wn-reason'"></th:block>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+
+                            <th:block th:include="forms/components/general :: next-button"></th:block>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:include="forms/irop/custom-modals :: poa-modal"></th:block>
+        <th:block th:include="forms/irop/custom-modals :: inter-vevos-modal"></th:block>
+        <th:block th:include="forms/irop/custom-modals :: estate-trust-modal"></th:block>
+
+    </div>
+</body>
+</html>

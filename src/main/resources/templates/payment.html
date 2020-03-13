@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Form</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="confirmation" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st">
+                        <h1 style="float: left;">My LAWPRO</h1><sup style="font-size: 12px; float: left;">®</sup>
+                        <div class="clearfix"></div>
+
+                        <div>Law Society number: <span class="submittedValue">A047179R</span></div>
+                        <div>Name: <span class="submittedValue">KAREN NASH</span></div>
+
+                        <div class="questionBreak"></div>
+                        <div class="questionBreak"></div>
+
+                        <div class="reviewLabel">Your filing has been submitted to LAWPRO Customer Service.</div>
+                        <div class="reviewLabel">Your confirmation number is:</div>
+
+                        <div class="questionBreak"></div>
+
+                        <div class="submittedValueIndent">P2286722</div>
+                        <div class="submittedValueIndent">(Filed on: <span id="submittedDate"></span>)</div>
+
+                        <div class="questionBreak"></div>
+
+                        <div class="reviewLabel">Please record this confirmation number in a secure location as it confirms your filing as follows:</div>
+
+                        <div clas="questionBreak"></div>
+                        <div clas="questionBreak"></div>
+
+                        <div class="submittedValueIndent">*Professional Liability Insurance Application - New Applicant.</div>
+
+                        <div class="alert alert-success alert-st-two" role="alert" id="efilingInfo" style="margin-top: 20px;">
+                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                            <p style="margin-left: 30px;">Did you know: You may refer to the "E-Filing History" tab on your MY LAWPRO page for a full record of all efilings completed on the LAWPRO website by you or on your behalf within the last 5 years.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+</body>
+</html>
+

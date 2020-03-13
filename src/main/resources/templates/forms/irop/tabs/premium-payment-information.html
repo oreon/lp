@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="premium-payment-information">
+        <div class="product-tab-list tab-pane fade in" id="premium-payment">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="review-content-section">
+                        <div class="pro-ad addcoursepro">
+                            <div class="row">
+                                <th:block th:include="forms/irop/custom-question-general :: third-party" th:with="question=${question12}"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+                            <div class="row" id="payment-option-question">
+                                <th:block th:include="forms/irop/custom-question-general :: payment-options" th:with="question=${question13}"></th:block>
+                            </div>
+                            <div id="paymentOptions">
+
+                                <div class="row" style="display:none" id="ppa-info">
+                                    <th:block th:include="forms/irop/custom-blurbs :: ppa-note"></th:block>
+                                    <th:block th:include="forms/irop/custom-blurbs :: ppa-info"></th:block>
+                                </div>
+
+                                <div id="credit-auth" style="display: none;" class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="alert alert-success" role="alert">
+                                            For your enhanced credit card security, you will be asked to provide your credit card payment details later in this filing. Please read the 'Next Steps' instructions carefully at the bottom of the Application Review page to proceed with your credit card information.
+                                        </div>
+                                    </div>
+                                    <div class="questionBreak"></div>
+                                </div>
+
+                                <div class="row" style="display:none" id="cc-info">
+                                    <th:block th:include="forms/irop/custom-blurbs :: cc-info"
+                                              th:with="question=${question00}"></th:block>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <th:block th:include="forms/components/simple :: simple-question-with-grid" th:with="question=${question14}"></th:block>
+                            </div>
+
+                            <th:block th:include="forms/components/general :: next-button"></th:block>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

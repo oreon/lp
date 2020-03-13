@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<div th:fragment="menu-admin">
+
+    <div id="myInfoTabs">
+        <div class="myInfoTab active" id="addressTab">Address</div>
+        <div class="myInfoTab" id="firmTab">Firm</div>
+        <div class="myInfoTab" id="firmSearchTab" style="display: none;">Search Firms</div>
+        <div class="myInfoTab" id="mailingLabelTab" style="display: none;">Mailing Label</div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div id="addressDetails">
+        <th:block th:include="forms/fragments/addressDetails" th:with="user=${user}, review=${review}"></th:block>
+
+    </div>
+    <div id="firmDetails" style="display: none;">
+
+        <th:block th:include="forms/fragments/firmDetails" th:with="user=${user}, review=${review}, edit=${edit}, naturesOfLaw=${naturesOfLaw}, lawyers=${lawyers}, provinces=${provinces}"></th:block>
+
+    </div>
+    <div id="searchDetails" style="display: none;">
+        <th:block th:include="forms/fragments/searchDetails"></th:block>
+    </div>
+
+    <div id="mailingLabelDetails" style="display: none;">
+        <th:block th:include="forms/fragments/mailingLabel"></th:block>
+    </div>
+
+</div>
+
+
+</body>
+</html>
+

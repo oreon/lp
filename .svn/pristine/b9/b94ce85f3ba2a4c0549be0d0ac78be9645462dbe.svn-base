@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <meta charset="UTF-8">
+    <title>irop</title>
+</head>
+<body>
+<th:block layout:fragment="content" th:with="role=${role}">
+
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+    </script>
+
+
+    <script th:if="${(#httpServletRequest.getParameter('confirmed') != null) and (#httpServletRequest.getParameter('confirmed') == 'true')}" th:inline="javascript">
+        $(document).ready(function(){
+            $('#iropForm').hide();
+            $('#confirmation').show();
+            $('#helpContainer').hide();
+            $('#formIntro').show();
+
+            $('#efilingInfo').show();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#_csrf_param_name').attr('name', _csrf_param_name);
+            $('#_csrf_param_name').val(_csrf_token);
+        });
+    </script>
+    <script src="/js/forms/iropaddress.js"></script>
+
+    <script src="/js/forms/utilities.js"></script>
+    <script src="/js/forms/irop/general.js"></script>
+    <script src="/js/forms/irop/toggles.js"></script>
+    <link rel="stylesheet" href="/css/form/irop.css">
+
+    <form name="UserDetailsForm" id="UserDetailsForm" method="post">
+        <input type="hidden" name="userName" id="UserName" th:value="${userInfo.getUsername()}" />
+        <input type="hidden" name="formName" value="IropForm" />
+    </form>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="formIntro">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-details blog-sig-details blog-details-inner" style="float: left; width: 100%;">
+
+                        <th:block th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                            <div class="alert alert-info alert-infoAdmin alert-st-two" role="alert">
+                                <i class="fa fa-info-circle edu-inform admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
+                                <p class="message-mg-rt message-alert-none">You are viewing the <span th:text="${form.name}"></span> as a user would see it.</p>
+                            </div>
+                            <div style="float: right;">
+                                <button id="btnEdit" class="btn btn-info">Edit</button>
+                                <button id="btnEditCancel" class="btn btn-alert" style="display: none;">Done</button>
+                            </div>
+                        </th:block>
+
+                        <h2 style="float: left;">Application to Increase Run-Off Coverage</h2>
+                        <div class="clearfix"></div>
+                        <div>For Applicants applying to increase Run-Off coverage limits or extend Run-Off Coverage to certain excluded services. For definitions of capitalized terms, see the <a href="https://www.lawpro.ca/your-policy/policy/" target="_blank">POLICY</a></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single pro tab review Start-->
+    <form name="iropForm" method="post" id="iropForm">
+
+        <input type="hidden" id="username" name="UserName" th:value="${userInfo.getUsername()}" />
+
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-payment-inner-st">
+                            <ul id="myTabedu1" class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+                                <li id="yourInfoTab" class="customNavTabs iropTabs active"><a href="#yourInfo">Address/Info Update</a></li>
+                                <li id="applicantInfoTab" class="customNavTabs iropTabs"><a href="#applicant-information">Applicant Information</a></li>
+                                <li id="optionSelectionTab" class="customNavTabs iropTabs"><a href="#option-selection">Option Selection</a></li>
+                                <li id="paymentTab" class="customNavTabs iropTabs"><a href="#premium-payment">Premium Payment Information</a></li>
+                                <li id="warrantyTab" class="customNavTabs iropTabs"><a href="#warranty">Warranty & Signature</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit">
+                                <div class="row review-print" style="display:none;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h2 style="float: left;">IROP Form</h2>
+                                        <div style="float: right; cursor: pointer; width: 25px;" id="printIcon"
+                                             onclick="printForm();">
+                                            <img src="/img/printIcon.png" alt="Print"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="formReview" style="display: none;">
+                                    <div class="questionBreak"></div>
+                                    <label>Instructions for reviewing your completed Application</label>
+                                    <ol>
+                                        <li>Review all fields in your completed Application below.</li>
+                                        <li>To make changes, click on the 'Revise Form' button at the end of the
+                                            Application.
+                                        </li>
+                                        <li>If no changes are needed, print a copy of the Application for your records,
+                                            using the print function in your browser.
+                                        </li>
+                                        <li>E-file your Application by clicking on the 'Submit' or 'Provide CC Payment
+                                            Info' button below.
+                                        </li>
+                                        <li>You will automatically be provided with a confirmation number (beginning
+                                            with "IRP") once you have submitted your form, to verify that you have
+                                            successfully completed the e-filing process. Record your confirmation number
+                                            with your printed application.
+                                        </li>
+                                    </ol>
+                                    <p>Once your application has been processed your policy documents and premium
+                                        invoice will be sent to you.</p>
+
+                                </div>
+                                <div class="questionBreak"></div>
+
+                                <!-- TAB 1 -->
+                                <th:block th:include="forms/irop/tabs/address-update :: address-update"></th:block>
+
+                                <!-- TAB 2 -->
+                                <th:block th:include="forms/irop/tabs/applicant-information :: applicant-information"></th:block>
+
+                                <!-- TAB 3 -->
+                                <th:block th:include="forms/irop/tabs/option-selection :: option-selection"></th:block>
+
+                                <!-- TAB 4 -->
+                                <th:block th:include="forms/irop/tabs/premium-payment-information :: premium-payment-information"></th:block>
+
+                                <!-- TAB 5 -->
+                                <th:block th:include="forms/irop/tabs/warranty :: warranty"></th:block>
+
+                                <th:block th:include="forms/components/general :: claims-modal" th:with="form='IROP'"></th:block>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="confirmation" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st" style="font-size: 16px;">
+                        <div class="clearfix"></div>
+
+                        <h2 style="color: #483b71;">Thank you!</h2>
+
+                        <div class="questionBreak"></div>
+                        <p>Thank you for submitting your application for Increased Run-off Coverage</p>
+
+                        <div class="questionBreak"></div>
+
+                        <div class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${user.getContactName().firstName}"></span> <span style="font-weight: normal;" th:text="${user.getContactName().lastName}"></span></div>
+                        <div class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${user.getLSONumberPartial()}"></span></div>
+                        <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Increased Run-Off Coverage</span></div>
+                        <div class="submittedValue confirmationLine">DATE: <span th:text="${#httpServletRequest.getParameter('confirmedDate')}" style="font-weight: normal;" id="submittedDate"></span></div>
+                        <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumber" th:text="${confirmationNumber}"></span></div>
+
+                        <div class="questionBreak"></div>
+
+                        <p>If you have not already submitted an application for premium exempt status, please apply at <u><a href="http://my.lawpro.ca/file_online/exemption.asp?status=New" target="_blank">My LAWPRO</a> </u></p>
+
+                        <div class="questionBreak"></div>
+
+                        <div class="alert alert-success alert-st-two" role="alert" id="efilingInfo" style="margin-top: 20px;">
+                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                            <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="http://lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://practicepro.ca" target="_blank">practicepro.ca</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</th:block>
+
+</body>
+</html>

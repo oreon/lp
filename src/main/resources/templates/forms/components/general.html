@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="claims-modal">
+        <div id="ClaimsModal" class="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
+            <div class="modal-dialog" style="width: 100% !important; max-width: 1200px;">
+                <div class="modal-content">
+                    <div class="modal-header header-color-modal bg-color-1">
+                        <h4 class="modal-title">Information</h4>
+                        <div class="modal-close-area modal-close-df">
+                            <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div style="text-align: left;">
+                            <p>For the purposes of this Application:</p>
+
+                            <p><span style="font-weight: bold;">CLAIM(S)</span> means:</p>
+                            <ul class="ul50">
+                                <li>a written or oral demand for money or services; or</li>
+                                <li>a written or oral allegation of breach in the rendering or failure to render PROFESSIONAL SERVICES; or</li>
+                                <li>a written or oral allegation of any <span style="font-weight: bold;">DISHONEST, fraudulent, criminal or malicious act(s) or omission(s)</span> in the rendering or failure to render PROFESSIONAL SERVICES;</li>
+                            </ul>
+
+                            <p>received by the INSURED and resulting from a single or related error(s), omission(s) or act(s) in the performance of or failure to perform PROFESSIONAL SERVICES.</p>
+                            <br/>
+                            <p th:if="${form == 'IROP'}"><span style="font-weight: bold;">CIRCUMSTANCE(S)</span> means any circumstances of an alleged, actual, or possible error, omission, or negligent act of which the INSURED becomes aware, which from the perspective of a reasonable LAWYER or LAW FIRM could potentially give rise to a CLAIM hereunder.</p>
+                            <p th:unless="${form == 'IROP'}"><span style="font-weight: bold;">POTENTIAL CLAIM(S)</span> means circumstances of any actual or potential error(s), omission(s) or act(s) which any reasonable person or LAW FIRM would expect to subsequently give rise to a CLAIM(S). </p>
+                            <br/>
+                            <p style="font-weight: bold;">Reporting CLAIM(S) or <span th:unless="${form == 'IROP'}">POTENTIAL CLAIM(S)</span><span th:if="${form == 'IROP'}">CIRCUMSTANCE(S)</span></p>
+                            <p>The LAWPRO insurance policy requires lawyers to immediately notify LAWPRO of a CLAIM or <span th:unless="${form == 'IROP'}">POTENTIAL CLAIM</span><span th:if="${form == 'IROP'}">CIRCUMSTANCE</span>. This notice can be filed in one of two ways*: </p>
+                            <ul class="ul50">
+                                <li>online using the <a target="_blank" href="https://my.lawpro.ca/insurance/online_services/report_claim.asp">Claim Notice Report</a>.</li>
+                                <li>
+                                    <div>Via mail or fax. Forward information to:</div>
+                                    <div>LAWPRO</div>
+                                    <div>250 Yonge Street, Suite 3101</div>
+                                    <div>P.O. Box 3</div>
+                                    <div>Toronto, ON M5B 2L7</div>
+                                    <div>Fax: 416-599-8341 or 1-800-286-7639</div>
+                                </li>
+                            </ul>
+
+                            <h4>* If you are unable to meet the "in writing" notice requirement due to a disability, please contact LAWPRO’s New Claims Coordinator, who will work with you in order to reasonably accommodate your situation. </h4>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a data-dismiss="modal" href="#">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="next-button">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="payment-address">
+                    <button type="button" class="btn btn-primary waves-effect waves-light btnSave" onclick="next(false); return false;">Save & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="review-blurb">
+        <div class="row" id="nextSteps1">
+            <div class="col-lg-12">
+                <div class="devit-card-custom">
+                    <p style="color: #336699"><b>Next steps</b> (<i>Note that you must first 'Review' your application before being able to <font color="#e68d02"><b>SUBMIT</b></font> it online</i>):</p>
+                    <ul class="ul50">
+                        <li>Click "<font color="#e68d02">Review</font>" to see a summary of your entries before submitting your application; OR</li>
+                        <li>Click "<font color="#e68d02">Cancel</font>" to exit the application.</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

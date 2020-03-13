@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="ppa-note">
+        <div class="col-xs-12 col-sm-6">
+            <div class="alert alert-success" role="alert">
+                NOTE: You have certain recourse rights if any debit does not comply with
+                this agreement. For example, you have the right to receive reimbursement
+                for any debit that is not authorized or is not consistent with this PAD
+                agreement. To obtain more information on your recourse rights, contact
+                your financial institution or visit www.payments.ca
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="ppa-info">
+        <div class="col-xs-12 col-sm-8">
+            <div class="alert alert-success" role="alert">
+                <label class="headerLabel">
+                       Pre-authorized Bank Account Withdrawal:
+                <i class="fa fa-info-circle formHelpIcon" aria-hidden="true" style="display: none;"></i>
+                </label>
+                <p>(complete only if paying by pre-authorized bank account withdrawal).</p>
+                    <div class="alert alert-info alert-success-style2 alert-success-stylenone" style="display: none;" id="popup183">
+                        <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(183);">
+                            <span class="icon-sc-cl" aria-hidden="true">×</span>
+                        </button>
+                        <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                        <p>(complete only if paying by pre-authorized bank account withdrawal).</p>
+                    </div>
+
+                    <div class="questionBreak"></div>
+
+                    <p>
+                        Banking Institution (please select one from the list below):
+                    </p>
+
+                    <label class="banking-info-review" for="BankingInstitution" style="display: none;">Bank</label>
+                    <select class="form-control" name="BankingInstitution" id="BankingInstitution" style="width: 600px;">
+                        <th:block th:each="item : ${banks}">
+                            <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                        </th:block>
+                    </select>
+
+                    <div class="questionBreak"></div>
+
+                    <label class="banking-info-review" for="transitNumber" style="display: none;">Transit Number</label>
+                    <input data-id="paymentInfo.account.transit" id="transitNumber" name="TransitNumber" type="text" class="form-control NumbersOnly" placeholder="Transit #" style="width: 100px; margin-right:10px; float: left;" maxlength="5">
+                    <input id="bankingInstitution2" name="BankingInstitution2" type="text" class="form-control review-hidden" placeholder="Bank #" style="width: 100px; float: left; margin-right: 10px;" readonly>
+                    <label class="banking-info-review" for="accountNumber" style="display: none;">Account Number</label>
+                    <input data-id="paymentInfo.account.number" id="accountNumber" name="AccountNumber" type="text" class="form-control NumbersOnly" placeholder="Account #" style="width: 200px; float: left;" maxlength="12">
+                    <div class="clearfix"></div>
+                    <div class="questionBreak"></div>
+                    <label class="banking-info-review" for="NameOnAccount" style="display: none;">Name</label>
+                    <input id="NameOnAccount" name="NameOnAccount" type="text" class="form-control" placeholder="Name of account holder" style="width: 420px;">
+                </div>
+            </div>
+            <div class="questionBreak"></div>
+    </div>
+
+    <div th:fragment="cc-info">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <th:block th:include="fragments/question"
+                      th:with="questionID=${question.getId()}, questionText=${question.getText()}, questionHelp=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+            <div class="inline-checkbox-cs">
+                <label class="checkbox i-checks" for="PPA_Check" style="width:520px">
+                    <input type="checkbox" name="PPA_Check" id="PPA_Check" value="true" />Please check this box to evidence your signature for the Declaration above.
+                </label>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+{"role":"ADMIN","priv":"FULL","isActive":false,"id":"f9225039-8ab2-4895-a23f-b57097c4fae9","email":"admin2@admin.com","password":"$2a$10$9nxlw9b4c6CTGr3EVfQlmeJtKhBVIEcSfzBJ20ub5VXiK7XAnIU7S","username":"admin2"}
+{"role":"ADMIN","priv":"FULL","isActive":true,"id":"9e952a36-5cdc-4cca-a560-c6f868bf2ef2","email":"admin@admin.com","password":"$2a$10$Y5h5atzmLsVUy27Bi7uenuS71bgF5ON319jOx9deJ8VfDwsJj7nIG","username":"admin"}
+{"role":"ADMIN","priv":"FULL","isActive":false,"id":"5fd1eb4d-5cfd-4365-b4ff-1fdc1014e810","email":"admin@admin.com","password":"$2a$10$eLB8VAlIZ7nVIJnnM3I8.u44iCdmd/iJMOztD26FxmoAaxhd1g1ou","username":"admin3"}

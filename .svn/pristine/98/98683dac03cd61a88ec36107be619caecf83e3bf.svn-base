@@ -1,0 +1,97 @@
+#excess-firm-details {
+    margin-bottom:20px;
+}
+
+#excess-firm-details-name {
+    min-width: 200px;
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+#excess-firm-details-number {
+    min-width: 60px;
+    padding-right: 10px;
+}
+
+#excess-firm-details-address {
+    min-width: 200px;
+    padding-right: 10px;
+}
+
+#excess-firm-details-city {
+    min-width: 100px;
+    padding-right: 10px;
+}
+
+#excess-firm-details-phone {
+    min-width: 100px;
+    padding-right: 10px;
+}
+
+#excess-firm-details-fax {
+    min-width: 100px;
+    padding-right: 10px;
+}
+
+
+.table-row-delete, .applicant-letterhead-delete, .related-letterhead-delete, .man-company-letterhead-delete  {
+    color: red;
+    font-size:25px;
+}
+
+.table-row-edit {
+    color:#fbbc22;
+    font-size:25px;
+}
+
+.table-row-edit:hover {
+    cursor:pointer;
+    color: #FBD546;
+}
+
+.table-row-delete:hover, .applicant-letterhead-delete:hover, .related-letterhead-delete:hover, .man-company-letterhead-delete:hover {
+    cursor:pointer;
+    color: #ff4738;
+}
+
+#coverage-former-firm-add-table, #coverage-man-firm-add-table, #coverage-insure-counsel-add-table {
+    margin-bottom:80px;
+}
+
+/*  TABLE SETTINGS  */
+
+
+/* COVERAGE TAB */
+
+
+
+/* QUESTION 11 */
+.coverage-man-info .table .coverage-man-row-name {
+    max-width:225px;
+    word-wrap:break-word;
+}
+
+.coverage-man-info .table .coverage-man-row-yio {
+    max-width:150px;
+    word-wrap:break-word;
+}
+
+.coverage-man-info .table .coverage-man-row-services {
+    max-width:750px;
+    word-wrap:break-word;
+}
+
+.table-label {
+    margin-left:8px;
+}
+
+.applicant-letterhead-warning, .related-letterhead-warning, .man-company-letterhead-warning {
+    font-size: 24px;
+    color:red;
+    display:none;
+}
+
+.applicant-letterhead-warning:hover, .related-letterhead-warning:hover, .man-company-letterhead-warning:hover {
+    color: #ff4738;
+    cursor:pointer;
+}

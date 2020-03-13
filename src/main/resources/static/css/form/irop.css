@@ -1,0 +1,67 @@
+.general-text-input {
+    width:500px;
+}
+
+#employment-from, #employment-to, #poa-from, #poa-to, #iv-from, #iv-to, #estate-from, #estate-to {
+    width:100px;
+    float:left;
+}
+
+.middle-lable-tofrom {
+    float:left;
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:8px;
+}
+
+/* TABLES */
+#employment-table-header {
+    display:none;
+}
+
+.employment-delete-row, .delete-row  {
+    color: red;
+    font-size:25px;
+}
+
+.employment-delete-row:hover, .delete-row:hover {
+    cursor:pointer;
+    color: #ff4738;
+}
+
+.employment-edit-row, .edit-row {
+    color:#fbbc22;
+    font-size:25px;
+}
+
+.employment-edit-row:hover, .edit-row:hover {
+    cursor:pointer;
+    color: #FBD546;
+}
+
+#previewMailingLabel {
+    margin-left:0px;
+}
+
+#primaryDetailsAddress {
+    padding-top:21px;
+}
+
+.review-green {
+    color: green;
+}
+
+.hide-ms-clear::-ms-clear {
+    display: none;
+}
+
+.poa-family-member-info, .estate-family-member-info, .iv-family-member-info {
+    display:none;
+}
+
+.bulleted-list {
+    list-style: disc;
+    margin-left: 50px;
+    margin-bottom: 20px;
+    color: #303030;
+}

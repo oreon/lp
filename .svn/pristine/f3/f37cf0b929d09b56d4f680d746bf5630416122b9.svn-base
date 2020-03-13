@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <div th:fragment="employment-modal">
+        <div id="employment-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Employment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="headerLabel">Name of Firm/Employer</label>
+                                        <input type="text" id="employment-firm-name" class="form-control general-text-input" placeholder="Name of Firm/Employer"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="headerLabel">Position</label>
+                                        <input type="text" id="employment-position" class="form-control general-text-input" placeholder="Position"/>
+                                    </div>
+
+
+                                <div class="form-group" style="height:70px;">
+                                    <label>Year(s)</label>
+
+                                    <div class="form-group" style="margin-bottom:15px;">
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="employment-from"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                        <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="employment-to"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                    </div>
+                                </div>
+                                    <input type="text" style="display:none" id="employment-row-id-ref"/>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" id="add-employment-btn" >Add To List</button>
+                        <button style="background-color:#2e1a47;color:white;display:none;" type="button" class="btn btn-default" id="save-employment-btn" >Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="poa-modal">
+        <div id="poa-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">POA Appointment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-input-with-label"
+                                              th:with="labelText='Name of client', id='poa-client-name', placeholder='Client Name'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-year-with-label"
+                                              th:with="labelText='Approximately when was this appointment first made?', id='poa-appointment-made', placeholder='YYYY'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Is the appointment for a family member?', id='poa-family-member', name='poaFamilyMember'"></th:block>
+                                    <div class="poa-family-member-info errorMessage">No coverage available</div>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-input-with-label"
+                                              th:with="labelText='Nature and purpose of the Power of Attorney work', id='poa-nature', placeholder='Nature and Purpose'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Have you already begun acting in this role?', id='poa-acting', name='poaActing'"></th:block>
+                                </div>
+
+                                <div class="form-group" style="height:70px;">
+                                    <label>Estimated duration of your Power of Attorney work</label>
+
+                                    <div class="form-group" style="margin-bottom:15px;">
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="poa-from"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                        <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="poa-to"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Will you be providing prompt notice to clients of this change to your insurance?', id='poa-written-notice', name='poaWrittenNotice'"></th:block>
+                                </div>
+                                <input type="text" style="display: none" id="poa-row-id-ref"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" id="add-poa-btn" >Add To List</button>
+                        <button style="background-color:#2e1a47;color:white;display:none;" type="button" class="btn btn-default" id="save-poa-btn" >Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:fragment="inter-vevos-modal">
+        <div id="inter-vevos-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i>Inter Vivos</i> Appointment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-input-with-label"
+                                              th:with="labelText='Name of client', id='iv-client-name', placeholder='Client Name'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-year-with-label"
+                                              th:with="labelText='Approximately when was this appointment first made?', id='iv-appointment-made', placeholder='YYYY'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Is the appointment for a family member?', id='iv-family-member', name='ivFamilyMember'"></th:block>
+                                    <div class="iv-family-member-info errorMessage">No coverage available</div>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-input-with-label"
+                                              th:with="labelText='Nature and purpose of the Trust', id='iv-nature', placeholder='Nature and Purpose'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Have you already begun acting in this role?', id='iv-acting', name='ivActing'"></th:block>
+                                </div>
+
+                                <div class="form-group" style="height:70px;">
+                                    <label>Estimated duration of the trust work</label>
+
+                                    <div class="form-group" style="margin-bottom:15px;">
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="iv-from"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                        <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="iv-to"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Will you be providing prompt notice to clients of this change to your insurance?', id='iv-written-notice', name='ivWrittenNotice'"></th:block>
+                                </div>
+                                <input type="text" style="display: none" id="iv-row-id-ref"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" id="add-iv-btn" >Add To List</button>
+                        <button style="background-color:#2e1a47;color:white;display:none;" type="button" class="btn btn-default" id="save-iv-btn" >Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:fragment="estate-trust-modal">
+        <div id="estate-trust-modal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Estate Trustee Appointment</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-input-with-label"
+                                              th:with="labelText='Name of Client', id='estate-client-name', placeholder='Name of Client'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: simple-year-with-label"
+                                              th:with="labelText='Approximately when was this appointment first made?', id='estate-appointment-made', placeholder='YYYY'"></th:block>
+                                </div>
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Is the appointment for a family member?', id='estate-family-member', name='estateFamilyMember'"></th:block>
+                                    <div class="estate-family-member-info errorMessage">No coverage available</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="headerLabel">Estimated total dollar value of the Estate</label>
+                                    <input type="text" class="form-control" id="estate-dollar-amount" style="width:500px;" placeholder="Estimated Amount"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="headerLabel">Date of the most recent passing of accounts (if applicable) </label>
+
+                                    <div class="form-group data-custon-pick"
+                                         style="width: 500px;">
+                                        <div class="input-group date" style="width: 200px;">
+                                            <span class="input-group-addon"><i class="fa fa-calendar clickable-calendar"></i></span>
+                                            <input type="text" class="form-control datepicker-input"
+                                                   style="width: 200px;"
+                                                   id="estate-passing-date"
+                                                   placeholder="MMM DD, YYYY">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Have you already begun acting in this role?', id='estate-acting', name='estateActing'"></th:block>
+                                </div>
+
+                                <div class="form-group" style="height:70px;">
+                                    <label>Estimated duration of the estate trustee work</label>
+
+                                    <div class="form-group" style="margin-bottom:15px;">
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="estate-from"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                        <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="estate-to"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <th:block th:include="forms/components/simple :: yes-no-without-question"
+                                              th:with="labelText='Will you be providing prompt notice to clients of this change to your insurance?', id='estate-written-notice', name='estateWrittenNotice'"></th:block>
+                                </div>
+                                <input type="text" style="display: none" id="estate-row-id-ref"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" id="add-estate-btn" >Add To List</button>
+                        <button style="background-color:#2e1a47;color:white;display:none;" type="button" class="btn btn-default" id="save-estate-btn" >Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

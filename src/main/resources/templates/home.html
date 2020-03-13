@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Home</title>
+<body>
+
+
+
+<th:block layout:fragment="content">
+
+
+
+    <div th:if="${#httpServletRequest.remoteUser == null}">
+        <a href="/login">Login</a>
+    </div>
+
+    <div th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var _csrf_token_services = /*[[${_csrf.token}]]*/ '';
+            var _csrf_param_name_services = /*[[${_csrf.parameterName}]]*/ '';
+            /*]]>*/
+
+
+            $(document).ready(function()
+            {
+                $('#_csrf_param_name_services').attr('name', _csrf_param_name_services);
+                $('#_csrf_param_name_services').val(_csrf_token_services);
+
+                //TODO: this should be moved somewhere else as more methods will likely be added
+                $.ajax({
+                    url: "/services/er/errors",
+                    type: "post",
+                    dataType: "json",
+                    data: $('#emptyForm').serialize(),
+                    success: function (result) {
+                        if (result > 0)
+                        {
+                            Lobibox.notify(
+                                'info',
+                                {
+                                    msg: 'There are ' + result + ' new error message(s) that need review.',
+                                    sound: false
+                                }
+                            );
+                        }
+                    },
+                    error: function(result)
+                    {
+
+                    }
+                });
+
+
+            })
+
+        </script>
+
+        <form name="emptyForm" id="emptyForm">
+            <input name="_csrf_param_name" id="_csrf_param_name_services" type="hidden" value="" />
+        </form>
+        You are logged in as an administrator. Please select an option from the menu.
+    </div>
+
+    <div th:if="${#httpServletRequest.isUserInRole('USER')}">
+        You are logged in as a lawyer, or a law firm. Please select an option from the menu.
+    </div>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="address-update">
+        <div class="product-tab-list tab-pane fade active in" id="yourInfo">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="review-content-section">
+                        <div class="pro-ad addcoursepro">
+                            <div class="row">
+                                <th:block th:include="forms/fragments/address" th:with="user=${user}, edit=${edit}, review=${addressReview}, naturesOfLaw=${naturesOfLaw}, lawyers=${lawyers}, provinces=${provinces}"></th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

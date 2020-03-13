@@ -1,0 +1,31 @@
+#my-account-panel {
+    width:600px;
+    margin:0 auto;
+}
+
+#my-account-change-password-dialog {
+    width:300px;
+}
+
+#my-account-password-form input{
+    width:75%;
+}
+
+#my-account-password-form {
+    margin-left:10px;
+}
+
+#my-account-change-password-submit {
+    float:right;
+}
+
+#my-account-change-password-message{
+    height:25px;
+    color:red;
+}
+
+.close-button {
+    float:right;
+    margin-right:10px;
+    margin-left:10px;
+}

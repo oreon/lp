@@ -1,0 +1,3 @@
+.hide-ms-clear::-ms-clear {
+    display: none;
+}

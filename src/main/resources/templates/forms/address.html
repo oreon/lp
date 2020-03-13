@@ -1,0 +1,160 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Address/Info Update</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+
+    <script src="/js/forms/address.js"></script>
+
+    <script>
+        $(document).ready(function(e){
+            $('#btnContinueFromAddress').remove();
+            $('#btnContinueFromFirm').remove();
+        });
+    </script>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="formIntro">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-details blog-sig-details blog-details-inner" style="float: left; width: 100%;">
+
+
+
+                        <h2 style="float: left;">Address/Info Update</h2>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<form name="addressChangeForm" method="post" id="addressChangeForm">
+    <input type="hidden" name="UserName" th:value="${user.LSONumber}" />
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st">
+                        <ul id="myTabedu1" class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+                            <li class="myAddressTab" id="helpTab"><a href="#help">Help</a></li>
+                            <li class="myAddressTab active" id="addressTab"><a href="#addressDetails">Lawyer Address</a></li>
+                            <li class="myAddressTab" id="firmTab"><a href="#firmDetails">Firm Address</a></li>
+                            <li class="myAddressTab" id="firmSearchTab" style="display: none;"><a href="#searchDetails">Firm Search</a></li>
+                            <li class="myAddressTab" id="mailingLabelTab" style="display: none;"><a href="#mailingLabelDetails">Mailing Label</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content custom-product-edit">
+
+                            <div class="product-tab-list tab-pane fade in" id="help">
+                                <div class="row" id="helpContainer">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad addcoursepro">
+
+                                                <div style="float: right; cursor: pointer; width: 25px; display: none;" id="printIcon" onclick="printForm();">
+                                                    <img src="/img/printIcon.png" alt="Print" />
+                                                </div>
+                                                <div style="clear: both;"></div>
+
+
+                                                <div class="questionBreak"></div>
+                                                <div class="questionBreak"></div>
+                                                <div class="questionBreak"></div>
+
+                                                <div class="formIntro">
+
+                                                    <br><br><b>Instructions</b>
+                                                    <ol type="1">
+                                                        <li>Complete each field in the Lawyer Address and Firm Address tabs.</li>
+                                                        <li>Click on "Review" to check your changes.</li>
+                                                        <li>Print a copy of your completed form for your records.</li>
+                                                        <li>When you have completed your review, click on "Save" to complete the "Address/Info Update" process. You will receive a confirmation number (beginning with "R") for your records.</li>
+                                                    </ol>
+
+                                                    <p>NOTE: For the purposes of this application, “Lawyer” means each person who holds a Class L1 licence pursuant to the by- laws of the Law Society Act.</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-tab-list tab-pane fade in active" id="addressDetails">
+                                <div class="row" id="addressContainer">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad addcoursepro">
+
+                                                <th:block th:include="forms/fragments/addressDetails" th:with="user=${user}, review=${addressReview}, naturesOfLaw=${naturesOfLaw}"></th:block>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-tab-list tab-pane fade in" id="firmDetails">
+                                <div class="row" id="firmContainer">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad addcoursepro">
+
+                                                <th:block th:include="forms/fragments/firmDetails" th:with="user=${user}, review=${addressReview}"></th:block>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-tab-list tab-pane fade in" id="searchDetails">
+                                <div class="row" id="searchDetailsContainer">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad addcoursepro">
+
+                                                <th:block th:include="forms/fragments/searchDetails"></th:block>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-tab-list tab-pane fade in" id="mailingLabelDetails">
+                                <div class="row" id="mailingLabelContainer">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad addcoursepro">
+
+                                                <th:block th:include="forms/fragments/mailingLabel"></th:block>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</th:block>
+
+
+</body>
+</html>
+
+
+

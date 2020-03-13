@@ -1,0 +1,50 @@
+universe.api.url=http://wsvcdev.lawpro.ca:8080/uat
+#universe.api.url=http://localhost:8092
+build=0.6.0003
+
+logging.path=D:/logs/
+letterhead.data.path=C:/data/templetterheads/
+
+#AMAZON DB LOCAL
+#amazon.dynamodb.endpoint=http://localhost:8100/
+#amazon.dynamodb.region=US-East
+#amazon.aws.accesskey=key
+#amazon.aws.secretkey=key2
+
+spring.profiles.active=dev
+
+#AMAZON DB DEV
+amazon.dynamodb.endpoint=http://dynamodb.ca-central-1.amazonaws.com/
+amazon.dynamodb.region=ca-central-1
+amazon.aws.accesskey=AKIAYUI33LBM64FTZJLK
+amazon.aws.secretkey=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
+
+#AMAZON DB PROD
+#amazon.dynamodb.endpoint=http://dynamodb.ca-central-1.amazonaws.com/
+#amazon.dynamodb.region=ca-central-1
+#amazon.aws.accesskey=AKIASZJQ3FDVM5NPXAWH
+#amazon.aws.secretkey=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
+
+server.servlet.session.cookie.max-age=3600
+
+legacyURL=http://mydev.lawpro.ca/file_online/login.asp
+#legacyURL=http://my.lawpro.ca/file_online/login.asp
+
+#Live
+#moneris.url=https://www3.moneris.com/HPPDP/index.php
+#moneris.res_id=7RNXB01799
+#moneris.res_key=resASDR23OI6
+
+#Dev
+moneris.url=https://esqa.moneris.com/HPPDP/index.php
+moneris.res_id=ACU6Qtore3
+moneris.res_key=res2VXQADSMV
+
+#Import
+import.active=false
+import.export=false
+
+#spring.thymeleaf.cache=false
+#spring.devtools.livereload.enabled = true
+#spring.thymeleaf.mode=LEGACYHTML5
+#spring.thymeleaf.templates_root=src/main/resources/templates/

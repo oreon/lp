@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/myaccount.css}"/>
+
+    <title>My Account</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="my-account-panel" class="panel panel-default">
+                <div class="panel-heading">
+                    <span>Edit Profile</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <button id="change-password-btn" class="btn btn-default">Change Password</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Change password modal -->
+    <div id="my-account-change-password-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" id="my-account-change-password-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="change-password-modal-header" class="modal-title">Change Password</h4>
+                </div>
+                <div class="modal-body edit-user-body">
+                    <form id="my-account-password-form" action="#" th:action="@{/myAccChangePassword}" th:object="${changePassword}" method="post" role="form">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="new-password1">New Password</label>
+                                <input th:field="*{password}" type="password" class="form-control new-password-input" id="new-password1" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password2">Confirm Password</label>
+                                <input id="new-password2" class="form-control new-password-input" type="password" placeholder="Password"/>
+                            </div>
+                            <input hidden name="username" th:value="${username}"/>
+                        </div>
+                        <div id="my-account-change-password-message"></div>
+                        <div class="row">
+                            <button type="button" class="btn btn-default close-button" data-dismiss="modal">Close</button>
+                            <button id="my-account-change-password-submit" class="btn btn-default" type="submit">Submit</button>
+                        </div>
+                        <input type="hidden" name="_csrf" value="32e9ae18-76b9-4330-a8b6-08721283d048" />
+                    </form>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
+
+<script th:inline="javascript" th:src="@{/js/myaccount.js}" ></script>

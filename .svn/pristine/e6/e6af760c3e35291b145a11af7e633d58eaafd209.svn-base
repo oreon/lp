@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <!-- QUESTION 07 -->
+    <div th:fragment="coverage-limit-buy-up-fragment">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <th:block th:include="fragments/question"
+                      th:with="questionID=${question.getId()}, questionText=${question.getText()}, helpText=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+            <div class="inline-checkbox-cs limit-buyup-container">
+                <label class="checkbox i-checks" for="limit-buy-up-none">
+                    <input name="limitBuyUpNone" class="review-hide-check" type="checkbox" value="NONE" id="limit-buy-up-none"/>
+                    <span class="review-green-label">Extend standard Run-off Coverage limits to residual work as an estate trustee, a trustee for an <i>inter vivos</i> trust, or an attorney for property (do NOT select this option if you are not seeking protection for these otherwise excluded services).</span>
+                </label>
+                <label class="checkbox i-checks" for="limit-buy-up-500">
+                    <input name="limitBuyUp500" class="review-hide-check" type="checkbox" value="500k" id="limit-buy-up-500"/> <span class="review-green-label">Buy-Up Run-off Coverage limits to $500,000 per CLAIM/$500,000 in the AGGREGATE</span>
+                </label>
+                <label class="checkbox i-checks" for="limit-buy-up-1m">
+                    <input name="limitBuyUp1m" class="review-hide-check" type="checkbox" value="1M" id="limit-buy-up-1m"/> <span class="review-green-label">Buy-Up Run-off Coverage limits to $1 million per CLAIM/$2 million in the AGGREGATE</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTION 08 -->
+    <div th:fragment="coverage-term">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <th:block th:include="fragments/question"
+                      th:with="questionID=${question.getId()}, questionText=${question.getText()}, helpText=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+            <div class="inline-checkbox-cs coverage-term-container">
+                <label class="checkbox i-checks" for="coverage-term-5">
+                    <input type="checkbox" class="review-hide-check" name="coverageTerm5" value="5" id="coverage-term-5"/> <span class="review-green-label">5-year term</span>
+                </label>
+                <label class="checkbox i-checks" for="coverage-term-4">
+                    <input type="checkbox" class="review-hide-check" name="coverageTerm4" value="4" id="coverage-term-4"/> <span class="review-green-label">4-year term</span>
+                </label>
+                <label class="checkbox i-checks" for="coverage-term-3">
+                    <input type="checkbox" class="review-hide-check" name="coverageTerm3" value="3" id="coverage-term-3"/> <span class="review-green-label">3-year term</span>
+                </label>
+                <label class="checkbox i-checks" for="coverage-term-2">
+                    <input type="checkbox" class="review-hide-check" name="coverageTerm2" value="2" id="coverage-term-2"/> <span class="review-green-label">2-year term</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTION 09 -->
+    <div th:fragment="innocent-buy-up-fragment">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <th:block th:include="fragments/question"
+                      th:with="questionID=${question.getId()}, questionText=${question.getText()}, helpText=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+            <div class="inline-checkbox-cs innocent-buyup-container">
+                <label class="checkbox i-checks" for="innocent-buy-up-none">
+                    <input type="checkbox" class="review-hide-check" name="innocentBuyUpNone" value="5" id="innocent-buy-up-none"/>  <span class="review-green-label">No increased Innocent Partner sublimit Buy-up</span>
+                </label>
+                <label class="checkbox i-checks" for="innocent-buy-up-500">
+                    <input type="checkbox" class="review-hide-check" name="innocentBuyUp500" value="4" id="innocent-buy-up-500"/> <span class="review-green-label">Innocent Partner sublimit Buy-up to $500,000 per CLAIM/$500,000 in the AGGREGATE</span>
+                </label>
+                <label class="checkbox i-checks" for="innocent-buy-up-1m">
+                    <input type="checkbox" class="review-hide-check" name="innocentBuyUp1m" value="3" id="innocent-buy-up-1m"/>  <span class="review-green-label">Innocent Partner sublimit Buy-up to $1 million per CLAIM/$1 million in the AGGREGATE</span>
+                </label>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- QUESTION 10 -->
+    <div th:fragment="applying-for-protection-options">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div>
+                <label class="headerLabel">10. Protection for Residual Work as Estate Trustee, Trustee for <i>inter vivos</i> Trust, or Attorney for Property
+                    <i class="fa fa-info-circle formHelpIcon questionHelp" aria-hidden="true"></i>
+                </label>
+                <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none;" id="popup300">
+                    <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(300);">
+                        <span class="icon-sc-cl" aria-hidden="true">×</span>
+                    </button>
+                    <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                    <div class="questionHelpParagraph">
+                        <p>Note: The APPLICANT requests the Increased Coverage of this policy, to the limit selected in Question 7 above, to apply to certain PROFESSIONAL SERVICES yet to be performed as an estate trustee, a trustee for an <i>inter vivos</i> trust, or an attorney for property, as residual work from the APPLICANT'S former practice.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- QUESTION 11 -->
+    <div th:fragment="third-party">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group">
+                <th:block th:include="fragments/question"
+                          th:with="questionID=${question.getId()}, questionText=${question.getText()}, helpText=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+                <th:block th:include="forms/components/simple :: simple-yes-no" th:with="id='third-party-payor', name='thirdPartyPayor'"></th:block>
+                <div class="form-group third-party-info" style="display: none">
+                    <p>If the APPLICANT'S insurance premium will be paid by a third party, other than another LAWYER or PARALEGAL PARTNER OR SHAREHOLDER in a former LAW FIRM of the APPLICANT,
+                        or the former LAW FIRM itself, or a management or other company of the former LAW FIRM, the APPLICANT agrees to obtain the consent of this third party authorizing the
+                        transaction and providing for the use and disclosure of personal information, in accordance with privacy legislation that came into effect on January 1, 2004.</p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QUESTION 13 -->
+    <div th:fragment="payment-options">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="form-group">
+                <th:block th:include="fragments/question"
+                          th:with="questionID=${question.getId()}, questionText=${question.getText()}, helpText=${question.getHelp()}, questionNumber=${question.getNumber()}, instructions=${question.getInstructions()}"></th:block>
+                <div id="payment-option-review"></div>
+                <div id="payment-option-div">
+                    <div class="questionBreak"></div>
+
+                    <label class="headerLabel">Annual instalment (meaning a single payment each year) by</label>
+
+                <div class="inline-checkbox-cs">
+                    <label class="checkbox i-checks" onclick="setCheque('AN CHEQUE')" for="ANCHEQUE">
+                        <input name="paymentOption" onclick="setCheque('AN CHEQUE')" type="radio" value="AN CHEQUE" id="ANCHEQUE"/> cheque
+                    </label>
+                    <label class="checkbox i-checks" onclick="setPPA('AN EFT')" for="ANEFT">
+                        <input name="paymentOption" onclick="setPPA('AN EFT')" type="radio" value="AN EFT" id="ANEFT"/> pre-authorized bank account withdrawal
+                    </label>
+                    <label class="checkbox i-checks" onclick="setCC('AN CREDIT CARD')" for="ANCREDITCARD">
+                        <input name="paymentOption" onclick="setCC('AN CREDIT CARD')" type="radio" value="AN CREDIT CARD" id="ANCREDITCARD"/> credit card
+                    </label>
+                </div>
+
+                <label class="headerLabel">Lump sum payment (meaning a single payment for the full multi-year term) by</label>
+                <div class="inline-checkbox-cs">
+                    <label class="checkbox i-checks" onclick="setCheque('1S CHEQUE')" for="1SCHEQUE">
+                        <input name="paymentOption" onclick="setCheque('1S CHEQUE')" type="radio" value="1S CHEQUE" id="1SCHEQUE"/> cheque
+                    </label>
+                    <label class="checkbox i-checks" onclick="setPPA('1S EFT')" for="1SEFT">
+                        <input name="paymentOption" onclick="setPPA('1S EFT')" type="radio" value="1S EFT" id="1SEFT"/> pre-authorized bank account withdrawal
+                    </label>
+                    <label class="checkbox i-checks" onclick="setCC('1S CREDIT CARD')" for="1SCREDITCARD">
+                        <input name="paymentOption" onclick="setCC('1S CREDIT CARD')" type="radio" value="1S CREDIT CARD" id="1SCREDITCARD"/> credit card
+                    </label>
+                </div>
+                <input type="text" id="payment-option" style="display: none"/>
+            </div>
+        </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="menu-admin">
+    <ul class="metismenu" id="menuAdmin">
+        <li class="active menuLink">
+            <a href="/">
+                <span class="educate-icon educate-home icon-wrap"></span>
+                <span class="mini-click-non">Home</span>
+            </a>
+        <li class="menuLink">
+            <a href="/dashboard/users" aria-expanded="false"><span class="educate-icon educate-professor icon-wrap"></span> <span class="mini-click-non">Users</span></a>
+        </li>
+        <li class="menuLink">
+            <a class="has-arrow" href="/dashboard/forms" aria-expanded="true"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Forms</span></a>
+        </li>
+        <li>
+            <ul class="submenu-angle" aria-expanded="false">
+                <li class="menuLink"><a title="All Forms" href="/dashboard/forms"><span class="mini-sub-pro">All Forms</span></a></li>
+                <li class="menuLink"><a title="New Application Form" href="/dashboard/forms/newapplicationform"><span class="mini-sub-pro">New Application Form</span></a></li>
+                <li class="menuLink"><a title="New Excess Form" href="/dashboard/forms/excessform"><span class="mini-sub-pro">New Excess Form</span></a></li>
+
+            </ul>
+        </li>
+        <li class="menuLink">
+            <a href="/dashboard/lookups"><span class="educate-icon educate-library icon-wrap"></span> <span>Dropdowns</span></a>
+        </li>
+        <li class="menuLink">
+            <a href="/dashboard/errors"><span class="educate-icon educate-library icon-wrap"></span> <span>Error Messages</span></a>
+        </li>
+    </ul>
+</div>
+
+<div th:fragment="menu-user">
+    <ul class="metismenu" id="menuUser">
+        <li class="active menuLink">
+            <a href="/">
+                <span class="educate-icon educate-home icon-wrap"></span>
+                <span class="mini-click-non">Home</span>
+            </a>
+        </li>
+        <th:block th:if="${#request.getSession(true).getAttribute('error') == false}">
+            <th:block th:if="${#httpServletRequest.remoteUser != null}">
+                <li class="menuLink">
+                    <a class="has-arrow" href="/forms/address" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Address/Info Update</span></a>
+                </li>
+                <li class="menuLink">
+                    <a class="has-arrow" href="#" aria-expanded="false"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">Online Forms</span></a>
+                </li>
+                <li class="menuLink">
+                    <a class="has-arrow" href="#" aria-expanded="true"><span class="educate-icon educate-course icon-wrap"></span> <span class="mini-click-non">My LAWPRO</span></a>
+                </li>
+                <li>
+                    <ul class="submenu-angle" aria-expanded="true">
+                        <li class="menuLink"><a title="File Online" href="/fileonline"><span class="mini-sub-pro">File Online</span></a></li>
+                        <li class="menuLink"><a title="Account Summary" href="#"><span class="mini-sub-pro">Account Summary</span></a></li>
+                        <li class="menuLink"><a title="Risk Management Credit" href="#"><span class="mini-sub-pro">Risk Management Credit</span></a></li>
+                        <li class="menuLink"><a title="Update Payment Info" href="#"><span class="mini-sub-pro">Update Payment Info</span></a></li>
+                        <li class="menuLink"><a title="E-Filing History" href="http://my.lawpro.ca/file_online/ef_history.asp" target="_blank"><span class="mini-sub-pro">E-Filing History</span></a></li>
+                        <li class="menuLink"><a title="Policy Documents" href="#"><span class="mini-sub-pro">Policy Documents</span></a></li>
+                    </ul>
+                </li>
+            </th:block>
+        </th:block>
+    </ul>
+</div>
+
+<div th:fragment="menu-top-admin">
+    <!--
+    <ul class="nav navbar-nav mai-top-nav">
+        <li class="nav-item"><a href="/" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item"><a href="/dashboard/users" class="nav-link">Users</a>
+        </li>
+        <li class="nav-item dropdown res-dis-nn">
+            <a href="/dashboard/forms" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">Forms <span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
+            <div role="menu" class="dropdown-menu animated zoomIn">
+                <a href="/dashboard/forms" class="dropdown-item">All Forms</a>
+                <a href="/dashboard/forms/newapplicationform" class="dropdown-item">New Application Form</a>
+            </div>
+        </li>
+        <li class="nav-item"><a href="/dashboard/lookups" class="nav-link">Dropdowns</a>
+        </li>
+    </ul>-->
+</div>
+
+<div th:fragment="menu-top-user">
+<!--    <ul class="nav navbar-nav mai-top-nav">
+        <li class="nav-item"><a href="/dashboard" class="nav-link">Home</a>
+        </li>
+        <th:block th:if="${#httpServletRequest.remoteUser != null}">
+            <li class="nav-item dropdown res-dis-nn">
+                <a href="/dashboard/forms" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">File Online <span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
+                <div role="menu" class="dropdown-menu animated zoomIn">
+                    <a href="/dashboard/forms/newapplicationform" class="dropdown-item">New Application Form</a>
+                </div>
+            </li>
+        </th:block>
+    </ul>-->
+</div>
+
+<div th:fragment="menu-mobile-admin">
+    <ul class="mobile-menu-nav">
+        <li><a data-toggle="collapse" data-target="#Charts" href="/">Home <span class="admin-project-icon edu-icon"></span></a>
+        </li>
+        <li><a href="/dashboard/users">Users</a></li>
+        <li><a data-toggle="collapse" data-target="#demoevent" href="#">Forms <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+            <ul id="demoevent" class="collapse dropdown-header-top">
+                <li><a href="/dashboard/forms">All Forms</a>
+                <li><a href="/dashboard/forms/newapplicationform">New Application Form</a>
+                </li>
+            </ul>
+        </li>
+        <li><a href="/dashboard/lookups">Dropdowns</a></li>
+        <li><a href="/dashboard/errors">Error Messages</a></li>
+    </ul>
+</div>
+
+<div th:fragment="menu-mobile-user">
+    <ul class="mobile-menu-nav">
+        <li><a data-toggle="collapse" href="/">Home <span class="admin-project-icon edu-icon"></span></a>
+        </li>
+        <th:block th:if="${#request.getSession(true).getAttribute('error') == false}">
+            <th:block th:if="${#httpServletRequest.remoteUser != null}">
+                <li><a data-toggle="collapse" href="/forms/address">Address/Info Update<span class="admin-project-icon edu-icon edu-down-arrow"></span></a></li>
+                <li><a data-toggle="collapse" href="#">Online Forms <span class="admin-project-icon edu-icon edu-down-arrow"></span></a></li>
+                <li><a data-toggle="collapse" data-target="#demoevent" href="#">My LAWPRO <span class="admin-project-icon edu-icon edu-down-arrow"></span></a>
+                    <ul id="demoevent" class="collapse dropdown-header-top">
+                        <li><a href="/fileonline">File Online</a>
+                        <li><a href="#">Account Summary</a>
+                        <li><a href="#">Risk Credit Management</a>
+                        <li><a href="#">Update Payment Info</a>
+                        <li><a href="#">Transaction Levy Filing</a>
+                        <li><a href="http://my.lawpro.ca/file_online/ef_history.asp" target="_blank">E-Filing History</a>
+                        <li><a href="#">Policy Documents</a>
+                        </li>
+                    </ul>
+                </li>
+            </th:block>
+        </th:block>
+    </ul>
+</div>
+
+</body>
+</html>

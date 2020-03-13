@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main" lang="en">
+<head>
+    <title>Form</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <FORM METHOD="POST"  NAME="frmLiability" th:action="${url}" style="display: none;">
+        <!--#INCLUDE virtual="/file_online/includes/moneris_vault.asp"-->
+        <input type="Hidden" name="cust_id" id="cust_id" value=""> <!--TODO: Replace with User ID-->
+        <INPUT TYPE="Submit" NAME="SUBMIT" VALUE="   Go to Moneris   " class="stdButton">
+        <input type="Hidden" name="res_id" th:value="${res_id}">
+        <input type="Hidden" name="res_key" th:value="${res_key}">
+        <input type="Hidden" name="cc_crypt_type" value="7">
+    </form>
+
+    <script>
+        $(document).ready(function(){
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                    .exec(window.location.search);
+
+                return (results !== null) ? results[1] || 0 : false;
+            }
+
+            $('#cust_id').val($.urlParam('custid'));
+            $('.stdButton').trigger('click');
+        });
+    </script>
+</th:block>
+
+</body>
+</html>
+

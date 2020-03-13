@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="applicant-information">
+        <div class="product-tab-list tab-pane fade in" id="applicant-information" >
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="review-content-section">
+                        <div class="pro-ad addcoursepro">
+
+                            <div class="row">
+                                <th:block th:include="forms/components/simple :: datepicker-simple" th:with="question=${question01}, inputId='applicant-last-engage', inputName='applicantLastEngage'"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/irop/custom-questions-tables :: past-employment" th:with="question=${question02}"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/components/simple :: numeric-simple" th:with="question=${question03}, inputId='applicant-years-in-law'"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/components/simple :: numeric-simple" th:with="question=${question04}, inputId='real-estate-perc', name='realEstatePerc'"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/components/simple :: numeric-simple" th:with="question=${question05}, inputId='criminal-law-perc', name='criminalLawPerc'"></th:block>
+                            </div>
+
+                            <hr>
+                            <div class="questionBreak"></div>
+
+                            <div class="row">
+                                <th:block th:include="forms/components/simple :: numeric-simple" th:with="question=${question06}, inputId='hours-devoted-practice', name='hoursDevotedPractice'"></th:block>
+                            </div>
+
+                            <th:block th:include="forms/components/general :: next-button"></th:block>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <th:block th:include="forms/irop/custom-modals :: employment-modal"></th:block>
+
+    </div>
+</body>
+</html>

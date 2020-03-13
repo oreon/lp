@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Login</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div th:if="${#httpServletRequest.remoteUser != null}">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+
+    <div th:if="${#httpServletRequest.remoteUser == null}">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 style="float: left;">My LAWPRO</h1><sup style="float: left; font-size: 12px;">®</sup>
+                <div class="clearfix"></div>
+                <div style="float: left;">Your secure online access to contact details, filing and payment information, account summary, and e-filing history.</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <div class="basic-login-inner">
+                    <h2>Sign In</h2>
+                    <form action="/login" method="post">
+                        <div class="form-group-inner">
+                            <label for="username">LSO #</label>
+                            <input type="text" class="form-control" placeholder="Enter LSO #" name="username" id="username" />
+                        </div>
+                        <div class="form-group-inner">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" placeholder="password" name="password" id="password" />
+                        </div>
+                        <div class="login-btn-inner">
+                            <div class="inline-remember-me">
+                                <button class="btn btn-sm btn-primary pull-right login-submit-cs" type="submit">Log In</button>
+                                <label for="remember-me">
+                                    <input name="remember-me" type="checkbox" class="i-checks" id="remember-me"> Remember me </label>
+                            </div>
+                        </div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </form>
+
+                    <div th:if="${errorMessage != null}" style="line-height: 60px; color: #e68d02; font-weight: bold; padding-top: 10px;">
+                        We are experiencing technical difficulties. Please try again later.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

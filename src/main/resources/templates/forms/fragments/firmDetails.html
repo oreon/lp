@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="firmDetails">
+
+    <style>
+        .review-firm-details span {
+            color:green;
+        }
+    </style>
+
+    <th:block if="${review}">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var _csrf_token = /*[[${_csrf.token}]]*/ '';
+            var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+            /*]]>*/
+
+            $(document).ready(function(){
+                $('#_csrf_param_name_firm').attr('name', _csrf_param_name);
+                $('#_csrf_param_name_firm').val(_csrf_token);
+            });
+
+        </script>
+
+        <input type="hidden" name="_csrf_param_name" id="_csrf_param_name_firm" />
+    </th:block>
+
+
+    <div id="firm-details">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="primaryDetails">
+            <div class="form-group" id="FirmEffectiveDateContainer" style="display: none;">
+                <label for="FirmEffectiveDate">Effective date of the requested changes</label>
+                <div class="form-group data-custon-pick" style="width: 250px;">
+                    <div class="input-group date" style="width: 200px;">
+                        <span class="input-group-addon"><i class="fa fa-calendar clickable-calendar"></i></span>
+                        <input type="text" class="form-control" style="width: 200px;" placeholder="MMM DD, YYYY" name="firmEffectiveDate" id="FirmEffectiveDate" th:value="${user.firm.getEffectiveDate()}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmNumber">LAWPRO Firm Number</label>
+                <input id="firmNumber" name="firmNumber" type="text" class="form-control" placeholder="Firm Number" th:value="${user.firm.firmNumber}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmName">Name of law partnership, association or sole practitioner</label>
+                <input id="firmName" name="firmName" type="text" class="form-control" placeholder="Name of law partnership, association or sole practitioner" th:value="${user.firm.name}" />
+                <input id="firmNameOriginal" type="hidden" th:value="${user.firm.name}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmAddress1">Address</label>
+                <input id="firmAddress1" name="firmAddress1" type="text" class="form-control" placeholder="Address" th:value="${user.firm.address.line1}" />
+                <input id="firmAddress1Original" type="hidden" th:value="${user.firm.address.line1}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmAddress2" style="display: none;">Address 2</label>
+                <input id="firmAddress2" name="firmAddress2" type="text" class="form-control" placeholder="Address" th:value="${user.firm.address.line2}" />
+                <input id="firmAddress2Original" type="hidden" th:value="${user.firm.address.line2}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmAddress3" style="display: none;">Address 3</label>
+                <input id="firmAddress3" name="firmAddress3" type="text" class="form-control" placeholder="Address" th:value="${user.firm.address.line3}" />
+                <input id="firmAddress3Original" type="hidden" th:value="${user.firm.address.line3}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmCity">City</label>
+                <input id="firmCity" name="firmCity" type="text" class="form-control" placeholder="City" th:value="${user.firm.address.city}" />
+                <input id="firmCityOriginal" type="hidden" th:value="${user.firm.address.city}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmProvince" style="float: left;">Province</label>
+                <div class="clearfix"></div>
+                <input type="hidden" id="firmProvinceValue" name="firmProvinceValue" th:value="${user.firm.address.province}" aria-hidden="true" />
+                <select id="firmProvince" aria-hidden="true" onchange="checkFirmProvince(); return false;" name="firmProvince" type="text" class="form-control" placeholder="Province" th:value="${user.firm.address.province}" style="width: 525px; display: none; float: left;">
+                    <th:block th:each="item : ${provinces}">
+                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                    </th:block>
+                </select>
+                <div class="clearfix"></div>
+                <label for="firmProvinceReadOnly" style="display: none;" aria-hidden="true">Province</label>
+                <input type="text" id="firmProvinceReadOnly" th:value="${user.firm.address.province}" class="form-control" placeholder="Province" style="float: left;" aria-hidden="true" />
+                <div class="clearfix"></div>
+                <input id="firmProvinceOriginal" type="hidden" th:value="${user.firm.address.province}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15" id="firmProvinceOtherContainer" style="display: none;">
+                <label for="firmProvinceOther">Enter Province</label>
+                <input type="text" id="firmProvinceOther" name="firmProvinceOther" placeholder="Enter province" th:value="${user.firm.address.province}" class="form-control" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmPostalCode">Postal code</label>
+                <input id="firmPostalCode" name="firmPostalCode" type="text" data-mask="*9* 9*9" class="form-control" placeholder="Postal code" th:value="${user.firm.address.postalCode}" style="text-transform: uppercase;" />
+                <input id="firmPostalCodeOriginal" type="hidden" th:value="${user.firm.address.postalCode}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmPhoneNumber">Telephone number (including area code)</label>
+                <input id="firmPhoneNumber" name="firmPhoneNumber" type="text" class="form-control" data-mask="999-999-9999" placeholder="Telephone number" th:value="${user.firm.getPhoneNumber()}" />
+                <input id="firmPhoneNumberOriginal" type="hidden" th:value="${user.firm.getPhoneNumber()}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmFaxNumber">Fax number (including area code)</label>
+                <input id="firmFaxNumber" name="firmFaxNumber" type="text" class="form-control" data-mask="999-999-9999" placeholder="Fax number" th:value="${user.firm.getFaxNumber()}" />
+                <input id="firmFaxNumberOriginal" type="hidden" th:value="${user.firm.getFaxNumber()}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmEmail">Email address</label>
+                <input id="firmEmail" name="firmEmail" type="text" class="form-control" placeholder="Email" th:value="${user.firm.getEmail()}" />
+                <input id="firmEmailOriginal" type="hidden" th:value="${user.firm.getEmail()}" aria-hidden="true" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmWebsite">Firm website</label>
+                <input id="firmWebsite" name="firmWebsite" type="text" class="form-control" placeholder="Website" th:value="${user.firm.getWebsite()}" />
+                <input id="firmWebsiteOriginal" type="hidden" th:value="${user.firm.getWebsite()}" aria-hidden="true" />
+            </div>
+
+        </div>
+        <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12" id="secondaryDetails">
+            <div class="form-group res-mg-t-15">
+                <label for="firmManagingPartnerLSOSelect">Managing partner/lawyer</label>
+                <label for="firmManagingPartnerLSOSelect_chosen" style="display: none;">Managing partner/lawyer</label>
+                <div class="clearfix"></div>
+
+                <th:block th:if="${user.firm.managingLawyer.firstName == null || user.firm.managingLawyer.firstName.isEmpty()}">
+                    <div style="float: left; margin-right: 10px; color: red;" id="firmManagingPartnerNotProvided">
+                        Not yet provided
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('#firmManagingPartnerContainer').hide();
+                        });
+                    </script>
+                </th:block>
+
+                <div id="firmManagingPartnerContainer" style="float: left;">
+                    <div style=" float: left; margin-right: 10px;">
+                        <select id="firmManagingPartnerLSOSelect" style="width: 100px;" data-id="wsFirm.managingLawyer">
+                            <option value="--Select--" data-firstname="" data-lastname="" data-lsokey="--Select--" data-email="" data-title="">--Select--</option>
+                            <th:block th:each="item : ${lawyers}">
+                                <option th:value="${item.lsoKey}" th:text="${item.lsoKey + ' - ' + item.lastName + ', ' + item.firstName}" data-th-attr="data-firstname=${item.firstName}, data-lsokey=${item.lsoKey}, data-lastname=${item.lastName}, data-title=${item.title}, data-email=${item.email}" />
+                            </th:block>
+                        </select>
+                    </div>
+                    <label for="firmManagingPartnerLSO" style="display: none;">Managing Partner LSO</label>
+                    <label for="firmManagingPartnerFirstName" style="display: none;">Managing Partner First Name</label>
+                    <label for="firmManagingPartnerLastName" style="display: none;">Managing Partner Last Name</label>
+                    <label for="firmManagingPartnerTitle" style="display: none;">Managing Partner Title</label>
+                    <label for="firmManagingPartnerEmail" style="display: none;">Managing Partner Email</label>
+                    <input id="firmManagingPartnerLSOOriginal" type="hidden" th:value="${user.firm.managingLawyer.lsoKey}" />
+                    <input id="firmManagingPartnerFirstNameOriginal" type="hidden" th:value="${user.firm.managingLawyer.firstName}" />
+                    <input id="firmManagingPartnerLastNameOriginal" type="hidden" th:value="${user.firm.managingLawyer.lastName}" />
+                    <input id="firmManagingPartnerTitleOriginal" type="hidden" th:value="${user.firm.managingLawyer.title}" />
+                    <input id="firmManagingPartnerEmailOriginal" type="hidden" th:value="${user.firm.managingLawyer.email}" />
+                    <input id="firmManagingPartnerLSO" name="firmManagingPartnerLSO" type="text" class="form-control" placeholder="LSO #" th:value="${user.firm.managingLawyer.lsoKey}" style="width: 100px; height: 39px; float: left; margin-right:10px;" />
+                    <input id="firmManagingPartnerFirstName" name="firmManagingPartnerFirstName" type="text" class="form-control" placeholder="First name" th:value="${user.firm.managingLawyer.firstName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmManagingPartnerLastName" name="firmManagingPartnerLastName" type="text" class="form-control" placeholder="Last name" th:value="${user.firm.managingLawyer.lastName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmManagingPartnerTitle" name="firmManagingPartnerTitle" type="text" class="form-control" placeholder="Title" th:value="${user.firm.managingLawyer.title}" style="width: 150px; float: left; margin-right:10px;" />
+                    <input id="firmManagingPartnerEmail" name="firmManagingPartnerEmail" type="text" class="form-control" placeholder="Email" th:value="${user.firm.managingLawyer.email}" style="width: 250px; float: left; margin-right:10px;" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmOfficeAdminLSOSelect">Office administrator/manager</label>
+                <label for="firmOfficeAdminLSOSelect_chosen" style="display: none;">Office administrator/manager</label>
+                <div class="clearfix"></div>
+                <th:block th:if="${user.firm.officeManager.firstName.isEmpty()}">
+                    <div style="float: left; margin-right: 10px; color: red;" id="firmOfficeAdminNotProvided">
+                        Not yet provided
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('#firmOfficeAdminContainer').hide();
+                        });
+                    </script>
+                </th:block>
+                <div id="firmOfficeAdminContainer">
+                    <div style=" float: left; margin-right: 10px;">
+                        <select id="firmOfficeAdminLSOSelect" style="width: 100px;">
+                            <option value="--Select--" data-firstname="" data-lastname="" data-lsokey="--Select--" data-email="" data-title="">--Select--</option>
+                            <option value="--No LSO--" data-firstname="" data-lastname="" data-lsokey="--No LSO--" data-email="" data-title="">Non-lawyer</option>
+                            <th:block th:each="item : ${lawyers}">
+                                <option th:value="${item.lsoKey}" th:text="${item.lsoKey + ' - ' + item.firstName + ' ' + item.lastName}" data-th-attr="data-firstname=${item.firstName}, data-lsokey=${item.lsoKey}, data-lastname=${item.lastName}, data-title=${item.title}, data-email=${item.email}" />
+                            </th:block>
+                        </select>
+                    </div>
+                    <label for="firmOfficeAdminLSO" style="display: none;">Office Admin LSO</label>
+                    <label for="firmOfficeAdminFirstName" style="display: none;">Office Admin First Name</label>
+                    <label for="firmOfficeAdminLastName" style="display: none;">Office Admin Last Name</label>
+                    <label for="firmOfficeAdminTitle" style="display: none;">Office Admin Title</label>
+                    <label for="firmOfficeAdminEmail" style="display: none;">Office Admin Email</label>
+                    <input id="firmOfficeAdminLSOOriginal" type="hidden" th:value="${user.firm.officeManager.lsoKey}" />
+                    <input id="firmOfficeAdminFirstNameOriginal" type="hidden" th:value="${user.firm.officeManager.firstName}" />
+                    <input id="firmOfficeAdminLastNameOriginal" type="hidden" th:value="${user.firm.officeManager.lastName}" />
+                    <input id="firmOfficeAdminTitleOriginal" type="hidden" th:value="${user.firm.officeManager.title}" />
+                    <input id="firmOfficeAdminEmailOriginal" type="hidden" th:value="${user.firm.officeManager.email}" />
+                    <input id="firmOfficeAdminLSO" name="firmOfficeAdminLSO" type="text" class="form-control" placeholder="LSO #" th:value="${user.firm.officeManager.lsoKey}" style="width: 100px; float: left; margin-right:10px;" />
+                    <input id="firmOfficeAdminFirstName" name="firmOfficeAdminFirstName" type="text" class="form-control" placeholder="First name" th:value="${user.firm.officeManager.firstName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmOfficeAdminLastName" name="firmOfficeAdminLastName" type="text" class="form-control" placeholder="Last name" th:value="${user.firm.officeManager.lastName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmOfficeAdminTitle" name="firmOfficeAdminTitle" type="text" class="form-control" placeholder="Title" th:value="${user.firm.officeManager.title}" style="width: 150px; float: left; margin-right:10px;" />
+                    <input id="firmOfficeAdminEmail" name="firmOfficeAdminEmail" type="text" class="form-control" placeholder="Email" th:value="${user.firm.officeManager.email}" style="width: 250px; float: left; margin-right:10px;" />
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="btnCancelOfficeAdmin" onclick="cancelOfficeAdmin(); toggleFirmDetails(true);  return false;" style="display: none; font-size: 18px;">Cancel</button>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmClaimsContactLSOSelect">Claims administration contact</label>
+                <label for="firmClaimsContactLSOSelect_chosen" style="display: none;">Claims administration contact</label>
+                <div class="clearfix"></div>
+                <th:block th:if="${user.firm.claimAdmin.firstName.isEmpty()}">
+                    <div style="float: left; margin-right: 10px; color: red;" id="firmClaimsContactNotProvided">
+                        Not yet provided
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('#firmClaimsContactContainer').hide();
+                        });
+                    </script>
+                </th:block>
+                <div id="firmClaimsContactContainer">
+                    <div style=" float: left; margin-right: 10px;">
+                        <select id="firmClaimsContactLSOSelect" style="width: 100px;">
+                            <option value="--Select--" data-firstname="" data-lastname="" data-lsokey="--Select--" data-email="" data-title="">--Select--</option>
+                            <option value="--No LSO--" data-firstname="" data-lastname="" data-lsokey="--No LSO--" data-email="" data-title="">Non-lawyer</option>
+                            <th:block th:each="item : ${lawyers}">
+                                <option th:value="${item.lsoKey}" th:text="${item.lsoKey + ' - ' + item.firstName + ' ' + item.lastName}" data-th-attr="data-firstname=${item.firstName}, data-lsokey=${item.lsoKey}, data-lastname=${item.lastName}, data-title=${item.title}, data-email=${item.email}" />
+                            </th:block>
+                        </select>
+                    </div>
+                    <label for="firmClaimsContactLSO" style="display: none;">Claims Contact LSO</label>
+                    <label for="firmClaimsContactFirstName" style="display: none;">Claims Contact First Name</label>
+                    <label for="firmClaimsContactLastName" style="display: none;">Claims Contact Last Name</label>
+                    <label for="firmClaimsContactTitle" style="display: none;">Claims Contact Title</label>
+                    <label for="firmClaimsContactEmail" style="display: none;">Claims Contact Email</label>
+                    <input id="firmClaimsContactLSOOriginal" type="hidden" th:value="${user.firm.claimAdmin.lsoKey}" />
+                    <input id="firmClaimsContactFirstNameOriginal" type="hidden" th:value="${user.firm.claimAdmin.firstName}" />
+                    <input id="firmClaimsContactLastNameOriginal" type="hidden" th:value="${user.firm.claimAdmin.lastName}" />
+                    <input id="firmClaimsContactTitleOriginal" type="hidden" th:value="${user.firm.claimAdmin.title}" />
+                    <input id="firmClaimsContactEmailOriginal" type="hidden" th:value="${user.firm.claimAdmin.email}" />
+                    <input id="firmClaimsContactLSO" name="firmClaimsContactLSO" type="text" class="form-control" placeholder="LSO #" th:value="${user.firm.claimAdmin.lsoKey}" style="width: 100px; float: left; margin-right:10px;" />
+                    <input id="firmClaimsContactFirstName" name="firmClaimsContactFirstName" type="text" class="form-control" placeholder="First name" th:value="${user.firm.claimAdmin.firstName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmClaimsContactLastName" name="firmClaimsContactLastName" type="text" class="form-control" placeholder="Last name" th:value="${user.firm.claimAdmin.lastName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmClaimsContactTitle" name="firmClaimsContactTitle" type="text" class="form-control" placeholder="Title" th:value="${user.firm.claimAdmin.title}" style="width: 150px; float: left; margin-right:10px;" />
+                    <input id="firmClaimsContactEmail" name="firmClaimsContactEmail" type="text" class="form-control" placeholder="Email" th:value="${user.firm.claimAdmin.email}" style="width: 250px; float: left; margin-right:10px;" />
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="btnCancelClaimsContact" onclick="cancelClaimsContact(); toggleFirmDetails(true);  return false;" style="display: none; font-size: 18px;">Cancel</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmCPDContactLSOSelect" aria-hidden="true">CPD contact</label>
+                <label for="firmCPDContactLSOSelect_chosen" style="display: none;">CPD contact</label>
+                <div class="clearfix"></div>
+                <th:block th:if="${user.firm.cpdContact.firstName.isEmpty()}">
+                    <div style="float: left; margin-right: 10px; color: red;" id="firmCPDContactNotProvided">
+                        Not yet provided
+                    </div>
+                    <script>
+                        $(document).ready(function(){
+                            $('#firmCPDContactContainer').hide();
+                        });
+                    </script>
+                </th:block>
+                <div id="firmCPDContactContainer">
+                    <div style=" float: left; margin-right: 10px;">
+                        <select id="firmCPDContactLSOSelect" style="width: 100px;">
+                            <option value="--Select--" data-firstname="" data-lastname="" data-lsokey="--Select--" data-email="" data-title="">--Select--</option>
+                            <option value="--No LSO--" data-firstname="" data-lastname="" data-lsokey="--No LSO--" data-email="" data-title="">Non-lawyer</option>
+                            <th:block th:each="item : ${lawyers}">
+                                <option th:value="${item.lsoKey}" th:text="${item.lsoKey + ' - ' + item.firstName + ' ' + item.lastName}" data-th-attr="data-firstname=${item.firstName}, data-lsokey=${item.lsoKey}, data-lastname=${item.lastName}, data-title=${item.title}, data-email=${item.email}" />
+                            </th:block>
+                        </select>
+                    </div>
+                    <label for="firmCPDContactLSO" style="display: none;">CPD Contact LSO</label>
+                    <label for="firmCPDContactFirstName" style="display: none;">CPD Contact First Name</label>
+                    <label for="firmCPDContactLastName" style="display: none;">CPD Contact Last Name</label>
+                    <label for="firmCPDContactTitle" style="display: none;">CPD Contact Title</label>
+                    <label for="firmCPDContactEmail" style="display: none;">CPD Contact Email</label>
+                    <input id="firmCPDContactLSOOriginal" type="hidden" th:value="${user.firm.cpdContact.lsoKey}" />
+                    <input id="firmCPDContactFirstNameOriginal" type="hidden" th:value="${user.firm.cpdContact.firstName}" />
+                    <input id="firmCPDContactLastNameOriginal" type="hidden" th:value="${user.firm.cpdContact.lastName}" />
+                    <input id="firmCPDContactTitleOriginal" type="hidden" th:value="${user.firm.cpdContact.title}" />
+                    <input id="firmCPDContactEmailOriginal" type="hidden" th:value="${user.firm.cpdContact.email}" />
+                    <input id="firmCPDContactLSO" name="firmCPDContactLSO" type="text" class="form-control" placeholder="LSO #" th:value="${user.firm.cpdContact.lsoKey}" style="width: 100px; float: left; margin-right:10px;" />
+                    <input id="firmCPDContactFirstName" name="firmCPDContactFirstName" type="text" class="form-control" placeholder="First name" th:value="${user.firm.cpdContact.firstName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmCPDContactLastName" name="firmCPDContactLastName" type="text" class="form-control" placeholder="Last name" th:value="${user.firm.cpdContact.lastName}" style="width: 200px; float: left; margin-right:10px;" />
+                    <input id="firmCPDContactTitle" name="firmCPDContactTitle" type="text" class="form-control" placeholder="Title" th:value="${user.firm.cpdContact.title}" style="width: 150px; float: left; margin-right:10px;" />
+                    <input id="firmCPDContactEmail" name="firmCPDContactEmail" type="text" class="form-control" placeholder="Email" th:value="${user.firm.cpdContact.email}" style="width: 250px; float: left; margin-right:10px;" />
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="btnCancelCPDContact" onclick="cancelCPDContact(); toggleFirmDetails(true); return false;" style="display: none; font-size: 18px;">Cancel</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="firmNatureOfLawPractice">Nature of law practice</label>
+                <div class="readOnlyInput" id="nopReadOnly"></div>
+                <input type="hidden" id="firmNatureOfLawPracticeHidden" th:value="${user.firm.nop}" />
+
+                <div class="clearfix"></div>
+                <select id="firmNatureOfLawPractice" name="firmNatureOfLawPractice" type="text" class="form-control" data-id="wsFirm.nop" placeholder="Nature of law practice" th:value="${user.firm.nop}" style="width: 500px;" multiple>
+                    <th:block th:each="item : ${naturesOfLaw}">
+                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                    </th:block>
+                </select>
+
+                <div class="clearfix"></div>
+
+                <div id="validNOPFirmContainer" style="float: left; display: none;">
+                    <div style="float: left; margin-top: 10px;">
+                        Valid Nature of Practice combinations:
+                    </div>
+
+                    <div style="float: left; margin-left: 5px; margin-top: 7px;">
+                        <i class="fa fa-question-circle formHelpIcon" aria-hidden="true" onclick="showValidNOPFirm();"></i>
+                    </div>
+
+                    <div style="float: left; margin-left: 0px; margin-top: 10px;">
+                        <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none" id="validNOPFirm">
+                            <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup();">
+                                <span class="icon-sc-cl" aria-hidden="true">×</span>
+                            </button>
+                            <div class="questionHelpParagraph">
+                                <i class="fa fa-question-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                <p style="font-size: 14px; font-weight: bold;">
+                                    If you are selecting multiple Nature of Practice options, the following are valid combinations:
+                                </p>
+                                <p style="font-size: 14px; font-weight: bold; font-style: italic; margin-top: 5px; margin-bottom: 5px;">Vaid Nature of Law Practice combinations:</p>
+                                <p>
+                                    Sole Practitioner <u>and</u> Law Corporate - Sole<br/>
+                                    Sole Practitioner <u>and</u> In-House Corporate Counsel<br/>
+                                    Law Corporation - Not Sole <u>and</u> Association<br/>
+                                    Law Corporation - Not Sole <u>and</u> Partnership - General<br/>
+                                    Law Corporation - Not Sole <u>and</u> Multi-Discipline Partnership and/or Combined Licensee Firm<br/>
+                                    Law Corporation - Not Sole <u>and</u>    Partnership - Limited Liability Partnership (LLP)<br/>
+                                    Law Corporation - Not Sole and Partnership - Limited Liability Partnership (LLP) <u>and</u> Multi-Discipline Partnership and/or Combined Licensee Firm
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; clear: both;">
+                <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnCancelFirm" onclick="cancelFirm(); return false;" style="margin-bottom:5px;display: none;">Cancel</button>
+                <button th:if="${review}" type="button" class="btn btn-primary waves-effect waves-light bigButton" id="btnReviewFirm" onclick="displayFirmReview(); return false;" style="margin-bottom:5px;display:none;">Review</button>
+                <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnUpdateFirm" th:onclick="'javascript:changeFirm(' + ${review} + '); return false;'" th:if="${edit}" style="margin-bottom:5px;">Update Firm Details</button>
+                <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnSaveFirmDetails" onclick="saveFirmDetails(false); return false;" style="margin-bottom:5px;display: none;">Save</button>
+                <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnContinueFromFirm" style="margin-bottom:5px;" onclick="next(false); return false;">Continue with New Application Form</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div id="firmLoading" class="loading">
+            <img src="/img/ajaxbig.gif" alt="Loading" />
+        </div>
+        <div id="firmConfirmation" style="display: none;">
+            <div class="product-payment-inner-st" style="font-size: 16px;">
+                <div class="clearfix"></div>
+
+                <h2 style="color: #483b71;">Thank you!</h2>
+
+                <div class="questionBreak"></div>
+
+                <p>Thank you for updating your information.</p>
+
+                <div class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${user.getContactName().firstName}"></span> <span style="font-weight: normal;" th:text="${user.getContactName().lastName}"></span></div>
+                <div class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${user.getLSONumberPartial()}"></span></div>
+                <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Firm Address Change</span></div>
+                <div class="submittedValue confirmationLine">DATE: <span style="font-weight: normal;" id="submittedDateFirm"></span></div>
+                <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumberFirmDetails"></span></div>
+
+                <div class="questionBreak"></div>
+
+                <div class="alert alert-success alert-st-two" role="alert" style="margin-top: 20px;">
+                    <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                    <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="https://www.lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://www.practicepro.ca" target="_blank">practicepro.ca</a></p>
+                </div>
+
+                <div class="row" style="text-align: center;" th:if="${edit == true && !review}">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnContinueFromFirmReview" onclick="next(false); return false;" style="display: inline-block;">Continue with New Application Form</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="review-firm-details" style="display:none;" th:if="${review}">
+        <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <div class="reviewLabel">Effective date of the requested changes</div><br/>
+                <span id="firm-review-effective-date"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">LAWPRO Firm Number</div><br/>
+                <span id="firm-review-firm-number"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Name of law partnership, association or sole practitioner</div><br/>
+                <span id="firm-review-firm-name"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Address</div><br/>
+                <span id="firm-review-address-one"></span><br/>
+                <span id="firm-review-address-two"></span><br/>
+                <span id="firm-review-address-three"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">City</div><br/>
+                <span id="firm-review-city"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Province</div>
+                <span id="firm-review-province"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Postal Code</div>
+                <span id="firm-review-postal-code"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Telephone number (including area code)</div><br/>
+                <span id="firm-review-telephone"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Fax number (including area code)</div><br/>
+                <span id="firm-review-fax"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Email Address</div><br/>
+                <span id="firm-review-email"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Firm Website</div><br/>
+                <span id="firm-review-website"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
+            <div class="form-group">
+                <div class="reviewLabel">Managing partner/lawyer</div><br/>
+                <span id="firm-review-managing-lso"></span><br/>
+                <span id="firm-review-managing-first"></span>
+                <span id="firm-review-managing-last"></span><br/>
+                <span id="firm-review-managing-email"></span><br/>
+                <span id="firm-review-managing-title"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Office administrator/manager</div><br/>
+                <span id="firm-review-office-lso"></span><br/>
+                <span id="firm-review-office-first"></span>
+                <span id="firm-review-office-last"></span><br/>
+                <span id="firm-review-office-email"></span><br/>
+                <span id="firm-review-office-title"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Claims administrator contact</div><br/>
+                <span id="firm-review-claims-lso"></span><br/>
+                <span id="firm-review-claims-first"></span>
+                <span id="firm-review-claims-last"></span><br/>
+                <span id="firm-review-claims-email"></span><br/>
+                <span id="firm-review-claims-title"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">CPD Contact</div><br/>
+                <span id="firm-review-cpd-lso"></span><br/>
+                <span id="firm-review-cpd-first"></span>
+                <span id="firm-review-cpd-last"></span><br/>
+                <span id="firm-review-cpd-email"></span><br/>
+                <span id="firm-review-cpd-title"></span>
+            </div>
+            <div class="form-group">
+                <div class="reviewLabel">Nature of Practie</div><br/>
+                <span id="firm-review-nop"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div id="firmLoadingReview" class="loading">
+            <img src="/img/ajaxbig.gif" alt="Loading" />
+        </div>
+        <div id="firmConfirmationReview" style="display: none;">
+            <div class="product-payment-inner-st" style="font-size: 16px;">
+                <div class="clearfix"></div>
+
+                <h2 style="color: #483b71;">Thank you!</h2>
+
+                <div class="questionBreak"></div>
+
+                <p>Thank you for updating your information.</p>
+
+                <div class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${user.getContactName().firstName}"></span> <span style="font-weight: normal;" th:text="${user.getContactName().lastName}"></span></div>
+                <div class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${user.getLSONumberPartial()}"></span></div>
+                <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Firm Address Change</span></div>
+                <div class="submittedValue confirmationLine">DATE: <span style="font-weight: normal;" id="submittedDateFirmReview"></span></div>
+                <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumberFirmDetailsReview"></span></div>
+
+                <div class="questionBreak"></div>
+
+                <div class="alert alert-success alert-st-two" role="alert" style="margin-top: 20px;">
+                    <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                    <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="http://www.lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://www.practicepro.ca" target="_blank">practicepro.ca</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6" style="text-align: center; margin-top: 20px;" th:if="${review }">
+        <button type="button" class="btn btn-primary waves-effect waves-light bigButton" id="btnFirmGoBack" onclick="firmGoBack(); return false;" style="display: none;">Go Back</button>
+        <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnSaveFirmDetailsReview" style="display: none;" onclick="saveFirmDetails(true); return false;">Save</button>
+    </div>
+</div>
+

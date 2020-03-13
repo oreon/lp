@@ -1,0 +1,2397 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Form</title>
+</head>
+<body>
+
+<th:block layout:fragment="content" th:with="role=${role}">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var _csrf_token = /*[[${_csrf.token}]]*/ '';
+        var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+        /*]]>*/
+    </script>
+    <script src="/js/forms/excess/excess.js"></script>
+    <script src="/js/forms/excess/applicant-firm/toggles.js"></script>
+    <script src="/js/forms/excess/coverage-request/toggles.js"></script>
+    <script src="/js/forms/excess/applicant-firm/modals.js"></script>
+    <script src="/js/forms/excess/coverage-request/modals.js"></script>
+    <script src="/js/forms/excess/other-insurance/modals.js"></script>
+    <script src="/js/forms/excess/other-insurance/toggles.js"></script>
+    <script src="/js/forms/excess/premium-payment/payment.js"></script>
+    <script src="/js/forms/utilities.js"></script>
+
+    <script src="/js/forms/address.js"></script>
+    <link rel="stylesheet" href="/css/form/excessform.css">
+
+    <script th:if="${(#httpServletRequest.getParameter('confirmed') != null) and (#httpServletRequest.getParameter('confirmed') == 'true')}" th:inline="javascript">
+        $(document).ready(function(){
+            $('#newExcessForm').hide();
+            $('#confirmation').show();
+            $('#helpContainer').hide();
+            $('#formIntro').show();
+
+            $('#submittedDate').text(moment());
+            $('#efilingInfo').show();
+        });
+    </script>
+
+
+    <form name="UserDetailsForm" id="UserDetailsForm" method="post">
+        <input type="hidden" name="userName" id="UserName" th:value="${userInfo.getUsername()}"/>
+        <input type="hidden" name="formName" value="NewExcessForm"/>
+    </form>
+
+
+    <input type="text" style="display:none" th:value="${userType}" id="user-type"/>
+    <input type="text" style="display: none" th:value="${userInfo.getFirstName()}" id="first-name"/>
+    <input type="text" style="display:none" th:value="${userInfo.getLastName()}" id="last-name"/>
+    <input type="text" style="display:none" th:value="${userInfo.getEmail()}" id="email"/>
+    <input type="text" style="display: none;" th:value="${userInfo.getFirm().getFirm().getFirmNumber()}" id="submitted-for"/>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="formIntro">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="blog-details blog-sig-details blog-details-inner" style="float: left; width: 100%;">
+
+                        <th:block th:if="${#httpServletRequest.isUserInRole('ADMIN')}">
+                            <div class="alert alert-info alert-infoAdmin alert-st-two" role="alert">
+                                <i class="fa fa-info-circle edu-inform admin-check-pro admin-check-pro-none"
+                                   aria-hidden="true"></i>
+                                <p class="message-mg-rt message-alert-none">You are viewing the <span
+                                        th:text="${form.name}"></span> as a user would see it.</p>
+                            </div>
+                            <div style="float: right;">
+                                <button id="btnEdit" class="btn btn-info">Edit</button>
+                                <button id="btnEditCancel" class="btn btn-alert" style="display: none;">Done</button>
+                            </div>
+                        </th:block>
+
+                        <h2 style="float: left;">Excess Liability Insurance Application Form</h2>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Single pro tab review Start-->
+    <form  method="post" id="newExcessForm" name="newExcessForm">
+
+        <input type="hidden" name="UserName" th:value="${userInfo.getUsername()}"/>
+
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-payment-inner-st">
+                            <ul id="myTabedu1" class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+                                <li id="yourInfoTab" class="excessTab active"><a href="#general-info">Applicant Firm Info</a></li>
+                                <li id="coverageRequestedTab" class="excessTab"><a href="#coverage-request-tab">Coverage Request</a></li>
+                                <li id="otherInsuranceTab" class="excessTab"><a href="#other-insurance">Other Insurance</a></li>
+                                <li id="paymentTab" class="excessTab"><a href="#payment-options">Premium Payment Options</a></li>
+                                <li id="authTab" class="excessTab"><a href="#authorization">Authorization, Warranty & Signature</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit">
+                                <div class="row review-print" style="display:none;">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <h2 style="float: left;">Excess Liability Insurance Application Form</h2>
+                                        <div style="float: right; cursor: pointer; width: 25px;" id="printIcon"
+                                             onclick="printForm();">
+                                            <img src="/img/printIcon.png" alt="Print"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="formReview" style="display: none;">
+                                    <div class="questionBreak"></div>
+                                    <label>Instructions for reviewing your completed Application</label>
+                                    <ol>
+                                        <li>Review all fields in your completed Application below.</li>
+                                        <li>To make changes, click on the 'Revise Form' button at the end of the
+                                            Application.
+                                        </li>
+                                        <li>If no changes are needed, print a copy of the Application for your records,
+                                            using the print function in your browser.
+                                        </li>
+                                        <li>E-file your Application by clicking on the 'Submit' or 'Provide CC Payment
+                                            Info' button below.
+                                        </li>
+                                        <li>You will automatically be provided with a confirmation number (beginning
+                                            with "XS") once you have submitted your form, to verify that you have
+                                            successfully completed the e-filing process. Record your confirmation number
+                                            with your printed application.
+                                        </li>
+                                    </ol>
+
+                                </div>
+                                <div class="questionBreak"></div>
+
+
+                                <!-- TAB 1-->
+                                <div class="product-tab-list general-info tab-pane fade in active" id="general-info">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad addcoursepro">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                        <!-- Question 1 -->
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question01.getId()}, questionText=${question01.getText()}, helpText=${question01.getHelp()}, questionNumber=${question01.getNumber()}, instructions=${question01.getInstructions()}"></th:block>
+
+                                                        <div class="form-group">
+                                                            <label>Filer name</label>
+                                                            <input type="text" class="form-control" maxlength="60"
+                                                                   style="width:500px" id="filer-name"
+                                                                   placeholder="Filer name"
+                                                                   name="fileName"/>
+                                                            <label style="margin-top:25px;">Filer LSO #</label>
+                                                            <input type="text" class="form-control" maxlength="10"
+                                                                   style="width:500px" id="lso-number"
+                                                                   placeholder="LSO #"
+                                                                   name="filerLSO" />
+
+
+                                                            <div class="questionBreak"></div>
+                                                            <div>
+                                                                <label>Name and address of applicant firm</label>
+                                                            </div>
+                                                            <div style="float:left;width:100%;margin-top:7px;">
+                                                                <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" id="applicant-info-popup">
+                                                                    <p class="message-alert-none" style="margin-left:0px;">If any of this information needs to be amended please email service@lawpro.ca or call 1-800-410-1013.</p>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div class="excess-firm-details-lawyer" style="display:none;">
+                                                                <div id="excess-firm-date"></div>
+                                                                <div id="excess-firm-details-number"></div>
+                                                                <div id="excess-firm-details-name"></div>
+                                                                <div id="excess-firm-details-address1"></div>
+                                                                <div id="excess-firm-details-address2"></div>
+                                                                <div id="excess-firm-details-address3"></div>
+                                                                <div id="excess-firm-details-city"></div>
+                                                                <div id="excess-firm-details-phone"></div>
+                                                                <div id="excess-firm-details-fax"></div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Name of Primary Contact</label>
+                                                            </div>
+
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="Primary contact"
+                                                                   id="primary-contact"
+                                                                   style="width:500px;"
+                                                                   name="filerPrimaryContact"
+                                                                   maxlength="60"/>
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+                                                        <hr>
+
+                                                        <!-------------- Question 2 ----------------------------------->
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question02.getId()}, questionText=${question02.getText()}, helpText=${question02.getHelp()}, questionNumber=${question02.getNumber()}, instructions=${question02.getInstructions()}"></th:block>
+
+                                                        <div class="form-group">
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle outside-ontario-toggles"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio"
+                                                                           name="applicantBranchOutsideOntario"
+                                                                           id="branch-outside-ontario-yes"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio"
+                                                                           name="applicantBranchOutsideOntario"
+                                                                           id="branch-outside-ontario-no"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+                                                            <input type="text" style="display:none" id="applicant-branch-outside-ontario-val" />
+
+
+                                                            <div class="form-group outside-ontario-info"
+                                                                 style="display:none;height:100px;">
+                                                                <div>
+                                                                    <label>Please provide the city and
+                                                                        province:</label>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+                                                                            <label>City</label>
+                                                                            <input type="text" class="form-control"
+                                                                                   maxlength="40" style="width:500px;"
+                                                                                   id="outside-ontario-city"
+                                                                                   placeholder="City"
+                                                                                   name="applicantBranchOutsideOnCity"/>
+                                                                        </div>
+
+                                                                        <div class="col-md-6">
+                                                                            <label>Province/Territory</label>
+                                                                            <select id="outside-ontario-prov"
+                                                                                    class="form-control"
+                                                                                    style="width:500px;"
+                                                                                    name="applicantBranchOutsideOnProv">
+                                                                                <option th:if="${province.getValue() != 'ON' && province.getValue() != 'Other'}"
+                                                                                        th:each="province : ${provinces}"
+                                                                                        th:value="${province.getValue()}"
+                                                                                        th:text="${province.getName()}"/>
+                                                                            </select>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="questionBreak"></div>
+
+                                                        <!-- Question 21 (2.b) -->
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question21.getId()}, questionText=${question21.getText()}, helpText=${question21.getHelp()}, questionNumber=${question21.getNumber()}, instructions=${question21.getInstructions()}"></th:block>
+                                                        <div class="form-group">
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio"
+                                                                           name="applicantBranchOutsideCanada"
+                                                                           id="branch-outside-canada-yes"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio"
+                                                                           name="applicantBranchOutsideCanada"
+                                                                           id="branch-outside-canada-no"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+
+                                                            <div class="form-group outside-canada-info"
+                                                                 style="display:none;height:100px">
+                                                                <div>
+                                                                    <label>Please provide name of the
+                                                                        country:</label>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Country</label>
+                                                                    <input type="text" class="form-control"
+                                                                           maxlength="40" style="width:500px"
+                                                                           id="outside-canada-country"
+                                                                           placeholder="Country"
+                                                                           name="applicantBranchOutsideCanCountry"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="questionBreak"></div>
+                                                        <hr/>
+
+                                                        <!-- Question 3 -->
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question3.getId()}, questionText=${question3.getText()}, helpText=${question3.getHelp()}, questionNumber=${question3.getNumber()}, instructions=${question3.getInstructions()}"></th:block>
+
+
+                                                        <div class="clearfix"></div>
+
+                                                        <div class="form-group">
+                                                            <select class="nop" id="nature-of-law-practice" multiple
+                                                                    style="width: 500px;"
+                                                                    name="natureOfLawPractice">
+                                                                <th:block th:each="item : ${naturesOfLaw}">
+                                                                    <option th:value="${item.getValue()}"
+                                                                            th:text="${item.getName()}"/>
+                                                                </th:block>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+                                                        <hr/>
+
+                                                        <!-- Question 4 -->
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question04.getId()}, questionText=${question04.getText()}, helpText=${question04.getHelp()}, questionNumber=${question04.getNumber()}, instruction=${question04.getInstructions()}"></th:block>
+
+                                                        <div class="form-group">
+                                                            <button id="attach-your-letterhead-btn" type="button"
+                                                                    class="btn btn-primary">Attach Letterhead(s)
+                                                            </button>
+                                                            <ul class="applicant-letterheads" style="list-style-type: circle;margin-top:15px;list-style-position: inside;">
+                                                                <li id="applicant-letterheads-list-one" style="display: none"></li>
+                                                                <li id="applicant-letterheads-list-two" style="display: none"></li>
+                                                                <li id="applicant-letterheads-list-three" style="display: none"></li>
+                                                                <li id="applicant-letterheads-list-four" style="display: none"></li>
+                                                                <li id="applicant-letterheads-list-five" style="display: none"></li>
+                                                            </ul>
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+                                                        <hr>
+
+                                                        <!-- Question 5 -->
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question5.getId()}, questionText=${question5.getText()}, helpText=${question5.getHelp()}, questionNumber=${question5.getNumber()}, instructions=${question5.getInstructions()}"></th:block>
+
+                                                        <div class="form-group">
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-office-space-yes"
+                                                                           name="applicantShareOfficeSpace"
+                                                                           data-value="Yes" value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-office-space-no"
+                                                                           name="applicantShareOfficeSpace"
+                                                                           data-value="No" value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group share-office-space-options"
+                                                             style="display:none;">
+                                                            <label for="refer-other-name">Name of the other lawyer;
+                                                                Name of the other law practice or business:</label>
+                                                            <input type="text" class="form-control"
+                                                                   id="refer-other-name"
+                                                                   name="applicantShareOfficeSpaceName"
+                                                                   maxlength="40" style="width: 500px;"
+                                                                   placeholder="Name"/>
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Do you share:</label>
+                                                            </div>
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Office Space</label>
+                                                            </div>
+
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-office-yes"
+                                                                           name="applicantShareOffice"
+                                                                           data-value="Yes" th:value=true
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-office-no"
+                                                                           name="applicantShareOffice"
+                                                                           data-value="No" th:value=false
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Reception area/receptionist</label>
+                                                            </div>
+
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-reception-yes"
+                                                                           name="applicantShareReception"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-reception-no"
+                                                                           name="applicantShareReception"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Telephone Number</label>
+                                                            </div>
+
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-telephone-yes"
+                                                                           name="applicantShareTelephone"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-telephone-no"
+                                                                           name="applicantShareTelephone"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group share-telephone-info"
+                                                                 style="display:none;">
+                                                                <label>If the applicant firm's telephone greeting
+                                                                    mentions the name of another law firm or lawyer,
+                                                                    please provide the name and working
+                                                                    relationship.</label>
+                                                                <textarea style="height:134px;width:100%" rows="4"
+                                                                          cols="50"
+                                                                          id="telephone-refer-info"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Fax Number</label>
+                                                            </div>
+
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-fax-yes"
+                                                                           name="applicantShareFax"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-fax-no"
+                                                                           name="applicantShareFax"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group share-fax-info"
+                                                                 style="display:none;">
+                                                                <label>If the fax header includes another law firm
+                                                                    name, please provide the name and working
+                                                                    relationship.</label>
+                                                                <textarea style="height:134px;width:100%" rows="4"
+                                                                          cols="50"
+                                                                          id="fax-refer-info"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Email Address</label>
+                                                            </div>
+
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-email-yes"
+                                                                           name="applicantShareEmail"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-email-no"
+                                                                           name="applicantShareEmail"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Website</label>
+                                                            </div>
+
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-website-yes"
+                                                                           name="applicantShareWebsite"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-website-no"
+                                                                           name="applicantShareWebsite"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group share-website-info"
+                                                                 style="display:none;">
+                                                                <label>What is the working relationship with the
+                                                                    other lawyers listed on website?</label>
+                                                                <textarea style="height:134px;width:100%" rows="4"
+                                                                          cols="50"
+                                                                          id="website-refer-info"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div>
+                                                                <label>Letterhead</label>
+                                                            </div>
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-letterhead-yes"
+                                                                           name="applicantShareLetterhead"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-letterhead-no"
+                                                                           name="applicantShareLetterhead"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="form-group share-letterhead-info"
+                                                                 style="display:none">
+                                                                <label>If any lawyer of the applicant firm appears on another firm's letterhead, please provide
+                                                                    the name and working relationship with that other firm.</label>
+                                                                <textarea style="height:134px;width:100%;" rows="4"
+                                                                          cols="50"
+                                                                          id="letterhead-refer-info"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <div>
+                                                                <label>Signage</label>
+                                                            </div>
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-signage-yes"
+                                                                           name="applicantShareSignage"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="share-signage-no"
+                                                                           name="applicantShareSignage"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+
+
+                                                            <div class="form-group share-signage-info"
+                                                                 style="display:none">
+                                                                <label>If another law firm or lawyer’s name appears
+                                                                    on the applicant firm's signage, please provide
+                                                                    names and working relationship.</label>
+                                                                <textarea style="height:134px;width:100%;" rows="4"
+                                                                          cols="50"
+                                                                          id="signage-refer-info"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <label>Promotional Material</label>
+                                                            <div id="promo-refer-others">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" id="share-promo-yes"
+                                                                               name="applicantSharePromo"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" id="share-promo-no"
+                                                                               name="applicantSharePromo"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group share-promo-info"
+                                                                 style="display:none;">
+                                                                <label>If another law firm appears on the applicant
+                                                                    firm's marketing materials, please provide the
+                                                                    name of the firm, the working relationship, and
+                                                                    describe the kinds of marketing materials.
+                                                                    Likewise, if the applicant firm's name appears
+                                                                    on another law firm's marketing
+                                                                    material.</label>
+                                                                <textarea style="height:134px;width:100%;" rows="4"
+                                                                          cols="50"
+                                                                          id="promo-refer-info"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <label>Employees</label>
+                                                            <div id="assoc-refer-others">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="prac-assoc-other-law-yes"
+                                                                               name="applicantPracAssocOtherLaw"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="prac-assoc-other-law-no"
+                                                                               name="applicantPracAssocOtherLaw"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group prac-assoc-other-law-info"
+                                                                 style="display:none;">
+                                                                <label>Please describe the nature of the shared employees' work and the number of employees.</label>
+                                                                <textarea style="height:134px;width:100%;" rows="4"
+                                                                          cols="50"
+                                                                          id="assoc-refer-info"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+                                                        <hr>
+
+                                                        <th:block th:include="fragments/question"
+                                                                  th:with="questionID=${question06.getId()}, questionText=${question06.getText()}, helpText=${question06.getHelp()}, questionNumber=${question06.getNumber()}, instructions=${question06.getInstructions()}"></th:block>
+
+                                                        <div class="form-group">
+                                                            <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                 data-toggle="buttons">
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="firm-assoc-other-yes"
+                                                                           name="firmAssocOther"
+                                                                           data-value="Yes" th:value="true"
+                                                                           autocomplete="off"> Yes
+                                                                </label>
+                                                                <label class="btn btn-secondary">
+                                                                    <input type="radio" id="firm-assoc-other-no"
+                                                                           name="firmAssocOther"
+                                                                           data-value="No" th:value="false"
+                                                                           autocomplete="off"> No
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group firm-assoc-other-info"
+                                                             style="display:none">
+                                                            <div class="questionBreak"></div>
+                                                            <label class="table-label">Related Law
+                                                                Firms</label>
+                                                            <table class="table table-striped" style="width:auto">
+                                                                <col width="225px">
+                                                                <col width="225px">
+                                                                <col width="100px">
+                                                                <col width="225px">
+                                                                <col width="65px">
+                                                                <col width="65px">
+                                                                <tr>
+                                                                    <th class="table-header-with-btn" colspan="6">
+                                                                        <button type="button"
+                                                                                id="firm-assoc-modal-toggle"
+                                                                                class="btn btn-default"
+                                                                        style="background-color:#2e1a47;color:white;">Add Firm
+                                                                        </button>
+                                                                    </th>
+                                                                </tr>
+                                                                <tr id="firm-assoc-table-header" style="display:none;">
+                                                                    <th>Firm Name</th>
+                                                                    <th>Address</th>
+                                                                    <th># of Lawyers</th>
+                                                                    <th>Nature of Law Practice</th>
+                                                                    <th class="review-edit-remove">Edit</th>
+                                                                    <th class="review-edit-remove">Remove</th>
+                                                                </tr>
+
+
+                                                            </table>
+
+
+                                                            <div class="form-group">
+                                                                <button id="related-letterhead-btn" type="button"
+                                                                        class="btn btn-primary">Attach Additional Letterhead(s)
+                                                                </button>
+                                                                <ul class="applicant-former-firm-letterheads" style="list-style-type: circle;margin-top:15px;list-style-position: inside;">
+                                                                    <li id="applicant-former-firm-letterheads-list-one" style="display: none"></li>
+                                                                    <li id="applicant-former-firm-letterheads-list-two" style="display: none"></li>
+                                                                    <li id="applicant-former-firm-letterheads-list-three" style="display: none"></li>
+                                                                    <li id="applicant-former-firm-letterheads-list-four" style="display: none"></li>
+                                                                    <li id="applicant-former-firm-letterheads-list-five" style="display: none"></li>
+                                                                </ul>
+                                                            </div>
+
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="button" id="continue-to-two"
+                                                                    onclick="next(false); return false;"
+                                                                    class="btn btn-primary waves-effect waves-light btnSave">
+                                                                Save & Continue
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <!-- END TAB 1 -->
+
+                                <!-- TAB 2 -->
+                                <div class="product-tab-list tab-pane fade in" id="coverage-request-tab">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="pro-ad addcoursepro">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <!--  Question 07  -->
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question07.getId()}, questionText=${question07.getText()}, helpText=${question07.getHelp()}, questionNumber=${question07.getNumber()}, instructions=${question07.getInstructions()}"></th:block>
+
+                                                            <div class="form-group data-custon-pick"
+                                                                 style="width: 500px;">
+                                                                <div class="input-group date" style="width: 200px;">
+                                                                    <span class="input-group-addon"><i
+                                                                            class="fa fa-calendar" id="dateofpolicycal"></i></span>
+                                                                    <label for="DateofPolicy" style="display: none;">Date
+                                                                        of policy</label>
+                                                                    <input type="text" class="form-control"
+                                                                           style="width: 200px;" name="DateofPolicy"
+                                                                           id="DateofPolicy" placeholder="MMM DD, YYYY" data-id="dateOfPolicy">
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="effective-date-smart-container" style="display: none;">
+                                                                <div class="alert alert-success">A 60-day waiting period applies from the date the application is received by LAWPRO</div>
+                                                            </div>
+
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr/>
+
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question08.getId()}, questionText=${question08.getText()}, helpText=${question08.getHelp()}, questionNumber=${question08.getNumber()}, instructions=${question08.getInstructions()}"></th:block>
+                                                            <div class="form-group policy-coverage-options"
+                                                                 style="margin-left:30px;width:340px">
+                                                                <!-- 1M -->
+                                                                <div>
+                                                                    <label style="font-weight:normal !important;"
+                                                                           onclick="setDesiredAmount('$1,000,000')">
+                                                                        <input type="radio" name="desiredAmmount" class="checkbox i-checks"
+                                                                               id="desired-amount-1m" value="$1,000,000"
+                                                                               onclick="setDesiredAmount('$1,000,000')">
+                                                                        $1 million per CLAIM/$1 million in the aggregate
+                                                                    </label>
+                                                                </div>
+
+                                                                <!-- 2M -->
+                                                                <div>
+                                                                    <label style="font-weight:normal !important;"
+                                                                           onclick="setDesiredAmount('$2,000,000')">
+                                                                        <input type="radio" name="desiredAmmount" class="checkbox i-checks"
+                                                                               id="desired-amount-2m" value="$2,000,000"
+                                                                               onclick="setDesiredAmount('$2,000,000')">
+                                                                        $2 million per CLAIM/$2 million in the aggregate
+                                                                    </label>
+                                                                </div>
+
+                                                                <!-- 3M -->
+                                                                <div>
+                                                                    <label style="font-weight:normal !important;"
+                                                                           onclick="setDesiredAmount('$3,000,000')">
+                                                                        <input type="radio" name="desiredAmmount" class="checkbox i-checks"
+                                                                               id="desired-amount-3m" value="$3,000,000"
+                                                                               onclick="setDesiredAmount('$3,000,000')">
+                                                                        $3 million per CLAIM/$3 million in the aggregate
+                                                                    </label>
+                                                                </div>
+
+                                                                <!-- 4M -->
+                                                                <div>
+                                                                    <label style="font-weight:normal !important;"
+                                                                           onclick="setDesiredAmount('$4,000,000')">
+                                                                        <input type="radio" name="desiredAmmount" class="checkbox i-checks"
+                                                                               id="desired-amount-4m" value="$4,000,000"
+                                                                               onclick="setDesiredAmount('$4,000,000')">
+                                                                        $4 million per CLAIM/$4 million in the aggregate
+                                                                    </label>
+                                                                </div>
+
+                                                                <!-- 9M -->
+                                                                <div>
+                                                                    <label style="font-weight:normal !important;"
+                                                                           onclick="setDesiredAmount('$9,000,000')">
+                                                                        <input type="radio" name="desiredAmmount" class="checkbox i-checks"
+                                                                               id="desired-amount-9m" value="$9,000,000"
+                                                                               onclick="setDesiredAmount('$9,000,000')">
+                                                                        $9 million per CLAIM/$9 million in the aggregate
+                                                                    </label>
+                                                                </div>
+
+                                                                <input type="text" id="desired-amount-val" hidden/>
+
+                                                            </div>
+                                                            <div style="margin-top:25px">
+                                                                <label><b>Note</b></label>
+                                                            </div>
+
+                                                            <div>
+                                                                <p>
+                                                                    These limit amounts are above the $1 million per
+                                                                    CLAIM/$2 million in the AGGREGATE underlying
+                                                                    amount that each LAWYER who is not exempt must
+                                                                    purchase, as required by the Law Society.
+                                                                </p>
+                                                            </div>
+                                                            <div class="questionBreak"></div>
+                                                            <hr/>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question09.getId()}, questionText=${question09.getText()}, helpText=${question09.getHelp()}, questionNumber=${question09.getNumber()}, instruction=${question09.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                    <textarea style="height:134px;width:100%" rows="7"
+                                                                              cols="50"
+                                                                              id="coverage-reason-for-applying"></textarea>
+                                                            </div>
+
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr/>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question10.getId()}, questionText=${question10.getText()}, helpText=${question10.getHelp()}, questionNumber=${question10.getNumber()}, instructions=${question10.getInstructions()}"></th:block>
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="coverage-former-firm-yes"
+                                                                               name="coverageFormerFirm"
+                                                                               data-value="Yes" th:value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="coverage-former-firm-no"
+                                                                               name="coverageFormerFirm"
+                                                                               data-value="No" th:value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group coverage-former-firm-info"
+                                                                 style="display:none;">
+                                                                <div class="questionBreak"></div>
+                                                                <label class="table-label">Former Firms</label>
+                                                                <table class="table table-striped"
+                                                                       style="width:auto;">
+                                                                    <col width="170px">
+                                                                    <col width="200px">
+                                                                    <col width="125px">
+                                                                    <col width="200px">
+                                                                    <col width="100px">
+                                                                    <col width="150px">
+                                                                    <col width="150px">
+                                                                    <col width="65px">
+                                                                    <col width="65px">
+                                                                    <tr>
+                                                                        <th class="table-header-with-btn" colspan="9">
+                                                                            <button type="button"
+                                                                                    id="coverage-former-firm-modal-toggle"
+                                                                                    class="btn btn-default"
+                                                                                    style="background-color:#2e1a47;color:white;">Add Firm
+                                                                            </button>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr id="coverage-former-firm-table-header" style="display:none;">
+                                                                        <th>Firm Account Number</th>
+                                                                        <th>Firm Name</th>
+                                                                        <th>City</th>
+                                                                        <th>Province</th>
+                                                                        <th>Dissolved</th>
+                                                                        <th>Years In Operation</th>
+                                                                        <th>Avg. # of Lawyers</th>
+                                                                        <th class="review-edit-remove">Edit</th>
+                                                                        <th class="review-edit-remove">Remove</th>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question11.getId()}, questionText=${question11.getText()}, helpText=${question11.getHelp()}, questionNumber=${question11.getNumber()}, instruction=${question11.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               name="coverageRequestManCompany"
+                                                                               id="coverage-man-yes" autocomplete="off"
+                                                                               data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               name="coverageRequestManCompany"
+                                                                               id="coverage-man-no"
+                                                                               autocomplete="off" data-value="No"
+                                                                               value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group coverage-man-info"
+                                                                 style="display:none;">
+                                                                <div class="questionBreak"></div>
+                                                                <label class="table-label">Management Companies</label>
+                                                                <table class="table table-striped" style="width:auto">
+                                                                    <col width="225px">
+                                                                    <col width="150px">
+                                                                    <col width="200px">
+                                                                    <col width="65px">
+                                                                    <col width="65px">
+                                                                    <tr>
+                                                                        <th class="table-header-with-btn" colspan="5">
+                                                                            <button type="button"
+                                                                                    id="coverage-man-firm-modal-toggle"
+                                                                                    class="btn btn-default"
+                                                                            style="background-color:#2e1a47;color:white;">Add
+                                                                                Company
+                                                                            </button>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr id="coverage-man-firm-table-headers" style="display:none;">
+                                                                        <th>Company Name</th>
+                                                                        <th>Years In Operation</th>
+                                                                        <th>Services</th>
+                                                                        <th class="review-edit-remove">Edit</th>
+                                                                        <th class="review-edit-remove">Remove</th>
+                                                                    </tr>
+                                                                </table>
+                                                                <div class="form-group">
+                                                                    <button id="coverage-man-letterhead-btn" type="button"
+                                                                            class="btn btn-primary">Attach Additional Letterhead(s)
+                                                                    </button>
+                                                                </div>
+
+                                                                <div class="form-group" style="width:141px;margin-left:16px;">
+                                                                    <ul class="man-company-letterheads" style="list-style-type: circle;margin-top:15px;list-style-position: outside;">
+                                                                        <li id="man-company-letterheads-list-one" style="display: none"></li>
+                                                                        <li id="man-company-letterheads-list-two" style="display: none"></li>
+                                                                        <li id="man-company-letterheads-list-three" style="display: none"></li>
+                                                                        <li id="man-company-letterheads-list-four" style="display: none"></li>
+                                                                        <li id="man-company-letterheads-list-five" style="display: none"></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question12.getId()}, questionText=${question12.getText()}, helpText=${question12.getHelp()}, questionNumber=${question12.getNumber()}, instructions=${question12.getInstructions()}"></th:block>
+                                                            <div class="form-group" style="width:100px;">
+                                                                <input class="touchspin4 form-control NumbersOnly"
+                                                                       style="width: 50px; display: block;" type="text" value=""
+                                                                       id="coverage-assoc-num-lawyers" data-id="">
+                                                            </div>
+
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr>
+
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question13.getId()}, questionText=${question13.getText()}, helpText=${question13.getHelp()}, questionNumber=${question13.getNumber()}, instructions=${question13.getInstructions()}"></th:block>
+
+                                                            <div class="form-group" id="letterhead-refer-options">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               name="coverageInsureCounsel"
+                                                                               id="coverage-insure-counsel-yes"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               name="coverageInsureCounsel"
+                                                                               id="coverage-insure-counsel-no"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group coverage-counsel-info"
+                                                                 style="display:none;">
+                                                                <div class="questionBreak"></div>
+                                                                <label class="table-label">Lawyers</label>
+                                                                <table class="table table-striped" style="width:auto;">
+                                                                    <col width="250px">
+                                                                    <col width="250px">
+                                                                    <col width="100px">
+                                                                    <tr>
+                                                                        <th class="table-header-with-btn" colspan="4">
+                                                                            <button type="button"
+                                                                                    class="btn btn-default"
+                                                                                    id="coverage-insure-counsel-modal-toggle"
+                                                                                    style="background-color:#2e1a47;color:white;">Add Lawyer
+                                                                            </button>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr id="coverage-insure-counsel-table-header" style="display:none;">
+                                                                        <th>
+                                                                            LSO #
+                                                                        </th>
+                                                                        <th>
+                                                                            Lawyer Name
+                                                                        </th>
+                                                                        <th class="review-edit-remove">
+                                                                            Edit
+                                                                        </th>
+                                                                        <th class="review-edit-remove">
+                                                                            Remove
+                                                                        </th>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question14.getId()}, questionText=${question14.getText()}, helpText=${question14.getHelp()}, questionNumber=${question14.getNumber()}, instructions=${question14.getInstructions()}"></th:block>
+
+                                                            <div class="form-group" id="coverage-buyup-options">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" id="coverage-buyup-yes"
+                                                                               name="coverageBuyUp"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" id="coverage-buyup-no"
+                                                                               name="coverageBuyUp"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group coverage-buyup-info"
+                                                                 style="display:none;">
+                                                                <div class="questionBreak"></div>
+                                                                <div>
+                                                                    By checking 'no' if members of the applicant firm do
+                                                                    not currently have $1m/in the aggregate innocent
+                                                                    party sublimit buy-up and the
+                                                                    applicant elects not to increase Innocent Party
+                                                                    sublimits, there could be a substantial gap in
+                                                                    coverage between the lawyer's primary insurance
+                                                                    coverage and firm's Excess coverage, for such claims
+                                                                    arising out of dishonest, fraudulent, criminal or
+                                                                    malicious acts or omissions.
+                                                                </div>
+                                                                <div class="buy-up-dec-container">
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox i-checks" id="coverage-buy-up-sig"
+                                                                               for="coverage-buy-up-dec">
+                                                                            <input type="checkbox" name="Declaration"
+                                                                                   value="yes" id="coverage-buy-up-dec"/> Please
+                                                                            check this box to decline Innocent Party sublimit coverage Buy-up.
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="payment-adress">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary waves-effect waves-light btnSave"
+                                                                        onclick="next(false); return false;">Save &
+                                                                    Continue
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- END TAB 2 -->
+
+                                <!-- TAB 3 -->
+                                <div class="product-tab-list tab-pane fade in " id="other-insurance">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="pro-ad addcoursepro">
+                                                    <div class="row">
+                                                        <!-- TAB 3 LEFT SIDE-->
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question15.getId()}, questionText=${question15.getText()}, questionHelp=${question15.getHelp()}, questionNumber=${question15.getNumber()}, instructions=${question15.getInstructions()}"/>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="other-purchased-coverage-yes"
+                                                                               name="otherPurchasedCoverage"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="other-purchased-coverage-no"
+                                                                               name="otherPurchasedCoverage"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <div class="form-group other-purchased-coverage-info"
+                                                                 style="display:none;">
+                                                                <label class="table-label">Please select 'Add Insurer' below.</label>
+
+                                                                <table class="table table-striped" style="width:auto">
+                                                                    <col width="300px">
+                                                                    <col width="100px">
+                                                                    <col width="100px">
+                                                                    <col width="120px">
+                                                                    <col width="125px">
+                                                                    <col width="65px">
+                                                                    <col width="20px">
+                                                                    <tr>
+                                                                        <th class="table-header-with-btn" colspan="8">
+                                                                            <button type="button"
+                                                                                    class="btn btn-default"
+                                                                                    id="other-purchased-coverage-toggle"
+                                                                                    style="background-color:#2e1a47;color:white;">
+                                                                                Add Insurer
+                                                                            </button>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr id="other-purchased-coverage-table-header" style="display:none;">
+                                                                        <th>Company Name</th>
+                                                                        <th>Policy Limit (CLAIM)</th>
+                                                                        <th>Policy Limit (AGGR)</th>
+                                                                        <th>Policy Period</th>
+                                                                        <th>Law Firm Name</th>
+                                                                        <th class="review-edit-remove">Edit</th>
+                                                                        <th class="review-edit-remove">Remove</th>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+                                                            <hr/>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question16.getId()}, questionText=${question16.getText()}, questionHelp=${question16.getHelp()}, questionNumber=${question16.getNumber()}, instructions=${question16.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="other-purchase-extra-coverage-yes"
+                                                                               name="otherPurchaseExtraCoverage"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="other-purchase-extra-coverage-no"
+                                                                               name="otherPurchaseExtraCoverage"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group other-purchase-extra-coverage-info"
+                                                                 style="display:none;">
+                                                                <label>Please provide name of other insurer</label>
+                                                                <input type="text" class="form-control"
+                                                                       style="width:500px"
+                                                                       id="other-purchase-extra-coverage-details"
+                                                                       placeholder="Details"/>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question17.getId()}, questionText=${question17.getText()}, questionHelp=${question17.getHelp()}, questionNumber=${question17.getNumber()}, instructions=${question17.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle"
+                                                                     data-toggle="buttons">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="other-denied-yes"
+                                                                               name="otherDenied"
+                                                                               data-value="Yes" th:value="true"
+                                                                               autocomplete="off"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio"
+                                                                               id="other-denied-no"
+                                                                               name="otherDenied"
+                                                                               data-value="No" th:value="false"
+                                                                               autocomplete="off"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group other-denied-info" style="display:none;">
+                                                                <label>Please provide details:</label>
+                                                                <input type="text" id="other-denied-details" class="form-control" style="width:500px" placeholder="Details"/>
+                                                            </div>
+
+
+
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="questionBreak"></div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div class="payment-adress">
+                                                                <button type="submit"
+                                                                        class="btn btn-primary waves-effect waves-light btnSave"
+                                                                        onclick="next(false); return false;">Save &
+                                                                    Continue
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <!-- END TAB 3 -->
+
+                                <!-- TAB 4 -->
+                                <div class="product-tab-list tab-pane fade" id="payment-options">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <!-------------- 17 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question18.getId()}, questionText=${question18.getText()}, helpText=${question18.getHelp()}, questionNumber=${question18.getNumber()}, instructions=${question18.getInstructions()}"></th:block>
+                                                            <div class="form-group">
+                                                                <p>A third party is defined as : </p>
+                                                                <ul style="list-style-type: disc;list-style-position: inside;margin-left:25px;">
+                                                                    <li>the spouse of the LAWYER or PARALEGAL PARTNER OR SHAREHOLDER or the spouse of another LAWYER or PARALEGAL PARTNER OR SHAREHOLDER in the firm;</li>
+                                                                    <li>a non-lawyer employee of the LAW FIRM other than a PARALEGAL PARTNER OR SHAREHOLDER; or</li>
+                                                                    <li>any other third party.</li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle" data-toggle="buttons" data-id="thirdPartyPayor">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="thirdPartyPayor" id="third-party-payor-yes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="thirdPartyPayor" id="third-party-payor-no" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+
+
+                                                            <div class="form-group third-party-blurb" style="display:none;">
+                                                                <p>If the LAWYER'S insurance premium will be paid by a third party, other than another LAWYER or PARALEGAL PARTNER OR SHAREHOLDER in the LAW FIRM, or the LAW FIRM itself, or a management or other company of the
+                                                                    LAW FIRM, the LAWYER agrees to obtain the consent of this third party authorizing the transaction and providing for the use and disclosure of personal information, in accordance with privacy legislation that
+                                                                    came into effect on January 1, 2004.</p>
+                                                                <p>This third party authorization will apply to future policy years, unless LAWPRO is advised in writing otherwise.</p>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+                                                            <!-------------- 18 ----------------------------------->
+                                                            <div id="paymentOptions">
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question19.getId()}, questionText=${question19.getText()}, helpText=${question19.getHelp()}, questionNumber=${question19.getNumber()}, instructions=${question19.getInstructions()}"></th:block>
+                                                                <div class="questionBreak"></div>
+
+                                                                <div id="onlinePayment">
+                                                                    <label class="headerLabel">Lump sum payment by</label>
+
+                                                                    <div class="inline-checkbox-cs">
+
+                                                                        <label class="checkbox i-checks" onclick="hidePaymentAuth('1S CASH');" for="1SCASH">
+                                                                            <input name="Instalment" type="radio" value="1S CASH" id="1SCASH" onclick="hidePaymentAuth('1S CASH');" /> cheque
+                                                                        </label>
+                                                                        <label class="checkbox i-checks" onclick="showBankingAuth('1S EFT');" for="1SEFT">
+                                                                            <input name="Instalment" type="radio" value="1S EFT" id="1SEFT" onclick="showBankingAuth('1S EFT');" /> pre-authorized bank account withdrawal
+                                                                        </label>
+                                                                        <label class="checkbox i-checks" onclick="showCreditAuth('1S CREDIT CARD');" for="1SCREDITCARD">
+                                                                            <input name="Instalment" type="radio" value="1S CREDIT CARD" id="1SCREDITCARD" onclick="showCreditAuth('1S CREDIT CARD');" /> credit card
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="headerLabel">Quarterly instalments by
+                                                                            <i class="fa fa-info-circle formHelpIcon questionHelp" aria-hidden="true"></i>
+                                                                        </label>
+                                                                        <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none;" id="popup181">
+                                                                            <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(181);">
+                                                                                <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                            </button>
+                                                                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                            <div class="questionHelpParagraph">
+                                                                                <p>Payments will be processed on January 15, April 15, July 15, and October 15 of the policy year. Payments for instalments past due will be processed on Policy Coverage Inception.</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div style="clear: both;"></div>
+
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox i-checks" onclick="showBankingAuth('4S EFT');" for="4SEFT">
+                                                                            <input name="Instalment" type="radio" value="4S EFT" id="4SEFT" onclick="showBankingAuth('4S EFT');" /> pre-authorized bank account withdrawal
+                                                                        </label>
+                                                                        <label class="checkbox i-checks" onclick="showCreditAuth('4S CREDIT CARD');" for="4SCREDITCARD">
+                                                                            <input name="Instalment" type="radio" value="4S CREDIT CARD" id="4SCREDITCARD" onclick="showCreditAuth('4S CREDIT CARD');" /> credit card
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label class="headerLabel">Monthly instalments by
+                                                                            <i class="fa fa-info-circle formHelpIcon questionHelp" aria-hidden="true"></i>
+                                                                        </label>
+                                                                        <div class="alert alert-info alert-success-style2 alert-success-stylenone questionHelpText" style="display: none;" id="popup182">
+                                                                            <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(182);">
+                                                                                <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                            </button>
+                                                                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                            <div class="quesitonHelpParagraph">
+                                                                                <p>Payments are processed on the 15th of each month</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div style="clear: both;"></div>
+
+                                                                    <div class="inline-checkbox-cs">
+
+                                                                        <label class="checkbox i-checks" onclick="showBankingAuth('12S EFT');" for="12SEFT">
+                                                                            <input name="Instalment" type="radio" value="12S EFT" id="12SEFT" onclick="showBankingAuth('12S EFT');" /> pre-authorized bank account withdrawal
+                                                                        </label>
+                                                                        <label class="checkbox i-checks"onclick="showCreditAuth('12S CREDIT CARD');" for="12SCREDITCARD">
+                                                                            <input name="Instalment" type="radio" value="12S CREDIT CARD" id="12SCREDITCARD" onclick="showCreditAuth('12S CREDIT CARD');"/> credit card
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <input type="hidden" id="Instalment_Option" />
+                                                                </div>
+
+                                                                <div id="creditAuth" style="display: none;" class="row">
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            For your enhanced credit card security, you will be asked to provide your credit card payment details later in this filing. Please read the 'Next Steps' instructions carefully at the bottom of the Application Review page to proceed with your credit card information.
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+
+                                                                <div id="paymentAuth" style="display: none;" class="row">
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            NOTE: You have certain recourse rights if any debit does not comply with
+                                                                            this agreement. For example, you have the right to receive reimbursement
+                                                                            for any debit that is not authorized or is not consistent with this PAD
+                                                                            agreement. To obtain more information on your recourse rights, contact
+                                                                            your financial institution or visit www.payments.ca
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+
+                                                                <div id="bankingAuth" style="display: none;" class="row">
+                                                                    <div class="col-xs-12 col-sm-8">
+                                                                        <div class="alert alert-success" role="alert">
+                                                                            <label class="headerLabel">
+                                                                                Pre-authorized Bank Account Withdrawal:
+                                                                                <i class="fa fa-info-circle formHelpIcon" aria-hidden="true" style="display: none;"></i>
+                                                                            </label>
+                                                                            <p>(complete only if paying by pre-authorized bank account withdrawal).</p>
+                                                                            <div class="alert alert-info alert-success-style2 alert-success-stylenone" style="display: none;" id="popup183">
+                                                                                <button type="button" class="close sucess-op" aria-label="Close" onclick="hidePopup(183);">
+                                                                                    <span class="icon-sc-cl" aria-hidden="true">×</span>
+                                                                                </button>
+                                                                                <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                                <p>(complete only if paying by pre-authorized bank account withdrawal).</p>
+                                                                            </div>
+
+                                                                            <div class="questionBreak"></div>
+
+                                                                            <p>
+                                                                                Banking Institution (please select one from the list below):
+                                                                            </p>
+
+                                                                            <label class="banking-info-review" for="BankingInstitution" style="display: none;">Bank:</label>
+                                                                            <select name="BankingInstitution" id="BankingInstitution" style="width: 600px;">
+                                                                                <th:block th:each="item : ${banks}">
+                                                                                    <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                                                                                </th:block>
+                                                                            </select>
+
+                                                                            <div class="questionBreak"></div>
+
+                                                                            <label class="banking-info-review" for="transitNumber" style="display: none;">Transit #:</label>
+                                                                            <input data-id="paymentInfo.account.transit" id="transitNumber" name="TransitNumber" type="text" class="form-control NumbersOnly" placeholder="Transit #" style="width: 100px; margin-right:10px; float: left;" maxlength="5">
+<!--                                                                            <label class="banking-info-review" for="bankingInstitution2" style="display: none;">Banking Institution:</label>-->
+                                                                            <input id="bankingInstitution2" name="BankingInstitution2" type="text" class="form-control review-hidden" placeholder="Bank #" style="width: 100px; float: left; margin-right: 10px;" readonly>
+                                                                            <label class="banking-info-review" for="accountNumber" style="display: none;">Account #:</label>
+                                                                            <input data-id="paymentInfo.account.number" id="accountNumber" name="AccountNumber" type="text" class="form-control NumbersOnly" placeholder="Account #" style="width: 200px; float: left;" maxlength="12">
+                                                                            <div class="clearfix"></div>
+                                                                            <div class="questionBreak"></div>
+                                                                            <label class="banking-info-review" for="NameOnAccount" style="display: none;">Name of account holder:</label>
+                                                                            <input id="NameOnAccount" name="NameOnAccount" type="text" class="form-control" placeholder="Name of account holder" style="width: 420px;">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="questionBreak"></div>
+                                                                </div>
+
+                                                                <div id="paymentAuthorization" style="display:none">
+                                                                    <th:block th:include="fragments/question"
+                                                                              th:with="questionID=${question021.getId()}, questionText=${question021.getText()}, questionHelp=${question021.getHelp()}, questionNumber=${question021.getNumber()}, instructions=${question021.getInstructions()}"></th:block>
+                                                                    <div class="inline-checkbox-cs">
+                                                                        <label class="checkbox i-checks" for="PPA_Check" style="width:520px">
+                                                                            <input type="checkbox" name="PPA_Check" id="PPA_Check" value="true" />Please check this box to evidence your signature for the Declaration above.
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <th:block th:include="fragments/question"
+                                                                      th:with="questionID=${question20.getId()}, questionText=${question20.getText()}, questionHelp=${question20.getHelp()}, questionNumber=${question20.getNumber()}, instructions=${question20.getInstructions()}"></th:block>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light btnSave" onclick="next(false); return false;">Save & Continue</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END OF TAB 4 -->
+
+                                <!-- TAB 5 -->
+                                <div class="product-tab-list tab-pane fade" id="authorization">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="review-content-section">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <!-------------- 21 ----------------------------------->
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question22.getId()}, questionText=${question22.getText()}, helpText=${question22.getHelp()}, questionNumber=${question22.getNumber()}, instructions=${question22.getInstructions()}"></th:block>
+
+                                                            <div class="form-group">
+                                                                <div class="btn-group btn-group-toggle yes-no-toggle" data-toggle="buttons" data-id="claims">
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="claims" id="claims-yes" autocomplete="off" data-value="Yes" value="true"> Yes
+                                                                    </label>
+                                                                    <label class="btn btn-secondary">
+                                                                        <input type="radio" name="claims" id="claims-no" autocomplete="off" data-value="No" value="false"> No
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <div class="comments-area">
+                                                                <th:block th:include="fragments/question" th:with="questionID=${question23.getId()}, questionText=${question23.getText()}, helpText=${question23.getHelp()}, questionNumber=${question23.getNumber()}, instructions=${question23.getInstructions()}"></th:block>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="comments" style="display: none;">Comments</label>
+                                                                <textarea rows="4" cols="50" name="comments" id="comments" data-id="comments"></textarea>
+                                                            </div>
+
+                                                            <div class="questionBreak"></div>
+
+                                                            <hr>
+
+                                                            <th:block th:include="fragments/question" th:with="questionID=${question24.getId()}, questionText=${question24.getText()}, helpText=${question24.getHelp()}, questionNumber=${question24.getNumber()}, instructions=${question24.getInstructions()}"></th:block>
+
+                                                            <div class="inline-checkbox-cs">
+                                                                <label class="checkbox i-checks" id="authorization-sig" style="width:650px" for="auth-sig">
+                                                                    <input type="checkbox" name="Declaration" value="yes" id="auth-sig" /> Please check this box to evidence your signature for the Warranty and signature Declaration above.
+                                                                </label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSteps1">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+                                                            <p style="color: #336699"><b>Next steps</b> (<i>Note that you must first 'Review' your application before being able to <font color="#e68d02"><b>SUBMIT</b></font> it online</i>):</p>
+                                                            <ul class="ul50">
+                                                                <li>Click "<font color="#e68d02">Review</font>" to see a summary of your entries before submitting your application; OR</li>
+                                                                <li>Click "<font color="#e68d02">Cancel</font>" to exit the application.</li>
+                                                            </ul>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSteps2" style="display: none;">
+                                                    <div class="col-lg-12">
+                                                        <div class="devit-card-custom">
+
+                                                            <p style="color: #336699"><b>Next steps</b></p>
+                                                            <ul class="ul50">
+                                                                <li>If you are ready to submit your Application, <b>print a copy of the completed Application</b> for your records. Then click on <font color=e68d02>"Submit"</font> below.</li>
+                                                                <li id="creditInfo" style="display: none;">You may provide your credit card payment details by clicking the 'Provide CC Payment Info' button below, and this application will be submitted to LAWPRO Customer Service for review and processing. If you do not wish to provide a credit card with this application, please click the 'Revise Form button and choose a different payment method.</li>
+                                                                <li>To make further changes, click on <font color="#e68d02">"Revise Form"</font> below.</li>
+                                                                <li>Click on <font color="#e68d02">"Cancel"</font>   to terminate this e-filing session and return to the File Online options screen. </li>
+                                                            </ul>
+                                                            <div class="alert alert-success alert-st-two" role="alert" id="creditAlert">
+                                                                <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                                                                <p style="margin-left: 30px;">Once you click the 'Provide CC Payment Info' button you will be re-directed to a secure third party website to enter your credit card information. After you complete your credit card information, you will then be returned to our site for the confirmation page of this filing.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSubmit1">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="review(); return false;">Review</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="location.href='/forms/excessform'; return false;">Cancel</button>
+                                                            <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row" id="nextSubmit2" style="display: none;">
+                                                    <div class="col-lg-12">
+                                                        <div class="payment-adress">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="reviseForm(); return false;">Revise Form</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="submitButton" onclick="submitForm(); return false;">Submit</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="creditButton" onclick="submitCC();" style="display: none;">Provide CC Payment Info</button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" onclick="location.href='/forms/excessform'; return false;">Cancel</button>
+                                                            <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+                                                        </div>
+
+                                                        <div class="questionBreak"></div>
+
+                                                    </div>
+                                                </div>
+
+                                                <input type="hidden" id="firmIdHidden" name="firmID" th:value="${userInfo.getFirm().getFirm().getFirmNumber()}" />
+
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        For more information about this form, please contact LAWPRO Customer Service at: 1-800-410-1013, or (416) 598-5899 in Toronto or via email at <a href="mailto:service@lawpro.ca">service@lawpro.ca</a>.
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END OF TAB 5 -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15" id="confirmation" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st" style="font-size: 16px;">
+                        <div class="clearfix"></div>
+
+                        <h2 style="color: #483b71;">Thank you!</h2>
+
+                        <div class="questionBreak"></div>
+
+                        <p>Thank you for submitting your excess liability insurance application online with LAWPRO.</p>
+
+                        <div th:if="${userInfo.isLawyer()}" class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${userInfo.getFirstName()} + ' ' + ${userInfo.getLastName()}"></span> <span style="font-weight: normal;"></span></div>
+                        <div th:if="${userInfo.isFirm()}" class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${userInfo.getFirm().getFirm().getName()}"></span> <span style="font-weight: normal;"></span></div>
+                        <div th:if="${userInfo.isLawyer()}"  class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${userInfo.getLSONumberPartial()}"></span></div>
+                        <div th:if="${userInfo.isFirm()}"  class="submittedValue confirmationLine">Firm NUMBER: <span style="font-weight: normal;" th:text="${userInfo.getFirm().getFirm().getFirmNumber()}"></span></div>
+
+                        <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Excess Liability Insurance Application</span></div>
+                        <div class="submittedValue confirmationLine">DATE: <span style="font-weight: normal;" id="submittedDate"></span></div>
+                        <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumber" th:text="${confirmationNumber}"></span></div>
+
+                        <div class="questionBreak"></div>
+
+                        <div class="alert alert-success alert-st-two" role="alert" id="efilingInfo" style="margin-top: 20px;">
+                            <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                            <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="http://lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://practicepro.ca" target="_blank">practicepro.ca</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTION 6 MODAL - 08/26/2019 -->
+    <div id="firm-assoc-add-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Related Firm</h4>
+                </div>
+                <div class="modal-body" style="height:auto;">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label>Firm Name</label>
+                                <input type="text" id="firm-assoc-name" class="form-control" style="width:500px;"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" id="firm-assoc-address" class="form-control" style="width:500px;"/>
+                            </div>
+                            <label>Number of lawyers in the firm</label>
+
+                            <div class="form-group" style="width:100px;">
+                                <input class="touchspin1 form-control NumbersOnly" data-max="10000"
+                                       style="width: 50px; display: block;" type="text" value=""
+                                       id="firm-assoc-num-lawyers" data-id="related-firm-num-lawyers">
+                            </div>
+                            <div class="form-group">
+                                <label>Nature of law practice</label>
+                                <select class="form-control" id="related-firm-nop"
+                                        style="width: 425px;">
+                                    <th:block th:each="item : ${naturesOfLaw}">
+                                        <option th:value="${item.getValue()}"
+                                                th:text="${item.getName()}"/>
+                                    </th:block>
+                                </select>
+                            </div>
+
+                            <input id="firm-assoc-row-id-ref" style="display:none;" type="text"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="display:none;background-color:#2e1a47;color:white;" id="firm-assoc-save-edit-btn"
+                            class="btn btn-default">Apply
+                    </button>
+                    <button type="button" style="display:none;background-color:#2e1a47;color:white;" id="firm-assoc-add-btn"
+                            class="btn btn-default">Add to list
+                    </button>
+                    <button type="button" style="background-color:#2e1a47;color:white;" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- QUESTION 8 MODAL - 08/26/2019 -->
+    <div id="coverage-add-former-firm-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Former Firm</h4>
+                </div>
+                <div class="modal-body" style="height:auto;">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label>Firm Account Number</label>
+                                <input type="text" maxlength="20" class="form-control" id="coverage-former-firm-number"
+                                       placeholder="Firm Account Number"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" maxlength="60" class="form-control" id="coverage-former-firm-name"
+                                       placeholder="Firm Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" maxlength="60" class="form-control" id="coverage-former-firm-city"
+                                       placeholder="City"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Province</label>
+                                <select id="coverage-former-firm-province" class="form-control"
+                                        style="width:100%">
+                                    <option th:if="${province.getValue() != 'Other'}"
+                                            th:each="province : ${provinces}"
+                                            th:value="${province.getValue()}"
+                                            th:text="${province.getName()}"/>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div>
+                                    <label>Is this firm dissolved?</label>
+                                </div>
+                                <div class="btn-group btn-group-toggle yes-no-toggle" data-toggle="buttons">
+                                    <label class="btn btn-secondary coverage-former-firm-dissolved-toggle">
+                                        <input type="radio" id="coverage-former-firm-dissolved-yes" data-value="Yes"
+                                               th:value="true" autocomplete="off"> Yes
+                                    </label>
+                                    <label class="btn btn-secondary coverage-former-firm-dissolved-toggle">
+                                        <input type="radio" id="coverage-former-firm-dissolved-no" data-value="No"
+                                               th:value="false" autocomplete="off"> No
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group coverage-former-firm-dissolved-info" style="display:none;">
+                                <div class="form-group" style="height:65px;">
+                                    <label>Years in operation From/To</label>
+                                    <div class="form-group" style="margin-bottom:15px;">
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="coverage-former-firm-from"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                        <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="coverage-former-firm-to"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group" style="width:250px;margin-bottom:0px;">
+                                    <div style="width:500px;">
+                                        <label>Average number of lawyers in practice</label>
+                                    </div>
+                                    <select class="form-control" id="coverage-former-firm-num-lawyers" style="width:100px;">
+                                        <option value="1-5">1-5</option>
+                                        <option value="6-15">6-15</option>
+                                        <option value="16-25">16-25</option>
+                                        <option value="26-35">26-35</option>
+                                        <option value="36-50">36-50</option>
+                                    </select>
+                                </div>
+
+                                <input id="coverage-former-firm-row-id-ref" style="display:none;" type="text"/>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-default"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="coverage-former-firm-save-btn">Apply
+                    </button>
+                    <button type="button" id="coverage-former-firm-add-btn"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            class="btn btn-default">Add to list
+                    </button>
+                    <button type="button" style="background-color:#2e1a47;color:white;" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Note Modal -->
+    <div id="application-notes" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Notes to the Excess Liability insurance application form</h4>
+                </div>
+                <div class="modal-body" style="overflow-y:scroll;height:220px;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            You may print this instruction sheet and use it as a guide for completing the online
+                            application.
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <ol>
+                                <li>For more information about the Excess Liability insurance coverage and options to
+                                    increase your liability insurance protection, we recommend you download the
+                                    Insurance Matters – Excess Liability Insurance booklet.
+                                </li>
+                                <li>Complete only one Application on behalf of the whole of the firm.</li>
+                                <li>Any Excess Liability insurance will be subject to a 60-day wait period following the
+                                    date of receipt of the completed application form. Please note, if you are
+                                    requesting coverage effective January 1, 2019, the application form must be received
+                                    on or before December 1, 2018.
+                                </li>
+                                <li>
+                                    Payment Options: You can provide your Premium Payment information electronically on
+                                    this form, or by providing the relevant data by mail.
+                                    <ul style="list-style-type:disc;margin-left:40px;">
+                                        <li>To authorize payment using a credit card: Complete question #14 and the
+                                            authorization in question 16
+                                        </li>
+                                        <li>To authorize payment using pre-authorized payments: Complete question #15
+                                            and the authorization in question 16
+                                        </li>
+                                        <li>To mail in the required authorization forms, proceed to Premium Payment
+                                            Authorization Form
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>Complete the Warranty & Signature section with your name and Law Society of Ontario
+                                    number, and the checkbox.
+                                </li>
+                                <li>Click on "Review" to see a preliminary copy of your completed application; if any of
+                                    the questions have not been answered (or have been answered incorrectly), a message
+                                    will appear with the appropriate direction.
+                                </li>
+                                <li>When you have completed your review and are ready to submit your filing, print a
+                                    copy of your completed application for your records. Note that your application will
+                                    not be considered received by LAWPRO until you press the "Submit" button
+                                    and receive your confirmation number (beginning with "XS"). Record this confirmation
+                                    number along with your printed application.
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <b>Please note:</b> Your Excess premium invoice and Declarations page will be issued and
+                            available after your application is processed and the policy is instated.
+                            Please do not provide payment until after receiving your Excess premium invoice.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="coverage-add-man-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Management Company</h4>
+                </div>
+                <div class="modal-body" style="height:auto;">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" class="form-control" style="width:500px;" id="coverage-man-name"
+                                       placeholder="Name"/>
+                            </div>
+                            <div class="form-group" style="height:65px;">
+                                <label>Years in operation From/To</label>
+                                <div class="form-group" style="margin-bottom:15px;">
+                                    <input type="text" maxlength="4" class="form-control NumbersOnly" id="coverage-man-from"
+                                           style="width:200px;float:left;" placeholder="YYYY"/>
+                                    <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                    <input type="text" maxlength="4" class="form-control NumbersOnly" id="coverage-man-to"
+                                           style="width:200px;float:left;" placeholder="YYYY"/>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label>Services provided</label>
+                                <input type="text" class="form-control" id="coverage-man-services" style="width:500px"
+                                       placeholder="Services"/>
+                            </div>
+                            <input type="text" style="display:none;" id="coverage-man-row-id-ref"/>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="coverage-man-save-changes-btn"
+                            class="btn btn-default">Apply
+                    </button>
+                    <button type="button"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="coverage-man-add-to-list-btn"
+                            class="btn btn-default">Add to list
+                    </button>
+                    <button type="button" style="background-color:#2e1a47;color:white;" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="coverage-add-counsel-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Lawyer</h4>
+                </div>
+                <div class="modal-body" style="height:200px;">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <label>LSO #</label>
+                                <input type="text" class="form-control" id="coverage-counsel-lso" placeholder="LSO #" maxlength="10"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Name of lawyer acting 'of counsel'</label>
+                                <input type="text" class="form-control" id="coverage-counsel-name" placeholder="Name" maxlength="60"/>
+                            </div>
+                            <input type="text" style="display:none" id="coverage-counsel-row-id-ref"/>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="coverage-counsel-save-changes-btn"
+                            class="btn btn-default">Apply
+                    </button>
+                    <button type="button"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="coverage-counsel-add-to-list-btn"
+                            class="btn btn-default">Add to list
+                    </button>
+                    <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="other-purchased-coverage-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Excess Insurer</h4>
+                </div>
+                <div class="modal-body" style="height:auto;">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>Name of Insurance Company</label>
+                                    <select class="form-control" id="other-purchased-coverage-com-name"
+                                            style="width: 500px;" data-placeholder="Select Insurance Provider(s)"
+                                            data-id="nameOfInsurer">
+                                        <th:block th:each="item : ${excessLiabilities}">
+                                            <option th:if="${item.getValue() != 'NONE'}" th:value="${item.getValue()}" th:text="${item.getName()}"/>
+                                        </th:block>
+                                        <option th:value="OTHER" th:text="Other"/>
+                                    </select>
+                                    <div id="other-purchased-coverage-com-name-other" style="display:none;">
+                                        <div style="font-style: italic; margin-top: 15px; margin-bottom: 5px;">
+                                            If you have other excess insurer(s) not in the list above, please specify:
+                                        </div>
+                                        <label for="other-purchased-coverage-other" style="display: none;">Please specify
+                                            insurer</label>
+                                        <input type="text" class="form-control" name="OtherExcessInsurer"
+                                               id="other-purchased-coverage-other" placeholder="Please Specify Insurer(s)"
+                                               style="width: 500px;" data-id="otherExcessInsurer"/>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group" id="liabilityLimits" style="height:130px;">
+                                    <div>
+                                        <label>Policy Limits</label>
+
+                                    </div>
+
+                                    <div class="form-group millionPerClaimValue"
+                                         style="width: 50px; padding-right: 150px; float: left;">
+                                        <label for="other-purchased-coverage-claim" style="display: none;">Excess per
+                                            claim</label>
+                                        <input type="text" data-id="excess" name="Excess_per_Claim"
+                                               id="other-purchased-coverage-claim" data-max="999"
+                                               class=" NumbersOnly touchspin1 form-control" style="width:50px;">
+                                    </div>
+                                    <div style="float: left; margin-top: 20px;" class="millionPerClaimLabel"> Million
+                                        per CLAIM
+                                    </div>
+
+                                    <div class="clear"></div>
+
+                                    <div class="form-group millionPerAggValue"
+                                         style="width: 50px; padding-right: 150px; float: left;">
+                                        <label for="other-purchased-coverage-agg"
+                                               style="display: none;">Aggregate</label>
+                                        <input type="text" data-id="aggregate" name="Aggregate"
+                                               id="other-purchased-coverage-agg"
+                                               class="NumbersOnly touchspin1 form-control" data-max="999"
+                                               style="width: 50px">
+                                    </div>
+                                    <div style="float: left; margin-top: 20px;" class="millionPerClaimLabel">Million
+                                        aggregate
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="height:70px;">
+                                    <label>Policy period (from/to)</label>
+
+                                    <div class="form-group" style="margin-bottom:15px;">
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="other-purchased-coverage-from"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                        <label style="float:left;margin-left:10px;margin-right:10px;margin-top:8px;">To</label>
+                                        <input type="text" maxlength="4" class="form-control NumbersOnly"
+                                               id="other-purchased-coverage-to"
+                                               style="width:200px;float:left;" placeholder="YYYY"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Name of law firm to which the policy was issued</label>
+                                    <input type="text" style="width:500px" class="form-control"
+                                           id="other-purchased-coverage-name" maxlength="60" placeholder="Law Firm Name"/>
+                                </div>
+
+
+                            </div>
+
+
+                            <input type="text" style="display:none" id="other-purchased-coverage-row-id-ref"/>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="other-purchased-coverage-save-changes-btn"
+                            class="btn btn-default">Apply
+                    </button>
+                    <button type="button"
+                            style="display:none;background-color:#2e1a47;color:white;"
+                            id="other-purchased-coverage-add-to-list-btn"
+                            class="btn btn-default">Add to list
+                    </button>
+                    <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Firm Letterhead Modal -->
+    <div id="your-firm-letterhead" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attach File(s)</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            Use the "Browse" or "Choose File" button to select the document(s) or image(s) to upload.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row" style="padding-left:25px;padding-top:30px">
+                                <table class="table table-striped firm-letterhead-table" style="width:auto;">
+                                    <col width="150px">
+                                    <col width="320px">
+                                    <col width="75px">
+                                    <col width="75px">
+
+                                    <tr>
+                                        <td>Letterhead #1</td>
+                                        <td><input type="file" class="applicant-letterhead-with-view" id="firm-letterhead-one"></td>
+                                        <td class="applicant-letterhead-delete-td"><i onclick="removeApplicantLetterhead('one', this)" style="display:none;" class="applicant-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="applicant-letterhead-warning-td"><a class="applicant-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #2</td>
+                                        <td><input type="file" class="applicant-letterhead-with-view" id="firm-letterhead-two"></td>
+                                        <td class="applicant-letterhead-delete-td"><i onclick="removeApplicantLetterhead('two', this)" style="display:none;" class="applicant-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="applicant-letterhead-warning-td"><a class="applicant-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #3</td>
+                                        <td><input type="file" class="applicant-letterhead-with-view" id="firm-letterhead-three"></td>
+                                        <td class="applicant-letterhead-delete-td"><i onclick="removeApplicantLetterhead('three', this)" style="display:none;" class="applicant-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="applicant-letterhead-warning-td"><a class="applicant-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #4</td>
+                                        <td><input type="file" class="applicant-letterhead-with-view" id="firm-letterhead-four"></td>
+                                        <td class="applicant-letterhead-delete-td"><i onclick="removeApplicantLetterhead('four', this)" style="display:none;" class="applicant-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="applicant-letterhead-warning-td"><a class="applicant-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #5</td>
+                                        <td><input type="file" class="applicant-letterhead-with-view" id="firm-letterhead-five"></td>
+                                        <td class="applicant-letterhead-delete-td"><i onclick="removeApplicantLetterhead('five', this)" style="display:none;" class="applicant-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="applicant-letterhead-warning-td"><a class="applicant-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" data-dismiss="modal">Attach</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Related Firm Letterhead Modal -->
+    <div id="related-firm-letterhead" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attach File(s)</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            Use the "Browse" or "Choose File" button to select the document(s) or image(s) to upload.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row" style="padding-left:25px;padding-top:30px">
+                                <table class="table table-striped related-letterhead-table" style="width:auto;">
+                                    <col width="150px">
+                                    <col width="320px">
+                                    <col width="75px">
+                                    <col width="75px">
+                                    <tr>
+                                        <td>Letterhead #1</td>
+                                        <td><input type="file" class="related-letterhead-with-view" id="related-letterhead-one"></td>
+                                        <td class="related-letterhead-delete-td"><i style="display:none;" onclick="removeRelatedLetterhead('one', this)" class="related-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="related-letterhead-warning-td"><a class="related-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #2</td>
+                                        <td><input type="file" class="related-letterhead-with-view" id="related-letterhead-two"></td>
+                                        <td class="related-letterhead-delete-td"><i style="display:none;" onclick="removeRelatedLetterhead('two', this)" class="related-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="related-letterhead-warning-td"><a class="related-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #3</td>
+                                        <td><input type="file" class="related-letterhead-with-view" id="related-letterhead-three"></td>
+                                        <td class="related-letterhead-delete-td"><i style="display:none;" onclick="removeRelatedLetterhead('three', this)" class="related-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="related-letterhead-warning-td"><a class="related-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #4</td>
+                                        <td><input type="file" class="related-letterhead-with-view" id="related-letterhead-four"></td>
+                                        <td class="related-letterhead-delete-td"><i style="display:none;" onclick="removeRelatedLetterhead('four', this)" class="related-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="related-letterhead-warning-td"><a class="related-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #5</td>
+                                        <td><input type="file" class="related-letterhead-with-view" id="related-letterhead-five"></td>
+                                        <td class="related-letterhead-delete-td"><i style="display:none;" onclick="removeRelatedLetterhead('five', this)" class="related-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="related-letterhead-warning-td"><a class="related-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" data-dismiss="modal">Attach</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="man-company-letterhead" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Attach File(s)</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            Use the "Browse" or "Choose File" button to select the document(s) or image(s) to upload.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row" style="padding-left:25px;padding-top:30px">
+                                <table class="table table-striped man-company-letterhead-table" style="width:auto">
+                                    <col width="150px">
+                                    <col width="320px">
+                                    <col width="75px">
+                                    <col width="75px">
+                                    <tr>
+                                        <td>Letterhead #1</td>
+                                        <td><input type="file" class="man-company-letterhead-with-view" id="man-company-letterhead-one"></td>
+                                        <td class="man-company-letterhead-delete-td"><i style="display:none;" onclick="removeManCompanyLetterhead('one', this)" class="man-company-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="man-company-letterhead-warning-td"><a class="man-company-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #2</td>
+                                        <td><input type="file" class="man-company-letterhead-with-view" id="man-company-letterhead-two"></td>
+                                        <td class="man-company-letterhead-delete-td"><i style="display:none;" onclick="removeManCompanyLetterhead('two', this)" class="man-company-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="man-company-letterhead-warning-td"><a class="man-company-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #3</td>
+                                        <td><input type="file" class="man-company-letterhead-with-view" id="man-company-letterhead-three"></td>
+                                        <td class="man-company-letterhead-delete-td"><i style="display:none;" onclick="removeManCompanyLetterhead('three', this)" class="man-company-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="man-company-letterhead-warning-td"><a class="man-company-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #4</td>
+                                        <td><input type="file" class="man-company-letterhead-with-view" id="man-company-letterhead-four"></td>
+                                        <td class="man-company-letterhead-delete-td"><i style="display:none;" onclick="removeManCompanyLetterhead('four', this)" class="man-company-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="man-company-letterhead-warning-td"><a class="man-company-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Letterhead #5</td>
+                                        <td><input type="file" class="man-company-letterhead-with-view" id="man-company-letterhead-five"></td>
+                                        <td class="man-company-letterhead-delete-td"><i style="display:none;" onclick="removeManCompanyLetterhead('five', this)" class="man-company-letterhead-delete fa fa-trash"></i></td>
+                                        <td class="man-company-letterhead-warning-td"><a class="man-company-letterhead-warning" href="#" data-toggle="tooltip" data-placement="top" title="File is too big!"><i class="fa fa-exclamation"></i></a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color:#2e1a47;color:white;" type="button" class="btn btn-default" data-dismiss="modal">Attach</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <th:block th:include="forms/components/general :: claims-modal"></th:block>
+
+</th:block>
+
+</body>
+</html>

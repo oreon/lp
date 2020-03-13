@@ -1,0 +1,61 @@
+/* The users page has a few style tags attached to its elements opposed to
+   being set in this file, those elements classes are listed below.
+        - user-active    - edit-user     -edit-user-switch
+
+   Styled elements without a class/id: The <th> element containing the table header "Admin Users"
+ */
+
+/* Edit user */
+.edit-profile:hover {
+    cursor:pointer;
+}
+
+.edit-user-modal-row {
+    height:25px;
+}
+
+.edit-user:hover{
+    cursor:pointer;
+}
+
+.edit-user-body {
+    height: 300px;
+}
+
+#edit-user-deactivate, #edit-user-activate {
+    margin-left:10px;
+}
+
+/* Add user */
+.add-user-row {
+    height:50px;
+    padding-top:7px;
+    margin-bottom:8px;
+}
+
+#add-user{
+    margin-bottom:15px;
+}
+
+.add-user-body {
+    height:300px;
+}
+
+/* Edit/Add user error message in respective modals */
+#add-user-error, #edit-user-error {
+    color:red;
+    height:25px;
+}
+
+/* Modal buttons */
+.close-button {
+    float:right;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.submit-button {
+    float:right;
+}
+
+

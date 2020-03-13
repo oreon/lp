@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <div th:fragment="next-submit-1">
+        <div class="row" id="nextSubmit1">
+            <div class="col-lg-12">
+                <div class="payment-adress">
+                    <button type="button" class="btn btn-primary waves-effect waves-light" onclick="review(); return false;">Review</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" th:onclick="cancel()">Cancel</button>
+                    <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+                </div>
+
+                <div class="questionBreak"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="next-submit-2">
+        <div class="row" id="nextSubmit2" style="display: none;">
+            <div class="col-lg-12">
+                <div class="payment-adress">
+                    <button type="button" class="btn btn-primary waves-effect waves-light" onclick="reviseForm(); return false;">Revise Form</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="creditButton" onclick="submitCC();" style="display: none;">Provide CC Payment Info</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" id="submitButton" onclick="submitForm(); return false;">Submit</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light" onclick="cancel()">Cancel</button>
+                    <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+                </div>
+
+                <div class="questionBreak"></div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

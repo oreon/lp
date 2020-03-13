@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .address-review span {
+            color:green;
+            }
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div th:fragment="addressDetails">
+
+    <th:block if="${review}">
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var _csrf_token = /*[[${_csrf.token}]]*/ '';
+            var _csrf_param_name = /*[[${_csrf.parameterName}]]*/ '';
+            /*]]>*/
+
+            $(document).ready(function(){
+                $('#_csrf_param_name').attr('name', _csrf_param_name);
+                $('#_csrf_param_name').val(_csrf_token);
+            });
+
+        </script>
+
+        <input type="hidden" name="_csrf_param_name" id="_csrf_param_name" />
+    </th:block>
+
+
+    <div class="address-details">
+        <input type="hidden" id="addressReview" th:value="${review}" />
+
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="primaryDetailsAddress">
+
+            <div class="form-group" id="EffectiveDateContainer" style="display: none;">
+                <label for="EffectiveDate">Effective date of the requested changes</label>
+                <div class="form-group data-custon-pick" style="width: 250px;">
+                    <div class="input-group date" style="width: 250px;">
+                        <span class="input-group-addon"><i class="fa fa-calendar clickable-calendar"></i></span>
+                        <input type="text" class="form-control" style="width: 200px;" name="effectiveDate" placeholder="MMM DD, YYYY" id="EffectiveDate" th:value="${user.getEffectiveDate()}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lawID">LSO #</label>
+                <input data-id="lawID" id="lawID" name="LSONumberPartial" type="text" class="form-control" placeholder="LSO #" th:value="${user.getLSONumberPartial()}">
+                <input id="hiddenLawID" name="LSONumber" type="hidden" class="form-control" placeholder="LSO #" th:value="${user.LSONumber}">
+            </div>
+            <div class="form-group">
+                <label for="firstName">First name</label>
+                <input id="firstName" name="firstName" type="text" class="form-control" data-id="firstName" placeholder="First name" th:value="${user.getContactName().firstName}">
+                <input type="hidden" id="firstNameOriginal" th:value="${user.getContactName().firstName}" />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last name</label>
+                <input id="lastName" name="lastName" type="text" class="form-control" data-id="lastName" placeholder="Last name" th:value="${user.getContactName().lastName}">
+                <input type="hidden" id="lastNameOriginal" th:value="${user.getContactName().lastName}" />
+            </div>
+            <div class="form-group">
+                <label for="position">Position</label>
+                <input id="position" name="position" type="text" class="form-control" placeholder="Position" th:value="${user.getContactName().title}">
+                <input type="hidden" id="positionOriginal" th:value="${user.getContactName().title}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="homePhone">Home phone number</label>
+                <input id="homePhone" name="homePhone" type="text" class="form-control hide-ms-clear" data-mask="999-999-9999" maxlength="10" data-id="homePhone" placeholder="Home phone" th:value="${user.homePhone}" />
+                <input type="hidden" id="homePhoneOriginal" th:value="${user.homePhone}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="workPhone">Work phone number</label>
+                <input id="workPhone" name="workPhone" type="text" class="form-control hide-ms-clear" data-id="workPhone" data-mask="999-999-9999" maxlength="10" placeholder="Work phone" th:value="${user.workPhone}" />
+                <label for="workPhoneExt" style="display: none;">Ext</label>
+                <input id="workPhoneExt" name="workPhoneExt" type="number" min="0" class="form-control" placeholder="Ext" th:value="${user.workPhoneExt}" />
+                <input type="hidden" id="workPhoneOriginal" th:value="${user.workPhone}" />
+                <input type="hidden" id="workPhoneExtOriginal" th:value="${user.workPhoneExt}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="addlPhone">Additional phone number</label>
+                <input id="addlPhone" name="addlPhone" type="text" data-id="addlPhone" class="form-control hide-ms-clear" data-mask="999-999-9999" maxlength="10" placeholder="Addl phone" th:value="${user.addlPhone}" />
+                <input type="hidden" id="addlPhoneOriginal" th:value="${user.addlPhone}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="faxNumber">Fax number</label>
+                <input id="faxNumber" name="faxNumber" type="text" data-id="fax" class="form-control hide-ms-clear" data-mask="999-999-9999" maxlength="10" placeholder="Fax number" th:value="${user.fax}" />
+                <input type="hidden" id="faxNumberOriginal" th:value="${user.fax}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="text" data-id="email" class="form-control" placeholder="Email address" th:value="${user.email}" />
+                <input type="hidden" id="emailOriginal" th:value="${user.email}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="website">Website</label>
+                <input id="website" name="website" type="text" data-id="website" class="form-control" placeholder="Website"  th:value="${user.website}" />
+                <input type="hidden" id="websiteOriginal" th:value="${user.website}" />
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" id="secondaryDetailsAddress">
+            <div class="form-group res-mg-t-15">
+                <label for="lawyerFirmNumber">LAWPRO firm number</label><a href="#" onclick="showSearch(); return false;" class="actionLink">(Change Firm)</a>
+                <input id="lawyerFirmNumber" name="firmNumber" type="text" class="form-control" placeholder="Firm number" th:value="${user.firmKey}" />
+                <input id="lawyerFirmNumberOriginal" type="hidden" th:value="${user.firmKey}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="laywerFirmName">Name of law partnership, association or sole practitioner</label>
+                <input id="laywerFirmName" name="firmName" type="text" class="form-control" placeholder="Name of law partnership, association or sole practitioner" th:value="${user.firmName}" />
+                <input type="hidden" id="lawyerFirmNameOriginal" th:value="${user.firmName}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="preferredMailingButtons" class="headerLabel">Preferred mailing address</label>
+                <div class="readOnlyInput" id="preferredMailingValue" th:text="${user.preferredMailingAddress}" style="float: left; margin-bottom: 20px;"></div>
+                <input type="hidden" id="preferredMailingTypeOriginal" th:value="${user.preferredMailingAddress}" />
+                <a href="#" onclick="showPreviewLabel(); return false;" class="actionLink" id="previewMailingLabel" style="float: left;">(Preview mailing label)</a>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons"  onclick="checkMailing(); return false;" style="display: none;" id="preferredMailingButtons">
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="preferredMailing" value="firm" data-value="Firm" id="preferredMailingFirm" autocomplete="off" /> Firm
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="preferredMailing" value="home" data-value="Home" id="preferredMailingHome" autocomplete="off" /> Home
+                    </label>
+                </div>
+            </div>
+            <div class="form-group res-mg-t-15" style="clear: both;">
+                <label for="mailingAddress1">Mailing address</label>
+                <input id="mailingAddress1" name="mailingAddress1" type="text" class="form-control" placeholder="Address" th:value="${user.address.line1}" />
+                <input id="mailingAddress1Value" name="mailingAddress1Value" type="hidden" class="form-control" placeholder="Address" th:value="${user.address.line1}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="mailingAddress2" style="display: none;">Address 2</label>
+                <input id="mailingAddress2" name="mailingAddress2" type="text" class="form-control" placeholder="Address" th:value="${user.address.line2}" />
+                <input id="mailingAddress2Value" name="mailingAddress2Value" type="hidden" class="form-control" placeholder="Address" th:value="${user.address.line2}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="mailingAddress3" style="display: none;">Address 3</label>
+                <input id="mailingAddress3" name="mailingAddress3" type="text" class="form-control" placeholder="Address" th:value="${user.address.line3}" />
+                <input id="mailingAddress3Value" name="mailingAddress3Value" type="hidden" class="form-control" placeholder="Address" th:value="${user.address.line3}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="city">City</label>
+                <input id="city" name="city" type="text" data-id="city" class="form-control" placeholder="City" th:value="${user.address.city}" />
+                <input id="cityValue" name="cityValue" type="hidden" class="form-control" placeholder="City" th:value="${user.address.city}" />
+            </div>
+            <div class="form-group res-mg-t-15">
+                <label for="province" style="float: left;">Province</label>
+                <div class="clearfix"></div>
+                <input type="hidden" id="provinceValue" name="provinceValue" th:value="${user.address.province}" />
+                <select id="province" data-id="province" onchange="checkProvince(); return false;" name="province" type="text" class="form-control" placeholder="Province" th:value="${user.address.province}" style="width:100%; float: left;">
+                    <th:block th:each="item : ${provinces}">
+                        <option th:value="${item.getValue()}" th:text="${item.getName()}" />
+                    </th:block>
+                </select>
+                <div class="clearfix"></div>
+                <label for="provinceReadOnly" style="display: none;">Province</label>
+                <input type="text" id="provinceReadOnly" th:value="${user.address.province}" class="form-control" placeholder="Province" style="float: left;" aria-hidden="true" />
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group res-mg-t-15" id="provinceOtherContainer" style="display: none;">
+                <label for="provinceOther">Enter Province</label>
+                <input type="text" id="provinceOther" name="provinceOther" placeholder="Enter province" th:value="${user.address.province}" class="form-control" />
+            </div>
+
+            <div class="form-group res-mg-t-15">
+                <label for="postalCode">Postal code</label>
+                <input id="postalCode" data-id="postalCode" data-mask="*9* 9*9" name="postalCode" type="text" class="form-control" placeholder="Postal code" th:value="${user.address.postalCode}" style="text-transform: uppercase;" />
+                <input id="postalCodeValue" name="postalCodeValue" type="hidden" class="form-control" placeholder="Postal code" th:value="${user.address.postalCode}" />
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" style="text-align: center; margin-top: 20px; clear:both;">
+                    <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnCancelAddress" onclick="cancelAddress(); return false;" style="display: none;">Cancel</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" style="margin-bottom:10px" id="btnUpdateAddressDetails" th:onclick="'javascript:updateAddressDetails(' + ${review} + '); return false;'">Click Here To Update Address</button> <span id="update-address-btn-break"></br></span>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnSaveAddressDetails" onclick="saveAddressDetails(false); return false;" style="display: none;">Save</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnContinueFromAddress" onclick="next(false); return false;">Continue with New Application Form</button>
+                    <button th:if="${review}" type="button" class="btn btn-primary waves-effect waves-light bigButton" id="btnReviewAddressDetails" onclick="displayAddressReview()" style="display:none;">Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addressLoading" class="loading">
+        <img src="/img/ajaxbig.gif" alt="Loading" />
+    </div>
+    <div id="addressConfirmation" style="display: none;">
+        <div class="product-payment-inner-st" style="font-size: 16px;">
+            <div class="clearfix"></div>
+
+            <h2 style="color: #483b71;">Thank you!</h2>
+
+            <div class="questionBreak"></div>
+
+            <p>Thank you for updating your information.</p>
+
+            <div class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${user.getContactName().firstName}"></span> <span style="font-weight: normal;" th:text="${user.getContactName().lastName}"></span></div>
+            <div class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${user.getLSONumberPartial()}"></span></div>
+            <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Address/Info Update</span></div>
+            <div class="submittedValue confirmationLine">DATE: <span style="font-weight: normal;" id="submittedDateAddress"></span></div>
+            <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumberAddress"></span></div>
+
+            <div class="questionBreak"></div>
+
+            <div class="alert alert-success alert-st-two" role="alert" style="margin-top: 20px;">
+                <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="http://www.lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://www.practicepro.ca" target="_blank">practicepro.ca</a></p>
+            </div>
+
+            <div class="row" style="text-align: center;" th:if="${!review}">
+                <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnContinueFromAddressReview" onclick="next(false); return false;" style="display: inline-block;">Continue with New Application Form</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="address-review" id="address-review" style="display:none;" th:if="${review}">
+
+            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="review-primary-address">
+
+                <div class="form-group">
+                    <div class="reviewLabel">Effective date of the requested changes</div></br>
+                    <span id="review-effective-date"></span>
+                </div>
+                <div class="form-group">
+                    <div class="reviewLabel">LSO #</div></br>
+                    <span id="review-law-id"></span>
+                </div>
+                <div class="form-group">
+                    <div class="reviewLabel">First name</div></br>
+                    <span id="review-first-name"></span>
+                </div>
+                <div class="form-group">
+                    <div class="reviewLabel">Last name</div></br>
+                    <span id="review-last-name"></span>
+                </div>
+                <div class="form-group">
+                    <div class="reviewLabel">Position</div></br>
+                    <span id="review-position"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Home phone number</div></br>
+                    <span id="review-home-phone"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Work phone number</div></br>
+                    <span id="review-work-phone"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Work phone ext</div></br>
+                    <span id="review-work-phone-ext"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Additional phone number</div></br>
+                    <span id="review-addl-phone"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Fax number</div></br>
+                    <span id="review-fax-number"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Email</div></br>
+                    <span id="review-email"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Website</div></br>
+                    <span id="review-website"></span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" id="review-secondary">
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">LAWPRO firm number</div></br>
+                    <span id="review-law-firm-number"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Name of law partnership, association or sole practitioner</div></br>
+                    <span id="review-law-firm-name"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Preferred Mailing</div></br>
+                    <span id="review-preferred-mailing"></span>
+                </div>
+                <div class="form-group res-mg-t-15" style="clear: both;">
+                    <div class="reviewLabel">Mailing address</div></br>
+                    <span id="review-mailing-address-1"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <span id="review-mailing-address-2"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <span id="review-mailing-address-3"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">City</div></br>
+                    <span id="review-city"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Province</div></br>
+                    <span id="review-province"></span>
+                </div>
+                <div class="form-group res-mg-t-15">
+                    <div class="reviewLabel">Postal code</div></br>
+                    <span id="review-postal-code"></span>
+                </div>
+                <div class="row">
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="button" class="btn btn-primary waves-effect waves-light bigButton" id="btnBackAddressDetails" onclick="reviewGoBack()">Back</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light bigButton" id="btnSaveAddressDetails2" onclick="saveAddressDetails(true); return false;">Save</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="review-address-loading" class="loading">
+                <img src="/img/ajaxbig.gif" alt="Loading" />
+            </div>
+            <div id="review-address-confirmation" style="display: none;">
+                <div class="product-payment-inner-st" style="font-size: 16px;">
+                    <div class="clearfix"></div>
+
+                    <h2 style="color: #483b71;">Thank you!</h2>
+
+                    <div class="questionBreak"></div>
+
+                    <p>Thank you for updating your information.</p>
+
+                    <div class="submittedValue confirmationLine">NAME: <span style="font-weight: normal;" th:text="${user.getContactName().firstName}"></span> <span style="font-weight: normal;" th:text="${user.getContactName().lastName}"></span></div>
+                    <div class="submittedValue confirmationLine">LSO NUMBER: <span style="font-weight: normal;" th:text="${user.getLSONumberPartial()}"></span></div>
+                    <div class="submittedValue confirmationLine">TYPE OF APPLICATION: <span style="font-weight: normal;">Address/Info Update</span></div>
+                    <div class="submittedValue confirmationLine">DATE: <span style="font-weight: normal;" id="submittedDateAddressReview"></span></div>
+                    <div class="submittedValue confirmationLine">CONFIRMATION NUMBER: <span style="font-weight: normal;" id="confirmationNumberAddressReview"></span></div>
+
+                    <div class="questionBreak"></div>
+
+                    <div class="alert alert-success alert-st-two" role="alert" style="margin-top: 20px;">
+                        <i class="fa fa-info-circle edu-inform admin-check-sucess admin-check-pro-none" aria-hidden="true"></i>
+                        <p style="margin-left: 30px;">You can see your E-Filing history information for the last five years in your My LAWPRO account. Learn more about LAWPRO at <a href="http://www.lawpro.ca" target="_blank">lawpro.ca</a> and download useful risk management resources at <a href="http://www.practicepro.ca" target="_blank">practicepro.ca</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

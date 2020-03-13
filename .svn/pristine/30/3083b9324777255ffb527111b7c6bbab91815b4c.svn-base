@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="layout/main">
+<head>
+    <title>Forms</title>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+
+
+    <div class="product-status mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-status-wrap drp-lst">
+                        <h4>All Forms</h4>
+                        <div class="asset-inner">
+                            <table>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>URL</th>
+                                    <th>Setting</th>
+                                </tr>
+                                <tr th:each="form : ${forms}">
+                                    <td th:text="${form.name}"></td>
+                                    <td th:text="${form.url}"></td>
+                                    <td>
+                                        <a th:href="@{|/dashboard/forms/${form.url}|}">
+                                            <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--TODO - Implement Paging
+                        <div class="custom-pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
